@@ -60,6 +60,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 | `Pagination` | 13 | `skip`/`take` windows: in range, past the end, beyond `int.MaxValue`, zero and negative values, and after `DISTINCT`, `GROUP BY` and joins |
 | `Combined` | 40 | Several clauses at once — join, where, group by, having, order by, distinct and pagination — including every clause together with five-level predicate trees |
 | `Types` | 39 | One column of each type, calendar and numeric extremes, uuid casing, and NULL semantics: nullable operands in comparisons, arithmetic and aggregates, three-valued `not`, NULL group keys and left-join padding |
+| `Parameters` | 2 | Unbound number and string parameters in a per-row equality |
 
 ### Data sets
 
