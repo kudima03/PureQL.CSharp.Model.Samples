@@ -18,6 +18,10 @@ end_of_line = lf
 [*.sln]
 indent_style = tab
 
+# Visual Studio XML Solution Files
+[*.slnx]
+indent_size = 2
+
 # Visual Studio XML Project Files
 [*.{csproj,vbproj,vcxproj.filters,proj,projitems,shproj}]
 indent_size = 2
@@ -407,3 +411,10 @@ dotnet_naming_symbols.parameters_group.applicable_kinds = parameter
 dotnet_naming_rule.parameters_rule.symbols              = parameters_group
 dotnet_naming_rule.parameters_rule.style                = camel_case_style
 dotnet_naming_rule.parameters_rule.severity             = warning
+
+# Query samples expose their Query through an instance property so a consumer
+# writes `new FooQuery().Value`, the same shape as every other Samples package.
+# The Query is built fresh on every read and touches no instance state, which
+# CA1822 would otherwise turn into a static member.
+[PureQL.CSharp.Model.Samples/Queries/**.cs]
+dotnet_diagnostic.CA1822.severity = none
