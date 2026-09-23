@@ -8,8 +8,12 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects the distinct rows of last_login from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record DistinctOnDateTimeColumnQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

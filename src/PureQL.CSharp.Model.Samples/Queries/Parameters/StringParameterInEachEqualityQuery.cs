@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Parameters;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, keeping the rows where
+/// order_status equals parameter status.
+/// </summary>
 public sealed record StringParameterInEachEqualityQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -9,8 +9,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects order_status and order_total minus order_total as diff from
+/// schema_with_foreign_keys.orders, grouped by order_status.
+/// </summary>
 public sealed record BareEachSubtractInGroupBySelectQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects order_user_id and the count of order_id as orderCount from
+/// schema_with_foreign_keys.orders, grouped by order_user_id, keeping the groups where
+/// false.
+/// </summary>
 public sealed record HavingRejectingEveryGroupQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

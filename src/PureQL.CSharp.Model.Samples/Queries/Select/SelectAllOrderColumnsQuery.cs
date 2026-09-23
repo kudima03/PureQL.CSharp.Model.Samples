@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects order_id, order_user_id, order_total, order_status, placed_at and placed_on
+/// from schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record SelectAllOrderColumnsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

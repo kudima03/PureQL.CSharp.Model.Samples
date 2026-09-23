@@ -12,8 +12,17 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects orders.order_user_id and the sum of (order_items.item_qty times
+/// products.product_price) as revenue from schema_with_foreign_keys.orders, inner-joined
+/// to schema_with_foreign_keys.order_items on order_items.item_order_id equals
+/// orders.order_id, inner-joined to schema_with_foreign_keys.products on
+/// order_items.item_product_id equals products.product_id, grouped by
+/// orders.order_user_id.
+/// </summary>
 public sealed record SumOfEachMultiplyGroupedByOrderUserIdQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

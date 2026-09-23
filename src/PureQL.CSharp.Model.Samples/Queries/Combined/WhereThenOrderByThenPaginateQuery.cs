@@ -12,8 +12,13 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects order_total from schema_with_foreign_keys.orders, keeping the rows where
+/// order_total is greater than 50, ordered by order_total, skipping 1 rows and taking 2.
+/// </summary>
 public sealed record WhereThenOrderByThenPaginateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

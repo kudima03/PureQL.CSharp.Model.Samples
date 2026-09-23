@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects users.user_id, the maximum of logins.login_at as lastLoginAt and the count of
+/// logins.login_id as loginCount from schema_with_foreign_keys.users, inner-joined to
+/// audit.logins on users.user_id equals logins.login_user_id, grouped by users.user_id.
+/// </summary>
 public sealed record PerUserMaxAndCountOverCrossSchemaLoginsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

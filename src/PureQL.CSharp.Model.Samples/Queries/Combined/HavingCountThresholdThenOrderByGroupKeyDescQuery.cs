@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects order_status and the count of order_id as orderCount from
+/// schema_with_foreign_keys.orders, grouped by order_status, keeping the groups where the
+/// count of order_id is at least 2, ordered by order_status descending.
+/// </summary>
 public sealed record HavingCountThresholdThenOrderByGroupKeyDescQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

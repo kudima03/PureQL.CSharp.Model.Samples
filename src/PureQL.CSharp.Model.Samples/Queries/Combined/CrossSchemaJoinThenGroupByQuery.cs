@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects users.user_id and the count of logins.login_id as loginCount from
+/// schema_with_foreign_keys.users, inner-joined to audit.logins on users.user_id equals
+/// logins.login_user_id, grouped by users.user_id.
+/// </summary>
 public sealed record CrossSchemaJoinThenGroupByQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Scalar;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, filtered by false or not
+/// (true or false).
+/// </summary>
 public sealed record DeMorganNotOfOrAtFourLevelsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

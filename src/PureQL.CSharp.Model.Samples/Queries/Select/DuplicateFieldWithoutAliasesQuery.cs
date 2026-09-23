@@ -8,8 +8,12 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects order_status and order_status from schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record DuplicateFieldWithoutAliasesQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

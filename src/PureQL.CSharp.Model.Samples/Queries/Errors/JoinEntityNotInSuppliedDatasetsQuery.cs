@@ -9,8 +9,14 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Errors;
 
+/// <summary>
+/// Selects single_column_table.id from single_table_schema.single_column_table,
+/// inner-joined to single_table_schema.nonexistent_join_table on single_column_table.id
+/// equals nonexistent_join_table.whatever_id.
+/// </summary>
 public sealed record JoinEntityNotInSuppliedDatasetsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

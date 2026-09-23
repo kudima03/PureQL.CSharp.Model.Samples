@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects users.user_name and the count of orders.order_id as orderCount from
+/// schema_with_foreign_keys.users, inner-joined to schema_with_foreign_keys.orders on
+/// users.user_id equals orders.order_user_id, grouped by users.user_name.
+/// </summary>
 public sealed record JoinThenGroupByQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects orders.order_total as hours and users.user_name as customer from
+/// schema_with_foreign_keys.orders, left-joined to schema_with_foreign_keys.users on
+/// orders.order_user_id equals '00000000-0000-0000-0000-000000000000'.
+/// </summary>
 public sealed record LeftJoinOnNeverMatchingUuidLiteralQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

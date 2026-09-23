@@ -14,8 +14,17 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects orders.order_status and the count of orders.order_id as orderCount from
+/// schema_with_foreign_keys.orders, inner-joined to schema_with_foreign_keys.users on
+/// orders.order_user_id equals users.user_id, keeping the rows where users.user_active
+/// equals true, grouped by orders.order_status, keeping the groups where the count of
+/// orders.order_id is greater than 1, ordered by orders.order_status, skipping 1 rows and
+/// taking 2.
+/// </summary>
 public sealed record JoinWhereGroupByHavingOrderByPaginationQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

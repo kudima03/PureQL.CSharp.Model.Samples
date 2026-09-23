@@ -9,8 +9,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, keeping the rows where
+/// order_total is greater than order_total.
+/// </summary>
 public sealed record EachGreaterThanOfANumberFieldWithItselfQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

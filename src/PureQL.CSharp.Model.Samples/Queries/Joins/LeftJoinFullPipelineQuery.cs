@@ -15,8 +15,17 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects the distinct rows of the count of orders.order_id as orderCount from
+/// schema_with_foreign_keys.users, left-joined to schema_with_foreign_keys.orders on
+/// users.user_id equals orders.order_user_id, keeping the rows where users.user_active
+/// equals true, grouped by users.user_id, keeping the groups where the sum of
+/// orders.order_total is at least 0, ordered by users.orderCount descending, skipping 1
+/// rows and taking 5.
+/// </summary>
 public sealed record LeftJoinFullPipelineQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects the count of orders.order_total as total_count from
+/// schema_with_foreign_keys.users, left-joined to schema_with_foreign_keys.orders on
+/// users.user_id equals orders.order_user_id.
+/// </summary>
 public sealed record LeftJoinCountOfNumericColumnQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

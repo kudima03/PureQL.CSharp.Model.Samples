@@ -9,8 +9,12 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects 1 plus parameter bonus as sum from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record SingleValueArithmeticWithParameterOperandInSelectQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

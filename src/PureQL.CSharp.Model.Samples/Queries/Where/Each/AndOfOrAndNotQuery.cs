@@ -13,8 +13,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, keeping the rows where
+/// (order_total is greater than 100 or order_status equals 'pending') and not
+/// (order_status equals 'cancelled').
+/// </summary>
 public sealed record AndOfOrAndNotQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the maximum of order_total as max_total from schema_with_foreign_keys.orders,
+/// grouped by order_user_id.
+/// </summary>
 public sealed record MaxOfTotalPerUserQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

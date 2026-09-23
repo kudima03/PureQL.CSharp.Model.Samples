@@ -13,8 +13,15 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects users.user_id and the sum of orders.order_total as totalSum from
+/// schema_with_foreign_keys.users, left-joined to schema_with_foreign_keys.orders on
+/// users.user_id equals orders.order_user_id, grouped by users.user_id, keeping the
+/// groups where the sum of orders.order_total is at least 150.
+/// </summary>
 public sealed record LeftJoinGroupByHavingSumQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

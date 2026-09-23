@@ -9,8 +9,13 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Pagination;
 
+/// <summary>
+/// Selects order_total from schema_with_foreign_keys.orders, ordered by order_total,
+/// skipping 2 rows and taking 2.
+/// </summary>
 public sealed record SkipAndTakeQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

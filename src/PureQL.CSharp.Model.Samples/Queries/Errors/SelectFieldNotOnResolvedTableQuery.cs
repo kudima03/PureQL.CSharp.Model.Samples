@@ -7,8 +7,12 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Errors;
 
+/// <summary>
+/// Selects user_nickname from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record SelectFieldNotOnResolvedTableQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

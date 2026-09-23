@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects user_active and the average of user_score as avg_score from
+/// schema_with_foreign_keys.users, grouped by user_active, keeping the groups where the
+/// average of user_score is greater than 15.
+/// </summary>
 public sealed record HavingAverageQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

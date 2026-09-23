@@ -8,8 +8,12 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects last_login from schema_with_foreign_keys.users, grouped by last_login.
+/// </summary>
 public sealed record GroupByDateTimeKeyQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

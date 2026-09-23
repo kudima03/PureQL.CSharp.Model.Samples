@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Errors;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, filtered by the count of
+/// order_id is greater than 0.
+/// </summary>
 public sealed record AggregateInsideWhereComparisonQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

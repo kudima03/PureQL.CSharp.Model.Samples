@@ -9,8 +9,13 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Pagination;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, skipping 9223372036854775807
+/// rows and taking 1.
+/// </summary>
 public sealed record SkipBeyondIntMaxQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -10,8 +10,12 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects the count of order_id as total from schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record WholeSetCountQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

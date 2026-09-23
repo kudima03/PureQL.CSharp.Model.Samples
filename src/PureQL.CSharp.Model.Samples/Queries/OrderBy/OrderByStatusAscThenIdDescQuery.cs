@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.OrderBy;
 
+/// <summary>
+/// Selects order_status and order_id from schema_with_foreign_keys.orders, ordered by
+/// order_status and order_id descending.
+/// </summary>
 public sealed record OrderByStatusAscThenIdDescQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

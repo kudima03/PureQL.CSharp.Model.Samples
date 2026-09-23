@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects the count of order_id as group_count from schema_with_foreign_keys.orders,
+/// grouped by order_user_id.
+/// </summary>
 public sealed record CountAggregateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the count of product_in_stock as n from schema_with_foreign_keys.products,
+/// grouped by product_in_stock.
+/// </summary>
 public sealed record CountOfBooleanColumnGroupedByStockStatusQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -13,8 +13,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where
+/// placed_on plus 1 days equals '2024-06-02' and order_status equals 'shipped'.
+/// </summary>
 public sealed record EachAndOfDateAddDaysEqualsTargetAndStatusEqualsShippedOverOrdersQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

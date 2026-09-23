@@ -10,8 +10,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects order_user_id and the count of order_id as orderCount from
+/// schema_with_foreign_keys.orders, grouped by order_user_id, ordered by orderCount
+/// descending and order_user_id.
+/// </summary>
 public sealed record OrderByAggregateDescThenGroupKeyAscQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

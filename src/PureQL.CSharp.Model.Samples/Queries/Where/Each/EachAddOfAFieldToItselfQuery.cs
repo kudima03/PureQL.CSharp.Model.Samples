@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, keeping the rows where
+/// (order_total plus order_total) is greater than 200.
+/// </summary>
 public sealed record EachAddOfAFieldToItselfQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

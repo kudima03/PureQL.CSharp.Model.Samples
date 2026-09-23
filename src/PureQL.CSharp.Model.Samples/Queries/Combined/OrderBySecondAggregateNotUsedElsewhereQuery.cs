@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects order_user_id, the count of order_id as orderCount and the maximum of
+/// order_total as maxTotal from schema_with_foreign_keys.orders, grouped by
+/// order_user_id, ordered by maxTotal descending.
+/// </summary>
 public sealed record OrderBySecondAggregateNotUsedElsewhereQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

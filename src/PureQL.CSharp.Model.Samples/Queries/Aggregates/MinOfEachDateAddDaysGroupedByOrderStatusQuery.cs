@@ -13,8 +13,15 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects orders.order_status and the minimum of users.signup_date plus 30 days as
+/// earliestProjectedDate from schema_with_foreign_keys.orders, inner-joined to
+/// schema_with_foreign_keys.users on orders.order_user_id equals users.user_id, grouped
+/// by orders.order_status.
+/// </summary>
 public sealed record MinOfEachDateAddDaysGroupedByOrderStatusQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

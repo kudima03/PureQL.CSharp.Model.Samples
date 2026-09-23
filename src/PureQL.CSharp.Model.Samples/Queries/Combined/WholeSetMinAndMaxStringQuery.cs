@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects the minimum of order_status as minStatus and the maximum of order_status as
+/// maxStatus from schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record WholeSetMinAndMaxStringQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

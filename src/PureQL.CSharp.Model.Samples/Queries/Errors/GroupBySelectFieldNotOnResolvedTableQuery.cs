@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Errors;
 
+/// <summary>
+/// Selects order_status as status and order_notes as notes from
+/// schema_with_foreign_keys.orders, grouped by order_status.
+/// </summary>
 public sealed record GroupBySelectFieldNotOnResolvedTableQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

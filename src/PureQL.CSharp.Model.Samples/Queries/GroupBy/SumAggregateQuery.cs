@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects the sum of order_total as group_total from schema_with_foreign_keys.orders,
+/// grouped by order_user_id.
+/// </summary>
 public sealed record SumAggregateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

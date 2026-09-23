@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects 'all' as scope and the count of order_id as order_count from
+/// schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record ScalarAlongsideWholeSetCountQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

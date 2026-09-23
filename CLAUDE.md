@@ -26,6 +26,8 @@ This is a **sample-data NuGet library**: a catalogue of named, predefined PureQL
 
 **Sample shape.** `PureQL.CSharp.Model.Query` is a sealed record with no interface, so a sample cannot implement it. Each sample instead exposes `public Query Value => new Query(...);` and is used as `new FooQuery().Value`. CA1822 is switched off for `Queries/**` in `src/.editorconfig` because of this — keep `Value` an instance member.
 
+**Documentation.** `GenerateDocumentationFile` is on, so every public type and member needs an XML doc comment — a missing one is CS1591, an error under `-warnaserror`. A sample's `<summary>` describes the query in plain English (what it selects, from where, and each clause in order); `Value` carries the one-line `Builds the query afresh on every read.`
+
 **Naming.** A sample is named after what the query *asks*, never after what an engine is expected to answer (`HavingSumGreaterThanConstantQuery`, not `…KeepsSomeGroups`). Every name ends in `Query` and is unique across all folders. Two queries that differ only in one value are named by that value's role (`HavingCountEqualExistingValueQuery` / `HavingCountEqualAbsentValueQuery`).
 
 **The catalogue is deduplicated.** A query appears once, however many Projection tests execute it. Before adding a sample, check that no existing sample already serializes to the same document.

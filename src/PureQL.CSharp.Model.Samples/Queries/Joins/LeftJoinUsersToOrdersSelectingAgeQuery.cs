@@ -9,8 +9,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects users.user_age from schema_with_foreign_keys.users, left-joined to
+/// schema_with_foreign_keys.orders on users.user_id equals orders.order_user_id.
+/// </summary>
 public sealed record LeftJoinUsersToOrdersSelectingAgeQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

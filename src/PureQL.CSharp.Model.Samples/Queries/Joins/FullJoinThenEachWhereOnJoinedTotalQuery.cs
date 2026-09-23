@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects users.user_name from schema_with_foreign_keys.orders, full-joined to
+/// schema_with_foreign_keys.users on orders.order_user_id equals users.user_id, keeping
+/// the rows where orders.order_total is at least 100.
+/// </summary>
 public sealed record FullJoinThenEachWhereOnJoinedTotalQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -14,8 +14,16 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects the distinct rows of the count of logins.login_id as loginCount from
+/// schema_with_foreign_keys.users, left-joined to audit.logins on users.user_id equals
+/// logins.login_user_id, grouped by users.user_id, keeping the groups where the count of
+/// logins.login_id is at least 1, ordered by users.loginCount descending, skipping 0 rows
+/// and taking 1.
+/// </summary>
 public sealed record CrossSchemaLeftJoinFullPipelineQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, keeping the rows where not
+/// (order_id equals order_user_id).
+/// </summary>
 public sealed record EachNotOfTwoDistinctUuidFieldsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

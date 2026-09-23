@@ -14,8 +14,15 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects order_user_id and the sum of order_total as totalSum from
+/// schema_with_foreign_keys.orders, grouped by order_user_id, keeping the groups where
+/// the count of order_id is at least 1, ordered by totalSum descending, skipping 1 rows
+/// and taking 2.
+/// </summary>
 public sealed record PaginationWindowAfterHavingAndOrderByQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

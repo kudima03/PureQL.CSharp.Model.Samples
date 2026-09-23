@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_total from schema_with_foreign_keys.orders, keeping the rows where the
+/// whole placed_on column equals a list of 3 dates.
+/// </summary>
 public sealed record EachEqualDateMultiElementLiteralArrayQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

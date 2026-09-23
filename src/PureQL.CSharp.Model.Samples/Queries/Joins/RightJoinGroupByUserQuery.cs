@@ -12,8 +12,15 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects users.user_id, the count of orders.order_id as orderCount and the sum of
+/// orders.order_total as totalSum from schema_with_foreign_keys.orders, right-joined to
+/// schema_with_foreign_keys.users on orders.order_user_id equals users.user_id, grouped
+/// by users.user_id.
+/// </summary>
 public sealed record RightJoinGroupByUserQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

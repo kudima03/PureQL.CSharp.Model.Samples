@@ -13,8 +13,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where the days
+/// between placed_on and '2024-06-01' is greater than 2 or order_total is less than 60.
+/// </summary>
 public sealed record EachOrOfDateDiffDaysAboveThresholdAndTotalBelowThresholdOverOrdersQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

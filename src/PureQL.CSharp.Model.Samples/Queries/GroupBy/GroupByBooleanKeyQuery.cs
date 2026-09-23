@@ -8,8 +8,12 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects user_active from schema_with_foreign_keys.users, grouped by user_active.
+/// </summary>
 public sealed record GroupByBooleanKeyQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

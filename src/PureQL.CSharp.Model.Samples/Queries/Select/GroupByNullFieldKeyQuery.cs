@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects the count of order_id as cnt and order_status as grouped_status from
+/// schema_with_foreign_keys.orders, grouped by order_status typed as null.
+/// </summary>
 public sealed record GroupByNullFieldKeyQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the maximum of (orders.order_total divided by users.user_score) as maxRatio
+/// from schema_with_foreign_keys.orders, inner-joined to schema_with_foreign_keys.users
+/// on orders.order_user_id equals users.user_id.
+/// </summary>
 public sealed record MaxOfEachDivideWholeSetQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

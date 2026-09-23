@@ -14,8 +14,16 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects orders.order_user_id and the count of (orders.order_total divided by
+/// users.user_score) as ratioCount from schema_with_foreign_keys.orders, inner-joined to
+/// schema_with_foreign_keys.users on orders.order_user_id equals users.user_id, grouped
+/// by orders.order_user_id, keeping the groups where the count of (orders.order_total
+/// divided by users.user_score) equals 0.
+/// </summary>
 public sealed record HavingCountOfEachDivideEqualToZeroQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

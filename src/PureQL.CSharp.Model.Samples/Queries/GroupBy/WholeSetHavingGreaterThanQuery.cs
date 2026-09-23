@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects the count of user_id as userCount from schema_with_foreign_keys.users, keeping
+/// the whole set only if the count of user_id is greater than 6.
+/// </summary>
 public sealed record WholeSetHavingGreaterThanQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

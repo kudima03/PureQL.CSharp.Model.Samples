@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects product_name from schema_with_foreign_keys.products, keeping the rows where
+/// the whole product_in_stock column equals a list of 5 booleans.
+/// </summary>
 public sealed record EachEqualBooleanMultiElementLiteralArrayQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

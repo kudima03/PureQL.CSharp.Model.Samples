@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the rows where user_age
+/// equals 30.
+/// </summary>
 public sealed record EachNumberEqualityQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

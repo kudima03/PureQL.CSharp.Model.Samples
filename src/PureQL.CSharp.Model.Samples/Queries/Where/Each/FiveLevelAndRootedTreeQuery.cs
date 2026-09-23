@@ -13,8 +13,15 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where (not
+/// (order_total is greater than 100 and order_status equals 'pending') or order_total is
+/// at least 300) and (not (order_status equals 'cancelled') or (order_total is less than
+/// 100 and order_status equals 'shipped')).
+/// </summary>
 public sealed record FiveLevelAndRootedTreeQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

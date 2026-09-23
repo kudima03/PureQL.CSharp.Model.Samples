@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects user_edge_date, user_edge_datetime and user_edge_time from
+/// schema_with_foreign_keys.users.
+/// </summary>
 public sealed record CalendarEdgeValuesQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the rows where the
+/// seconds between shift_start and '08:00:00' is greater than 3600.
+/// </summary>
 public sealed record EachTimeDiffSecondsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

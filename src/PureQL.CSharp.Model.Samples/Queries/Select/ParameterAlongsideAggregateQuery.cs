@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects parameter scope as scope and the count of order_id as order_count from
+/// schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record ParameterAlongsideAggregateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

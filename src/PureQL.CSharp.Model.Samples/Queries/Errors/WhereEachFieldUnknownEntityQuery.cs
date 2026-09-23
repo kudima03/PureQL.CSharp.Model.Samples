@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Errors;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, keeping the rows where
+/// whatever equals 'shipped'.
+/// </summary>
 public sealed record WhereEachFieldUnknownEntityQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

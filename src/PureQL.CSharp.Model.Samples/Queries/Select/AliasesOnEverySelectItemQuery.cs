@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects order_id as id, order_status as state and order_total as amount from
+/// schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record AliasesOnEverySelectItemQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

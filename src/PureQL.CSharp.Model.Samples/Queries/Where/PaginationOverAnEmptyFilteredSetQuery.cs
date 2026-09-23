@@ -12,8 +12,13 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, keeping the rows where
+/// order_status equals 'no-such-status', skipping 0 rows and taking 5.
+/// </summary>
 public sealed record PaginationOverAnEmptyFilteredSetQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

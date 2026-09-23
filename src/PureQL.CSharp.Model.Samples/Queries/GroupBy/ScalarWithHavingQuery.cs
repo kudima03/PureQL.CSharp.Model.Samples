@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects 'repeat-buyer' as tag and the count of order_id as order_count from
+/// schema_with_foreign_keys.orders, grouped by order_user_id, keeping the groups where
+/// the count of order_id is greater than 1.
+/// </summary>
 public sealed record ScalarWithHavingQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

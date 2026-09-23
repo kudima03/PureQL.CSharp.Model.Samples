@@ -13,8 +13,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where
+/// (order_total is greater than 100000 or order_total is less than -100000) and
+/// order_status equals 'shipped'.
+/// </summary>
 public sealed record UnsatisfiableEachTreeQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

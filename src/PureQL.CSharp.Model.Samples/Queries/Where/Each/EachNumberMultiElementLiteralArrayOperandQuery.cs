@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where the list
+/// [999, -5] is greater than 0.
+/// </summary>
 public sealed record EachNumberMultiElementLiteralArrayOperandQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

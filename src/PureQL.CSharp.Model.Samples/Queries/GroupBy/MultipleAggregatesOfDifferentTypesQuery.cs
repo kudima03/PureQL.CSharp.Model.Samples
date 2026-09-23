@@ -13,8 +13,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects order_user_id, the count of order_id as orderCount, the sum of order_total as
+/// totalSum, the minimum of placed_on as earliestPlacedOn and the maximum of order_status
+/// as maxStatus from schema_with_foreign_keys.orders, grouped by order_user_id.
+/// </summary>
 public sealed record MultipleAggregatesOfDifferentTypesQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

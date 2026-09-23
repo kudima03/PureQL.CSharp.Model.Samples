@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects order_user_id from schema_with_foreign_keys.orders, grouped by order_user_id,
+/// keeping the groups where the maximum of placed_at is greater than
+/// '2024-06-03T12:00:00'.
+/// </summary>
 public sealed record HavingMaxPlacedAtGreaterThanConstantQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -14,8 +14,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects order_user_id from schema_with_foreign_keys.orders, grouped by order_user_id,
+/// keeping the groups where not ((the count of order_id is greater than 1 and the maximum
+/// of order_total is at least 200) or not (the minimum of order_total is at least 100)).
+/// </summary>
 public sealed record HavingFourLevelNestedNotOrAndNotQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

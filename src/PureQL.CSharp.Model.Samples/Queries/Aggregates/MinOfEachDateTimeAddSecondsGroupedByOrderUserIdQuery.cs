@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects order_user_id and the minimum of placed_at plus 1800 seconds as
+/// earliestProjectedInstant from schema_with_foreign_keys.orders, grouped by
+/// order_user_id.
+/// </summary>
 public sealed record MinOfEachDateTimeAddSecondsGroupedByOrderUserIdQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

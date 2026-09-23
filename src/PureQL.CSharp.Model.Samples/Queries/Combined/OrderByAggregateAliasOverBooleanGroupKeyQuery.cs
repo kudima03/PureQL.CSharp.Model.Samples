@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects user_active and the maximum of user_age as maxAge from
+/// schema_with_foreign_keys.users, grouped by user_active, ordered by maxAge descending.
+/// </summary>
 public sealed record OrderByAggregateAliasOverBooleanGroupKeyQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

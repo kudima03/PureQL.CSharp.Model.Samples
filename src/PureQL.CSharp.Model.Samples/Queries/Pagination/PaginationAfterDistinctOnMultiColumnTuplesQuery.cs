@@ -9,8 +9,14 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Pagination;
 
+/// <summary>
+/// Selects the distinct rows of user_age and user_active from
+/// schema_with_foreign_keys.users, ordered by user_age and user_active, skipping 1 rows
+/// and taking 2.
+/// </summary>
 public sealed record PaginationAfterDistinctOnMultiColumnTuplesQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -9,8 +9,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the rows where
+/// user_active equals user_active.
+/// </summary>
 public sealed record EachBooleanEqualityOfABoolFieldWithItselfQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

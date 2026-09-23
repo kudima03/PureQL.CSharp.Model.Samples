@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects shift_start, user_id, last_login, user_name, signup_date, user_active and
+/// user_age from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record SelectManyColumnsInShuffledOrderQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the rows where the
+/// whole shift_start column is at least the list ['09:00:00'].
+/// </summary>
 public sealed record EachGreaterThanOrEqualTimeLiteralArrayQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

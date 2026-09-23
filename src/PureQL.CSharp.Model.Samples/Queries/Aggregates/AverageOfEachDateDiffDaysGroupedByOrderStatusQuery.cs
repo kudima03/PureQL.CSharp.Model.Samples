@@ -12,8 +12,15 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects orders.order_status and the average of the days between orders.placed_on and
+/// users.signup_date as meanSpanDays from schema_with_foreign_keys.orders, inner-joined
+/// to schema_with_foreign_keys.users on orders.order_user_id equals users.user_id,
+/// grouped by orders.order_status.
+/// </summary>
 public sealed record AverageOfEachDateDiffDaysGroupedByOrderStatusQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

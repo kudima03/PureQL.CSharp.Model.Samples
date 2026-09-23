@@ -12,8 +12,15 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects orders.order_user_id and the sum of the days between orders.placed_on and
+/// users.signup_date as totalSpanDays from schema_with_foreign_keys.orders, inner-joined
+/// to schema_with_foreign_keys.users on orders.order_user_id equals users.user_id,
+/// grouped by orders.order_user_id.
+/// </summary>
 public sealed record SumOfEachDateDiffDaysGroupedByOrderUserIdQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

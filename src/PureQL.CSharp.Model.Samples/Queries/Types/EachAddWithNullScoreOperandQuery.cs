@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the rows where
+/// (user_score plus 1) is greater than -1000.
+/// </summary>
 public sealed record EachAddWithNullScoreOperandQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

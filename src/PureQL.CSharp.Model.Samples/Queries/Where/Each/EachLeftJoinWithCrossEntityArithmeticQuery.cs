@@ -13,8 +13,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects users.user_name from schema_with_foreign_keys.users, left-joined to
+/// schema_with_foreign_keys.orders on users.user_id equals orders.order_user_id, keeping
+/// the rows where (users.user_age plus orders.order_total) is greater than 120.
+/// </summary>
 public sealed record EachLeftJoinWithCrossEntityArithmeticQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

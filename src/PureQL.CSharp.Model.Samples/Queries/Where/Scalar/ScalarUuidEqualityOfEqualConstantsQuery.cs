@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Scalar;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, filtered by
+/// '00000001-0000-0000-0000-000000000000' equals '00000001-0000-0000-0000-000000000000'.
+/// </summary>
 public sealed record ScalarUuidEqualityOfEqualConstantsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

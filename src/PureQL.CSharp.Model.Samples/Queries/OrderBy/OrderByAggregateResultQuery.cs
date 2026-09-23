@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.OrderBy;
 
+/// <summary>
+/// Selects order_status and the sum of order_total as totalSum from
+/// schema_with_foreign_keys.orders, grouped by order_status, ordered by totalSum.
+/// </summary>
 public sealed record OrderByAggregateResultQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

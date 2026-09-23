@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the rows where
+/// last_login plus 3600 seconds equals '2024-06-01T09:30:00'.
+/// </summary>
 public sealed record EachDateTimeAddSecondsInEqualityQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(
