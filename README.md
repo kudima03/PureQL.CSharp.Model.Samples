@@ -49,6 +49,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 
 | Folder | Samples | Exercises |
 |---|---|---|
+| `Select` | 59 | Column projection and aliases, `DISTINCT` over every column type and over joins, scalar and literal-arithmetic columns, wide projections, and select lists an engine has to reject |
 | `Pagination` | 13 | `skip`/`take` windows: in range, past the end, beyond `int.MaxValue`, zero and negative values, and after `DISTINCT`, `GROUP BY` and joins |
 
 ### Data sets
