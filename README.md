@@ -58,6 +58,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 | `Aggregates` | 60 | `count`, `sum`, `average`, `min` and `max` over every column type, per group and over the whole set, over per-row arithmetic and temporal expressions, over nullable columns, and across joins |
 | `OrderBy` | 32 | Sorting by every column type in both directions, multi-key and mixed-direction orderings, ties, joined columns with padded rows, aggregates and aliases, and null fields |
 | `Pagination` | 13 | `skip`/`take` windows: in range, past the end, beyond `int.MaxValue`, zero and negative values, and after `DISTINCT`, `GROUP BY` and joins |
+| `Combined` | 40 | Several clauses at once — join, where, group by, having, order by, distinct and pagination — including every clause together with five-level predicate trees |
 
 ### Data sets
 
