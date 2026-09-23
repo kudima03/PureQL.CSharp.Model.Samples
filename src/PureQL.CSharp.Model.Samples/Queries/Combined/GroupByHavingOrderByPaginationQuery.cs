@@ -13,8 +13,15 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects order_status and the sum of order_total as statusSum from
+/// schema_with_foreign_keys.orders, grouped by order_status, keeping the groups where the
+/// sum of order_total is greater than 0, ordered by order_status, skipping 1 rows and
+/// taking 1.
+/// </summary>
 public sealed record GroupByHavingOrderByPaginationQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

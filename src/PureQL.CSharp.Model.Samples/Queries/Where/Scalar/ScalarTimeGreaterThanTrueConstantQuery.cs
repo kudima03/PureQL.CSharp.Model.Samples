@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Scalar;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, filtered by '10:00:00' is
+/// greater than '09:00:00'.
+/// </summary>
 public sealed record ScalarTimeGreaterThanTrueConstantQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

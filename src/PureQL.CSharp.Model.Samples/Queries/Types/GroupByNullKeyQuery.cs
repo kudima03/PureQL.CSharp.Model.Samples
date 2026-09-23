@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects user_score and the count of user_id as n from schema_with_foreign_keys.users,
+/// grouped by user_score.
+/// </summary>
 public sealed record GroupByNullKeyQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -9,8 +9,14 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects table_with_indexes.id from schema_with_indexes.table_with_indexes (aliased
+/// need), inner-joined to schema_with_indexes.table_with_single_index on
+/// table_with_indexes.tenant_id equals sp.id.
+/// </summary>
 public sealed record JoinOnConditionViaUndeclaredAliasQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

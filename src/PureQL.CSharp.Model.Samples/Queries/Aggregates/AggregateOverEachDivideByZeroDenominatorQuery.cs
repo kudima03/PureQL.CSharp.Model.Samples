@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the sum of (order_total divided by (order_total minus 100.5)) as sumRatio from
+/// schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record AggregateOverEachDivideByZeroDenominatorQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, filtered by a list of 3 dates
+/// equals the list ['2024-01-01', '2024-02-01'].
+/// </summary>
 public sealed record WholeDateArrayEqualityOfDifferentLengthLiteralArraysQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

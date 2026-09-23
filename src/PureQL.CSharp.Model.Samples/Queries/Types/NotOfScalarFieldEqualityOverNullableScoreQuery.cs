@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, filtered by not (user_age
+/// equals user_score).
+/// </summary>
 public sealed record NotOfScalarFieldEqualityOverNullableScoreQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

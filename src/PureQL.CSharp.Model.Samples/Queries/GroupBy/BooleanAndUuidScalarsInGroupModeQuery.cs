@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects true as flag, '9b2b1f6e-3c86-4c50-8f6a-2f6d1a8f2c11' as marker and the count
+/// of order_id as order_count from schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record BooleanAndUuidScalarsInGroupModeQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

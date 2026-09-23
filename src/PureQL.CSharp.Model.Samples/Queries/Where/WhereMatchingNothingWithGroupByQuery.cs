@@ -12,8 +12,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where;
 
+/// <summary>
+/// Selects order_user_id and the count of order_id as orderCount from
+/// schema_with_foreign_keys.orders, keeping the rows where order_status equals
+/// 'no-such-status', grouped by order_user_id.
+/// </summary>
 public sealed record WhereMatchingNothingWithGroupByQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

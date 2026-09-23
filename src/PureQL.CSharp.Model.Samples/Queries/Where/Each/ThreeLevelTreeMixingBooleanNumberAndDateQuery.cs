@@ -13,8 +13,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects user_id from schema_with_foreign_keys.users, keeping the rows where
+/// (user_active equals true and user_age is at least 28) and signup_date is less than
+/// '2021-01-01'.
+/// </summary>
 public sealed record ThreeLevelTreeMixingBooleanNumberAndDateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

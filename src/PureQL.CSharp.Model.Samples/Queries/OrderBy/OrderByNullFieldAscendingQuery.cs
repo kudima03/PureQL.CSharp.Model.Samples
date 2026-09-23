@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.OrderBy;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, ordered by user_name typed as
+/// null.
+/// </summary>
 public sealed record OrderByNullFieldAscendingQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects users.user_active and the sum of orders.order_total as totalByActive from
+/// schema_with_foreign_keys.orders, inner-joined to schema_with_foreign_keys.users on
+/// orders.order_user_id equals users.user_id, grouped by users.user_active.
+/// </summary>
 public sealed record GroupByJoinedBooleanKeyQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

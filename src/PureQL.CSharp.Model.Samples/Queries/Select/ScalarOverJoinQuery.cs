@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects 'joined' as source and users.user_name from schema_with_foreign_keys.orders,
+/// inner-joined to schema_with_foreign_keys.users on orders.order_user_id equals
+/// users.user_id.
+/// </summary>
 public sealed record ScalarOverJoinQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

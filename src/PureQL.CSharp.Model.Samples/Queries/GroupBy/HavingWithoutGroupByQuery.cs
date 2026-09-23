@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the whole set only if
+/// false.
+/// </summary>
 public sealed record HavingWithoutGroupByQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

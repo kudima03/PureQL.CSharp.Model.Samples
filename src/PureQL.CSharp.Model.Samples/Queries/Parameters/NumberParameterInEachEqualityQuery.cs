@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Parameters;
 
+/// <summary>
+/// Selects user_name from schema_with_foreign_keys.users, keeping the rows where user_age
+/// equals parameter age.
+/// </summary>
 public sealed record NumberParameterInEachEqualityQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

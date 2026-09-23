@@ -17,8 +17,21 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects the distinct rows of orders.order_id, the sum of order_items.item_qty as
+/// qtySum and the count of order_items.item_id as itemCount from
+/// schema_with_foreign_keys.orders, inner-joined to schema_with_foreign_keys.users on
+/// orders.order_user_id equals users.user_id, inner-joined to
+/// schema_with_foreign_keys.order_items on orders.order_id equals
+/// order_items.item_order_id, keeping the rows where a 5-level and/not/or condition on
+/// orders.order_status and orders.order_total, grouped by orders.order_id, keeping the
+/// groups where (the count of order_items.item_id is at least 2 or the sum of
+/// order_items.item_qty is at least 5) and not (the count of order_items.item_id is at
+/// least 100), ordered by orders.order_id.
+/// </summary>
 public sealed record DeMorganEquivalentFiveLevelEachTreeQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

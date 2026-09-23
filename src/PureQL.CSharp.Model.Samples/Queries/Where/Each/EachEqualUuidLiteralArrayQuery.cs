@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_total from schema_with_foreign_keys.orders, keeping the rows where the
+/// whole order_id column equals the list ['00000067-0000-0000-0000-000000000000'].
+/// </summary>
 public sealed record EachEqualUuidLiteralArrayQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

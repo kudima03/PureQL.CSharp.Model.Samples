@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the average of signup_date plus 30 days as meanProjectedDate from
+/// schema_with_foreign_keys.users.
+/// </summary>
 public sealed record AverageOfEachDateAddDaysQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

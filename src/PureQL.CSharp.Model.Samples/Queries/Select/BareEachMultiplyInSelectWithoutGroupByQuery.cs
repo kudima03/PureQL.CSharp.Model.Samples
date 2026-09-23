@@ -9,8 +9,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects user_age times user_precision_value as product from
+/// schema_with_foreign_keys.users.
+/// </summary>
 public sealed record BareEachMultiplyInSelectWithoutGroupByQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

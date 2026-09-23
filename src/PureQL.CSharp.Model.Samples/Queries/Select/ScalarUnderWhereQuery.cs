@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects 'active-user' as tag from schema_with_foreign_keys.users, filtered by
+/// user_active.
+/// </summary>
 public sealed record ScalarUnderWhereQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

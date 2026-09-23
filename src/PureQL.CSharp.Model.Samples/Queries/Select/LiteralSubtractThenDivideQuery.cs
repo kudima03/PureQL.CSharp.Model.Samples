@@ -8,8 +8,12 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects (10 minus 4) divided by 2 as result from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record LiteralSubtractThenDivideQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

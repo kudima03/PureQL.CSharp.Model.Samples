@@ -9,8 +9,16 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects orders.order_status and products.product_name from
+/// schema_with_foreign_keys.orders, inner-joined to schema_with_foreign_keys.order_items
+/// on order_items.item_order_id equals orders.order_id, inner-joined to
+/// schema_with_foreign_keys.products on order_items.item_product_id equals
+/// products.product_id.
+/// </summary>
 public sealed record ChainedInnerJoinsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

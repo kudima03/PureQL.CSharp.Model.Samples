@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects 1 as version and the sum of order_total as status_total from
+/// schema_with_foreign_keys.orders, grouped by order_status.
+/// </summary>
 public sealed record ScalarInGroupModeQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

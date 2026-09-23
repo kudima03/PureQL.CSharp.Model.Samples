@@ -15,8 +15,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where a list
+/// of 6 strings equals the whole order_status column or placed_on plus 30 days is greater
+/// than '2024-07-04'.
+/// </summary>
 public sealed record EachOrOfLiteralStringArrayFieldAndNestedDateArithmeticOperandsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

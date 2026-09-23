@@ -8,8 +8,13 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects 9 as page_marker from schema_with_foreign_keys.users, skipping 1 rows and
+/// taking 2.
+/// </summary>
 public sealed record ScalarWithPaginationQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

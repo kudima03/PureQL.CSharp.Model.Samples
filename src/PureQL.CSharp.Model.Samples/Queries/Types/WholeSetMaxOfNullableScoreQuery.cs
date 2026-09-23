@@ -10,8 +10,12 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects the maximum of user_score as max_score from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record WholeSetMaxOfNullableScoreQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

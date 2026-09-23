@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects user_active and the minimum of the seconds between shift_start and '08:00:00'
+/// as minShiftGapSeconds from schema_with_foreign_keys.users, grouped by user_active.
+/// </summary>
 public sealed record MinOfEachTimeDiffSecondsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

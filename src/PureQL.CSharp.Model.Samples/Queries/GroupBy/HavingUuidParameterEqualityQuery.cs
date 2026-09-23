@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects order_user_id from schema_with_foreign_keys.orders, grouped by order_user_id,
+/// keeping the groups where parameter id equals '00000000-0000-0000-0000-000000000000'.
+/// </summary>
 public sealed record HavingUuidParameterEqualityQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

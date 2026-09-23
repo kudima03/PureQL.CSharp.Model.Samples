@@ -14,8 +14,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where the
+/// whole order_total column is greater than the list [90, -1] and (order_total minus 200)
+/// is less than 0.
+/// </summary>
 public sealed record EachAndOfFieldLiteralArrayAndNestedArithmeticOperandsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

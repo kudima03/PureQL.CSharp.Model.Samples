@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects '2024-06' as period, order_status and the sum of order_total as status_total
+/// from schema_with_foreign_keys.orders, grouped by order_status.
+/// </summary>
 public sealed record ScalarGroupKeyFieldAndAggregateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

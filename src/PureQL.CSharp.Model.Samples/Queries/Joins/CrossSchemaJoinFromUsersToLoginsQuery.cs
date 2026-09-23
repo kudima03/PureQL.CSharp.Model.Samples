@@ -9,8 +9,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects users.user_name from schema_with_foreign_keys.users, inner-joined to
+/// audit.logins on users.user_id equals logins.login_user_id.
+/// </summary>
 public sealed record CrossSchemaJoinFromUsersToLoginsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

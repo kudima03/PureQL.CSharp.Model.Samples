@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects user_active from schema_with_foreign_keys.users, grouped by user_active,
+/// keeping the groups where the maximum of shift_start equals '00:00:00'.
+/// </summary>
 public sealed record HavingMaxShiftStartEqualAbsentValueQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -9,8 +9,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Errors;
 
+/// <summary>
+/// Selects users.user_id from schema_with_foreign_keys.users, inner-joined to
+/// schema_with_foreign_keys.orders on users.user_id equals products.product_id.
+/// </summary>
 public sealed record JoinOnEntityNeitherBaseNorJoinedQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

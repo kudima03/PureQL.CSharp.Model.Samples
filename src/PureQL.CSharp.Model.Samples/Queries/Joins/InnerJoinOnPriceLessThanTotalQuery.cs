@@ -9,8 +9,14 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects products.product_name from schema_with_foreign_keys.orders, inner-joined to
+/// schema_with_foreign_keys.products on products.product_price is less than
+/// orders.order_total.
+/// </summary>
 public sealed record InnerJoinOnPriceLessThanTotalQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

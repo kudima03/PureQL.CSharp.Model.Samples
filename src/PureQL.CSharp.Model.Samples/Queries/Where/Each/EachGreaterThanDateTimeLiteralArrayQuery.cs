@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_total from schema_with_foreign_keys.orders, keeping the rows where the
+/// whole placed_at column is greater than the list ['2024-06-03T12:00:00'].
+/// </summary>
 public sealed record EachGreaterThanDateTimeLiteralArrayQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

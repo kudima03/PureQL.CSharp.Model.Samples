@@ -9,8 +9,15 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects the distinct rows of order_items.item_order_id from
+/// schema_with_foreign_keys.order_items, inner-joined to
+/// schema_with_foreign_keys.products on order_items.item_product_id equals
+/// products.product_id.
+/// </summary>
 public sealed record DistinctOverItemsToProductsJoinQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

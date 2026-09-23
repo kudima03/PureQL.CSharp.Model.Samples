@@ -9,8 +9,13 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects user_age from schema_with_foreign_keys.users, grouped by user_age, ordered by
+/// user_age descending, skipping 0 rows and taking 2.
+/// </summary>
 public sealed record GroupByAgeDescOrderThenPaginateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

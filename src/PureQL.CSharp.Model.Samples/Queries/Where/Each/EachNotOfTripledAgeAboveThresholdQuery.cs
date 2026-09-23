@@ -13,8 +13,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects user_id from schema_with_foreign_keys.users, keeping the rows where not
+/// ((user_age times 3) is greater than 120).
+/// </summary>
 public sealed record EachNotOfTripledAgeAboveThresholdQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

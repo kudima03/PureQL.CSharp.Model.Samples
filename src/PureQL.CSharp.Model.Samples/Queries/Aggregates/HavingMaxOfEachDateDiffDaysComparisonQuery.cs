@@ -14,8 +14,16 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects orders.order_user_id and the maximum of the days between orders.placed_on and
+/// users.signup_date as maxSpanDays from schema_with_foreign_keys.orders, inner-joined to
+/// schema_with_foreign_keys.users on orders.order_user_id equals users.user_id, grouped
+/// by orders.order_user_id, keeping the groups where the maximum of the days between
+/// orders.placed_on and users.signup_date is greater than 1500.
+/// </summary>
 public sealed record HavingMaxOfEachDateDiffDaysComparisonQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

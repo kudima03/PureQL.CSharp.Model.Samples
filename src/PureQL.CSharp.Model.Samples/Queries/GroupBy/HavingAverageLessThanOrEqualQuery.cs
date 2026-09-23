@@ -13,8 +13,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects order_user_id and the count of order_id as orderCount from
+/// schema_with_foreign_keys.orders, grouped by order_user_id, keeping the groups where
+/// the average of order_total is at most 100.5.
+/// </summary>
 public sealed record HavingAverageLessThanOrEqualQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -10,8 +10,15 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects users.user_name and orders.order_total from schema_with_foreign_keys.users,
+/// inner-joined to schema_with_foreign_keys.orders on users.user_id equals
+/// orders.order_user_id, ordered by orders.order_total and users.user_name, skipping 2
+/// rows and taking 3.
+/// </summary>
 public sealed record InnerJoinOrderByThenPaginationQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

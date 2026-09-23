@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
+/// <summary>
+/// Selects order_user_id from schema_with_foreign_keys.orders, grouped by order_user_id,
+/// keeping the groups where the minimum of order_total equals the maximum of order_total.
+/// </summary>
 public sealed record HavingEqualityOfMinAndMaxQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

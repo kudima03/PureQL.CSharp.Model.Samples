@@ -7,8 +7,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects true as active, '2024-12-31' as release, '2024-12-31T23:59:58' as built_at,
+/// 42.5 as amount, 'v2' as label, '17:30:15' as cutoff and
+/// '0f8fad5b-d9cb-469f-a165-70867728950e' as marker from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record AllSevenScalarTypesQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

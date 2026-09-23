@@ -13,8 +13,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Scalar;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, filtered by (not (false or
+/// false) and 1 is greater than 2) or 'x' equals 'y'.
+/// </summary>
 public sealed record ScalarOrAndNotAtFourLevelsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

@@ -7,8 +7,12 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects 7 from schema_with_foreign_keys.users.
+/// </summary>
 public sealed record ScalarWithoutAliasQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

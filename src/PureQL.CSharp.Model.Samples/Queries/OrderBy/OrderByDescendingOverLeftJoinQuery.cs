@@ -9,8 +9,14 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.OrderBy;
 
+/// <summary>
+/// Selects users.user_name and orders.order_total from schema_with_foreign_keys.users,
+/// left-joined to schema_with_foreign_keys.orders on users.user_id equals
+/// orders.order_user_id, ordered by orders.order_total descending.
+/// </summary>
 public sealed record OrderByDescendingOverLeftJoinQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

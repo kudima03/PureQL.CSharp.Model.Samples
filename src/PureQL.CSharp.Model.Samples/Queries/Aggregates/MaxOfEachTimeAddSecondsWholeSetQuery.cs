@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the maximum of shift_start plus 3600 seconds as latestProjectedTime from
+/// schema_with_foreign_keys.users.
+/// </summary>
 public sealed record MaxOfEachTimeAddSecondsWholeSetQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

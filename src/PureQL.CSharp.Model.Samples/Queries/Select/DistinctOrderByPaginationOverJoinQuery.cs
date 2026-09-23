@@ -10,8 +10,14 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects the distinct rows of orders.order_status from schema_with_foreign_keys.users,
+/// inner-joined to schema_with_foreign_keys.orders on users.user_id equals
+/// orders.order_user_id, ordered by orders.order_status, skipping 1 rows and taking 1.
+/// </summary>
 public sealed record DistinctOrderByPaginationOverJoinQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

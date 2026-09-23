@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects user_active and the maximum of signup_date plus 30 days as latestProjectedDate
+/// from schema_with_foreign_keys.users, grouped by user_active.
+/// </summary>
 public sealed record MaxOfEachDateAddDaysGroupedByUserActiveQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

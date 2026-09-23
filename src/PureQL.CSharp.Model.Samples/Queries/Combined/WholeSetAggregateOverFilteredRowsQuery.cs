@@ -12,8 +12,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects the sum of order_total as filteredSum from schema_with_foreign_keys.orders,
+/// keeping the rows where order_status equals 'shipped'.
+/// </summary>
 public sealed record WholeSetAggregateOverFilteredRowsQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

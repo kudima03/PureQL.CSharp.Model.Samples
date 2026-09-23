@@ -13,8 +13,18 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects order_items.item_id, order_items.item_qty and orders.order_total from
+/// schema_with_foreign_keys.orders, inner-joined to schema_with_foreign_keys.users on
+/// orders.order_user_id equals users.user_id, inner-joined to
+/// schema_with_foreign_keys.order_items on orders.order_id equals
+/// order_items.item_order_id, filtered by (not (true and false) or true) and (not (false)
+/// or (true and true)), ordered by orders.order_total and order_items.item_qty
+/// descending, skipping 1 rows and taking 2.
+/// </summary>
 public sealed record MultiJoinFiveLevelScalarTreeOrderByMultiKeyThenPaginateQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

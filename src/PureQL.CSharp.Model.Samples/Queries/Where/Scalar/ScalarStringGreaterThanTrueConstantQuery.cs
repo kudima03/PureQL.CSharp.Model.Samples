@@ -12,8 +12,13 @@ using StringComparison = PureQL.CSharp.Model.Comparisons.StringComparison;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Scalar;
 
+/// <summary>
+/// Selects order_status from schema_with_foreign_keys.orders, filtered by 'b' is greater
+/// than 'a'.
+/// </summary>
 public sealed record ScalarStringGreaterThanTrueConstantQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

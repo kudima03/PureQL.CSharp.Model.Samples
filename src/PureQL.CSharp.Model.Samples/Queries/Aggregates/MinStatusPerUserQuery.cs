@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the minimum of order_status as min_status from
+/// schema_with_foreign_keys.orders, grouped by order_user_id.
+/// </summary>
 public sealed record MinStatusPerUserQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

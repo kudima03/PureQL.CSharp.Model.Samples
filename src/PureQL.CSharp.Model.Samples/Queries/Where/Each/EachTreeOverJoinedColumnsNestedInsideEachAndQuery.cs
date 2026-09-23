@@ -13,8 +13,15 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects orders.order_id from schema_with_foreign_keys.orders, inner-joined to
+/// schema_with_foreign_keys.users on orders.order_user_id equals users.user_id, keeping
+/// the rows where (users.user_age is greater than 28 or orders.order_status equals
+/// 'pending') and not (users.user_active equals false).
+/// </summary>
 public sealed record EachTreeOverJoinedColumnsNestedInsideEachAndQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

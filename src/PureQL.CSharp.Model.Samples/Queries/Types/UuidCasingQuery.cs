@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Types;
 
+/// <summary>
+/// Selects name from schema_without_foreign_keys.table_without_indexes, keeping the rows
+/// where id equals '0f9e8d7c-6b5a-4938-8271-605f4e3d2c1b'.
+/// </summary>
 public sealed record UuidCasingQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

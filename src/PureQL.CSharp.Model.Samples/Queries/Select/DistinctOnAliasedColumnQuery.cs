@@ -8,8 +8,13 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
+/// <summary>
+/// Selects the distinct rows of order_status as state from
+/// schema_with_foreign_keys.orders.
+/// </summary>
 public sealed record DistinctOnAliasedColumnQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

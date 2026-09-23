@@ -13,8 +13,14 @@ using PureQL.CSharp.Model.Scalars;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, keeping the rows where
+/// (order_user_id equals '00000003-0000-0000-0000-000000000000' and placed_on is at least
+/// '2024-06-05') and order_status equals 'shipped'.
+/// </summary>
 public sealed record ThreeLevelTreeMixingUuidDateAndStringQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

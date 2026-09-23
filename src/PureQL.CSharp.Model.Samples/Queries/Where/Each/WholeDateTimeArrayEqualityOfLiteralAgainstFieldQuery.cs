@@ -11,8 +11,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where.Each;
 
+/// <summary>
+/// Selects order_id from schema_with_foreign_keys.orders, filtered by a list of 6
+/// datetimes equals the whole placed_at column.
+/// </summary>
 public sealed record WholeDateTimeArrayEqualityOfLiteralAgainstFieldQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

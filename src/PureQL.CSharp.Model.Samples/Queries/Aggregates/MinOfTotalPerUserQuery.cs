@@ -10,8 +10,13 @@ using PureQL.CSharp.Model.Returnings;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
+/// <summary>
+/// Selects the minimum of order_total as min_total from schema_with_foreign_keys.orders,
+/// grouped by order_user_id.
+/// </summary>
 public sealed record MinOfTotalPerUserQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

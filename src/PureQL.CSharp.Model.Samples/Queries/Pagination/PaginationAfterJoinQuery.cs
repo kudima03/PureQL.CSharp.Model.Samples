@@ -13,8 +13,15 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Pagination;
 
+/// <summary>
+/// Selects order_items.item_qty from schema_with_foreign_keys.order_items, inner-joined
+/// to schema_with_foreign_keys.products on order_items.item_product_id equals
+/// products.product_id, keeping the rows where order_items.item_qty is greater than 1,
+/// ordered by order_items.item_qty, skipping 1 rows and taking 1.
+/// </summary>
 public sealed record PaginationAfterJoinQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

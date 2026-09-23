@@ -11,8 +11,14 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects order_items.item_qty from schema_with_foreign_keys.order_items, inner-joined
+/// to schema_with_foreign_keys.orders on order_items.item_order_id equals orders.order_id
+/// and order_items.item_qty is at most orders.order_total.
+/// </summary>
 public sealed record InnerJoinOnKeyEqualityAndQtyAtMostOrderTotalQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

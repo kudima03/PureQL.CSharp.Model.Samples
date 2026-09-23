@@ -9,8 +9,14 @@ using PureQL.CSharp.Model.Fields;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Joins;
 
+/// <summary>
+/// Selects the distinct rows of users.user_name from schema_with_foreign_keys.orders,
+/// right-joined to schema_with_foreign_keys.users on orders.order_user_id equals
+/// users.user_id.
+/// </summary>
 public sealed record RightJoinDistinctOnUserNameQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(

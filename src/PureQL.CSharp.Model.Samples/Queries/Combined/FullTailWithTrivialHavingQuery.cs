@@ -13,8 +13,15 @@ using ModelPagination = PureQL.CSharp.Model.Pagination;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
+/// <summary>
+/// Selects the distinct rows of the count of order_id as orderCount from
+/// schema_with_foreign_keys.orders, grouped by order_user_id, keeping the groups where
+/// the count of order_id is at least 1, ordered by orderCount, skipping 0 rows and taking
+/// 1.
+/// </summary>
 public sealed record FullTailWithTrivialHavingQuery
 {
+    /// <summary>Builds the query afresh on every read.</summary>
     public Query Value =>
         new Query(
             new FromExpression(
