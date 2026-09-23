@@ -61,6 +61,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 | `Combined` | 40 | Several clauses at once — join, where, group by, having, order by, distinct and pagination — including every clause together with five-level predicate trees |
 | `Types` | 39 | One column of each type, calendar and numeric extremes, uuid casing, and NULL semantics: nullable operands in comparisons, arithmetic and aggregates, three-valued `not`, NULL group keys and left-join padding |
 | `Parameters` | 2 | Unbound number and string parameters in a per-row equality |
+| `Errors` | 16 | Well-formed queries no data set can answer: unknown entities in every clause, fields the resolved table does not carry, a type mismatch, division by zero and an aggregate inside `WHERE` |
 
 ### Data sets
 
