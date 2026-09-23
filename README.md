@@ -56,6 +56,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 | `Joins` | 70 | Inner, left, right and full joins on key, composite, non-equi, negated, constant and uuid-literal conditions; cross-schema and chained joins; `FROM` aliases; and joins followed by every later clause |
 | `GroupBy` | 84 | Grouping by every key type and by composite and joined keys, `HAVING` over every aggregate and comparison operator, nested `HAVING` trees, whole-set `HAVING`, and scalars and mixed projections in group mode |
 | `Aggregates` | 60 | `count`, `sum`, `average`, `min` and `max` over every column type, per group and over the whole set, over per-row arithmetic and temporal expressions, over nullable columns, and across joins |
+| `OrderBy` | 32 | Sorting by every column type in both directions, multi-key and mixed-direction orderings, ties, joined columns with padded rows, aggregates and aliases, and null fields |
 | `Pagination` | 13 | `skip`/`take` windows: in range, past the end, beyond `int.MaxValue`, zero and negative values, and after `DISTINCT`, `GROUP BY` and joins |
 
 ### Data sets
