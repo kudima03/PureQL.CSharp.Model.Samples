@@ -66,4 +66,32 @@ public sealed record WhereMatchingNothingWithGroupByQueryTests
             new QueryJson(new WhereMatchingNothingWithGroupByQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "orderCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WhereMatchingNothingWithGroupByQuery().Result).TextValue
+        );
+    }
 }

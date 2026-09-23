@@ -45,4 +45,28 @@ public sealed record SkipBeyondEndQueryTests
             new QueryJson(new SkipBeyondEndQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new SkipBeyondEndQuery().Result).TextValue
+        );
+    }
 }

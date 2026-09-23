@@ -58,4 +58,57 @@ public sealed record OrderByStatusAscThenPlacedOnDescQueryTests
             new QueryJson(new OrderByStatusAscThenPlacedOnDescQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "placed_on",
+                      "type": "date"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "2024-06-04"
+                    ],
+                    [
+                      "pending",
+                      "2024-06-06"
+                    ],
+                    [
+                      "pending",
+                      "2024-06-02"
+                    ],
+                    [
+                      "shipped",
+                      "2024-06-05"
+                    ],
+                    [
+                      "shipped",
+                      "2024-06-03"
+                    ],
+                    [
+                      "shipped",
+                      "2024-06-01"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByStatusAscThenPlacedOnDescQuery().Result).TextValue
+        );
+    }
 }

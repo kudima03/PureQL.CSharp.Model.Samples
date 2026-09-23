@@ -110,4 +110,59 @@ public sealed record SumAndCountOfEachDivideGroupedByOrderUserIdQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "sumRatio",
+                      "type": "double"
+                    },
+                    {
+                      "name": "ratioCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "5.016666666666667",
+                      "2"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "",
+                      "0"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "",
+                      "0"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "12.508333333333333",
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new SumAndCountOfEachDivideGroupedByOrderUserIdQuery().Result
+            ).TextValue
+        );
+    }
 }

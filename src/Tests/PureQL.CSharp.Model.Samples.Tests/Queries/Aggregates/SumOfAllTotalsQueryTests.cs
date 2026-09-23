@@ -34,4 +34,32 @@ public sealed record SumOfAllTotalsQueryTests
             new QueryJson(new SumOfAllTotalsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "sum_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "826.25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new SumOfAllTotalsQuery().Result).TextValue
+        );
+    }
 }

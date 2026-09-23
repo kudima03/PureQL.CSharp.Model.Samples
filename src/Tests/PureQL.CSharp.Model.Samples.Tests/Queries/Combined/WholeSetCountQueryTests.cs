@@ -34,4 +34,32 @@ public sealed record WholeSetCountQueryTests
             new QueryJson(new WholeSetCountQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "6"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WholeSetCountQuery().Result).TextValue
+        );
+    }
 }

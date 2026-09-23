@@ -43,4 +43,41 @@ public sealed record AverageOfTotalPerUserQueryTests
             new QueryJson(new AverageOfTotalPerUserQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "avg_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "75.25"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "187.625"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new AverageOfTotalPerUserQuery().Result).TextValue
+        );
+    }
 }

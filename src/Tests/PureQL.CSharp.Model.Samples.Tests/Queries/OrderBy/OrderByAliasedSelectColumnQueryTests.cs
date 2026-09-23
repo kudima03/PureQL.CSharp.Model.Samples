@@ -42,4 +42,47 @@ public sealed record OrderByAliasedSelectColumnQueryTests
             new QueryJson(new OrderByAliasedSelectColumnQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "grandTotal",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "50"
+                    ],
+                    [
+                      "75.25"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "300"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByAliasedSelectColumnQuery().Result).TextValue
+        );
+    }
 }

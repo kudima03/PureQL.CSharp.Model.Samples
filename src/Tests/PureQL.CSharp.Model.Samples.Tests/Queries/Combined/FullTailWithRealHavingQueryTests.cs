@@ -86,4 +86,37 @@ public sealed record FullTailWithRealHavingQueryTests
             new QueryJson(new FullTailWithRealHavingQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "statusSum",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "pending",
+                      "150.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new FullTailWithRealHavingQuery().Result).TextValue
+        );
+    }
 }

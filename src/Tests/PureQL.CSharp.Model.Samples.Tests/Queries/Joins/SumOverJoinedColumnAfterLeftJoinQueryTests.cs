@@ -57,4 +57,32 @@ public sealed record SumOverJoinedColumnAfterLeftJoinQueryTests
             new QueryJson(new SumOverJoinedColumnAfterLeftJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "totalSum",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "826.25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new SumOverJoinedColumnAfterLeftJoinQuery().Result).TextValue
+        );
+    }
 }

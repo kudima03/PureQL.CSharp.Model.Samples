@@ -80,4 +80,45 @@ public sealed record HavingThenOrderByAggregateAliasQueryTests
             new QueryJson(new HavingThenOrderByAggregateAliasQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "totalSum",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "150.5"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "200"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "375.25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new HavingThenOrderByAggregateAliasQuery().Result).TextValue
+        );
+    }
 }

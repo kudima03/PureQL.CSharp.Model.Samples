@@ -54,4 +54,41 @@ public sealed record DistinctOverUsersToOrdersJoinQueryTests
             new QueryJson(new DistinctOverUsersToOrdersJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Cara"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DistinctOverUsersToOrdersJoinQuery().Result).TextValue
+        );
+    }
 }

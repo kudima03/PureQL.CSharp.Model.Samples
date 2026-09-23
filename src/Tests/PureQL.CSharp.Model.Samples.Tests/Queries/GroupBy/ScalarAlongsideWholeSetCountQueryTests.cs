@@ -41,4 +41,37 @@ public sealed record ScalarAlongsideWholeSetCountQueryTests
             new QueryJson(new ScalarAlongsideWholeSetCountQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "scope",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_count",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "all",
+                      "6"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarAlongsideWholeSetCountQuery().Result).TextValue
+        );
+    }
 }

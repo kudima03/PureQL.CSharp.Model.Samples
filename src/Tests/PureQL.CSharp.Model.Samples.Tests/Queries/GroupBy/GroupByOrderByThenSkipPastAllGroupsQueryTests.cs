@@ -54,4 +54,30 @@ public sealed record GroupByOrderByThenSkipPastAllGroupsQueryTests
             new QueryJson(new GroupByOrderByThenSkipPastAllGroupsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new GroupByOrderByThenSkipPastAllGroupsQuery().Result
+            ).TextValue
+        );
+    }
 }

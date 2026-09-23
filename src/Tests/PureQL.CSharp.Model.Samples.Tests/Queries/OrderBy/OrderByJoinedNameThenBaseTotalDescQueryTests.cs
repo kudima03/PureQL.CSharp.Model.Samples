@@ -81,4 +81,59 @@ public sealed record OrderByJoinedNameThenBaseTotalDescQueryTests
             new QueryJson(new OrderByJoinedNameThenBaseTotalDescQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann",
+                      "100.5"
+                    ],
+                    [
+                      "Ann",
+                      "50"
+                    ],
+                    [
+                      "Bob",
+                      "200"
+                    ],
+                    [
+                      "Cara",
+                      "300"
+                    ],
+                    [
+                      "Cara",
+                      "75.25"
+                    ],
+                    [
+                      "Dan",
+                      "100.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new OrderByJoinedNameThenBaseTotalDescQuery().Result
+            ).TextValue
+        );
+    }
 }

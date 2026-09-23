@@ -47,4 +47,47 @@ public sealed record EachNumberGreaterThanZeroQueryTests
             new QueryJson(new EachNumberGreaterThanZeroQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "hours",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "50"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "75.25"
+                    ],
+                    [
+                      "300"
+                    ],
+                    [
+                      "100.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachNumberGreaterThanZeroQuery().Result).TextValue
+        );
+    }
 }

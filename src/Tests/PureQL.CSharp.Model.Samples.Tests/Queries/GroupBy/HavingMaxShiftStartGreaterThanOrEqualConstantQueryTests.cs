@@ -60,4 +60,37 @@ public sealed record HavingMaxShiftStartGreaterThanOrEqualConstantQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "False"
+                    ],
+                    [
+                      "True"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new HavingMaxShiftStartGreaterThanOrEqualConstantQuery().Result
+            ).TextValue
+        );
+    }
 }

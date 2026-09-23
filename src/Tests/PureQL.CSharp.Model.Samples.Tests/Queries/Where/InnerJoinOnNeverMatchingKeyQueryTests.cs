@@ -53,4 +53,28 @@ public sealed record InnerJoinOnNeverMatchingKeyQueryTests
             new QueryJson(new InnerJoinOnNeverMatchingKeyQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new InnerJoinOnNeverMatchingKeyQuery().Result).TextValue
+        );
+    }
 }

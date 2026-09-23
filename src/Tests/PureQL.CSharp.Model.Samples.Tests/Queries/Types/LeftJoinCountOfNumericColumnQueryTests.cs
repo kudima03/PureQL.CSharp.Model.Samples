@@ -57,4 +57,32 @@ public sealed record LeftJoinCountOfNumericColumnQueryTests
             new QueryJson(new LeftJoinCountOfNumericColumnQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "total_count",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "6"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LeftJoinCountOfNumericColumnQuery().Result).TextValue
+        );
+    }
 }

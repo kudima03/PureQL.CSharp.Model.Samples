@@ -52,4 +52,41 @@ public sealed record PaginationWindowOverTiesQueryTests
             new QueryJson(new PaginationWindowOverTiesQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000065-0000-0000-0000-000000000000",
+                      "100.5"
+                    ],
+                    [
+                      "0000006a-0000-0000-0000-000000000000",
+                      "100.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new PaginationWindowOverTiesQuery().Result).TextValue
+        );
+    }
 }

@@ -29,4 +29,47 @@ public sealed record ScalarWithoutAliasQueryTests
             new QueryJson(new ScalarWithoutAliasQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "7"
+                    ],
+                    [
+                      "7"
+                    ],
+                    [
+                      "7"
+                    ],
+                    [
+                      "7"
+                    ],
+                    [
+                      "7"
+                    ],
+                    [
+                      "7"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarWithoutAliasQuery().Result).TextValue
+        );
+    }
 }

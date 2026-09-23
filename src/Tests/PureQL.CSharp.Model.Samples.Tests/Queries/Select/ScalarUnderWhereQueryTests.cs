@@ -37,4 +37,41 @@ public sealed record ScalarUnderWhereQueryTests
             new QueryJson(new ScalarUnderWhereQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "tag",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "active-user"
+                    ],
+                    [
+                      "active-user"
+                    ],
+                    [
+                      "active-user"
+                    ],
+                    [
+                      "active-user"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarUnderWhereQuery().Result).TextValue
+        );
+    }
 }

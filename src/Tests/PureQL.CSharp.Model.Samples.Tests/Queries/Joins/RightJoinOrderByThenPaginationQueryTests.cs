@@ -84,4 +84,45 @@ public sealed record RightJoinOrderByThenPaginationQueryTests
             new QueryJson(new RightJoinOrderByThenPaginationQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann",
+                      "100.5"
+                    ],
+                    [
+                      "Dan",
+                      "100.5"
+                    ],
+                    [
+                      "Bob",
+                      "200"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new RightJoinOrderByThenPaginationQuery().Result).TextValue
+        );
+    }
 }

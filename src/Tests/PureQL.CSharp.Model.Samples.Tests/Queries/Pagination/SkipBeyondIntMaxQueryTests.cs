@@ -34,4 +34,28 @@ public sealed record SkipBeyondIntMaxQueryTests
             new QueryJson(new SkipBeyondIntMaxQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new SkipBeyondIntMaxQuery().Result).TextValue
+        );
+    }
 }

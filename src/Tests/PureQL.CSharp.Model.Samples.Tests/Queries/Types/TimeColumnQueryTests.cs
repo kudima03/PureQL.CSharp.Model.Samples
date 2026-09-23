@@ -30,4 +30,47 @@ public sealed record TimeColumnQueryTests
             new QueryJson(new TimeColumnQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "shift_start",
+                      "type": "time"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "09:00:00"
+                    ],
+                    [
+                      "10:00:00"
+                    ],
+                    [
+                      "09:00:00"
+                    ],
+                    [
+                      "11:30:00"
+                    ],
+                    [
+                      "08:00:00"
+                    ],
+                    [
+                      "09:00:00"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new TimeColumnQuery().Result).TextValue
+        );
+    }
 }

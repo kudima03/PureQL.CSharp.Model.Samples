@@ -57,4 +57,52 @@ public sealed record ScalarGroupKeyFieldAndAggregateQueryTests
             new QueryJson(new ScalarGroupKeyFieldAndAggregateQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "period",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "status_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2024-06",
+                      "cancelled",
+                      "75.25"
+                    ],
+                    [
+                      "2024-06",
+                      "pending",
+                      "150.5"
+                    ],
+                    [
+                      "2024-06",
+                      "shipped",
+                      "600.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarGroupKeyFieldAndAggregateQuery().Result).TextValue
+        );
+    }
 }

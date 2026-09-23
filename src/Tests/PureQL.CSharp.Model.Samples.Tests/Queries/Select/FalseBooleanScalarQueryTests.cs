@@ -30,4 +30,47 @@ public sealed record FalseBooleanScalarQueryTests
             new QueryJson(new FalseBooleanScalarQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "flag",
+                      "type": "bool"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "False"
+                    ],
+                    [
+                      "False"
+                    ],
+                    [
+                      "False"
+                    ],
+                    [
+                      "False"
+                    ],
+                    [
+                      "False"
+                    ],
+                    [
+                      "False"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new FalseBooleanScalarQuery().Result).TextValue
+        );
+    }
 }

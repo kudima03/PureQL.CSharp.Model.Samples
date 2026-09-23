@@ -71,4 +71,65 @@ public sealed record OrderByAscendingOverLeftJoinQueryTests
             new QueryJson(new OrderByAscendingOverLeftJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann",
+                      "50"
+                    ],
+                    [
+                      "Cara",
+                      "75.25"
+                    ],
+                    [
+                      "Dan",
+                      "100.5"
+                    ],
+                    [
+                      "Ann",
+                      "100.5"
+                    ],
+                    [
+                      "Bob",
+                      "200"
+                    ],
+                    [
+                      "Cara",
+                      "300"
+                    ],
+                    [
+                      "Eve",
+                      ""
+                    ],
+                    [
+                      "Fay",
+                      ""
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByAscendingOverLeftJoinQuery().Result).TextValue
+        );
+    }
 }

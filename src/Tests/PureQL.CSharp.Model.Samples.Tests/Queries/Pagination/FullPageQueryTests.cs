@@ -45,4 +45,47 @@ public sealed record FullPageQueryTests
             new QueryJson(new FullPageQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "50"
+                    ],
+                    [
+                      "75.25"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "300"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new FullPageQuery().Result).TextValue
+        );
+    }
 }

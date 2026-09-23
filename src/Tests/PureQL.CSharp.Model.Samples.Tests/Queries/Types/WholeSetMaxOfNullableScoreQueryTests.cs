@@ -34,4 +34,32 @@ public sealed record WholeSetMaxOfNullableScoreQueryTests
             new QueryJson(new WholeSetMaxOfNullableScoreQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "max_score",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "30"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WholeSetMaxOfNullableScoreQuery().Result).TextValue
+        );
+    }
 }

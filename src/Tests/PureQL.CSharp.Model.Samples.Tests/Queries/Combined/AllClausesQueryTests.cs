@@ -318,4 +318,42 @@ public sealed record AllClausesQueryTests
             new QueryJson(new AllClausesQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "qtySum",
+                      "type": "double"
+                    },
+                    {
+                      "name": "itemCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000065-0000-0000-0000-000000000000",
+                      "3",
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new AllClausesQuery().Result).TextValue
+        );
+    }
 }

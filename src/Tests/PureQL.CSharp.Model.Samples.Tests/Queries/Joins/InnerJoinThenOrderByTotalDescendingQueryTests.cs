@@ -65,4 +65,49 @@ public sealed record InnerJoinThenOrderByTotalDescendingQueryTests
             new QueryJson(new InnerJoinThenOrderByTotalDescendingQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "300"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "75.25"
+                    ],
+                    [
+                      "50"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new InnerJoinThenOrderByTotalDescendingQuery().Result
+            ).TextValue
+        );
+    }
 }

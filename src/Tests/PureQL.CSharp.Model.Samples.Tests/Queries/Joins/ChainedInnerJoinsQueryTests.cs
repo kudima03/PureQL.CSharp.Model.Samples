@@ -81,4 +81,49 @@ public sealed record ChainedInnerJoinsQueryTests
             new QueryJson(new ChainedInnerJoinsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "product_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped",
+                      "Widget"
+                    ],
+                    [
+                      "shipped",
+                      "Gadget"
+                    ],
+                    [
+                      "shipped",
+                      "Gizmo"
+                    ],
+                    [
+                      "shipped",
+                      "Widget"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ChainedInnerJoinsQuery().Result).TextValue
+        );
+    }
 }

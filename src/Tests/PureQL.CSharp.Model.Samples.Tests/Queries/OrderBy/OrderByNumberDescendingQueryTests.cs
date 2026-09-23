@@ -42,4 +42,47 @@ public sealed record OrderByNumberDescendingQueryTests
             new QueryJson(new OrderByNumberDescendingQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "300"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "75.25"
+                    ],
+                    [
+                      "50"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByNumberDescendingQuery().Result).TextValue
+        );
+    }
 }

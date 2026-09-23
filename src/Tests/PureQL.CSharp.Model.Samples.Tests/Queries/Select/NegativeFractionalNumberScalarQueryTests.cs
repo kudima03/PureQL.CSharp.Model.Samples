@@ -30,4 +30,41 @@ public sealed record NegativeFractionalNumberScalarQueryTests
             new QueryJson(new NegativeFractionalNumberScalarQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "adjustment",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "-12.75"
+                    ],
+                    [
+                      "-12.75"
+                    ],
+                    [
+                      "-12.75"
+                    ],
+                    [
+                      "-12.75"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new NegativeFractionalNumberScalarQuery().Result).TextValue
+        );
+    }
 }

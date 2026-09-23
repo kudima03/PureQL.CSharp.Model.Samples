@@ -37,4 +37,57 @@ public sealed record ScalarAlongsideFieldColumnQueryTests
             new QueryJson(new ScalarAlongsideFieldColumnQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "release",
+                      "type": "string"
+                    },
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "v2",
+                      "Ann"
+                    ],
+                    [
+                      "v2",
+                      "Bob"
+                    ],
+                    [
+                      "v2",
+                      "Cara"
+                    ],
+                    [
+                      "v2",
+                      "Dan"
+                    ],
+                    [
+                      "v2",
+                      "Eve"
+                    ],
+                    [
+                      "v2",
+                      "Fay"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarAlongsideFieldColumnQuery().Result).TextValue
+        );
+    }
 }

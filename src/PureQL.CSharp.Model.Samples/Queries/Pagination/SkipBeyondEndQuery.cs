@@ -3,9 +3,13 @@ using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Samples.Columns;
 using Pure.RelationalSchema.Samples.Schemas;
 using Pure.RelationalSchema.Samples.Tables;
+using Pure.RelationalSchema.Storage.Abstractions;
+using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
+using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.ArrayReturnings;
 using PureQL.CSharp.Model.Fields;
 using ModelPagination = PureQL.CSharp.Model.Pagination;
+using Table = Pure.RelationalSchema.Table.Table;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Pagination;
 
@@ -63,5 +67,17 @@ public sealed record SkipBeyondEndQuery
                 ),
             ],
             new ModelPagination(100, 5)
+        );
+
+    /// <summary>
+    /// The rows the query returns under SQL semantics over
+    /// <see cref="SchemaDataSetWithForeignKeys"/> and <see cref="AuditSchemaDataSet"/>,
+    /// in the order the query sorts them; rows tied on every sort key may come in either
+    /// order.
+    /// </summary>
+    public IStoredTableDataSet Result =>
+        new StoredTableDataSet(
+            new Table(new EmptyString(), [new OrderTotalColumn()], []),
+            []
         );
 }

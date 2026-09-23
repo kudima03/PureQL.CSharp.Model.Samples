@@ -61,4 +61,43 @@ public sealed record MaxOfEachDateAddDaysGroupedByUserActiveQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "latestProjectedDate",
+                      "type": "date"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "False",
+                      "2023-03-30"
+                    ],
+                    [
+                      "True",
+                      "2022-12-05"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new MaxOfEachDateAddDaysGroupedByUserActiveQuery().Result
+            ).TextValue
+        );
+    }
 }

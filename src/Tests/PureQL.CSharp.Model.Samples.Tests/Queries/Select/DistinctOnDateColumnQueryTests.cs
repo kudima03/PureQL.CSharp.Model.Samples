@@ -31,4 +31,44 @@ public sealed record DistinctOnDateColumnQueryTests
             new QueryJson(new DistinctOnDateColumnQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "signup_date",
+                      "type": "date"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2019-07-10"
+                    ],
+                    [
+                      "2023-02-28"
+                    ],
+                    [
+                      "2022-11-05"
+                    ],
+                    [
+                      "2020-01-15"
+                    ],
+                    [
+                      "2021-03-20"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DistinctOnDateColumnQuery().Result).TextValue
+        );
+    }
 }

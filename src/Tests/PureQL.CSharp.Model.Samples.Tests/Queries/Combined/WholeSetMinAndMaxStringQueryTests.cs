@@ -45,4 +45,37 @@ public sealed record WholeSetMinAndMaxStringQueryTests
             new QueryJson(new WholeSetMinAndMaxStringQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "minStatus",
+                      "type": "string"
+                    },
+                    {
+                      "name": "maxStatus",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "shipped"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WholeSetMinAndMaxStringQuery().Result).TextValue
+        );
+    }
 }

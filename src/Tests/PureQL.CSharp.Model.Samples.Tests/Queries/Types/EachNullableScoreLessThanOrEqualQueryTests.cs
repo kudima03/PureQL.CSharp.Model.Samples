@@ -46,4 +46,32 @@ public sealed record EachNullableScoreLessThanOrEqualQueryTests
             new QueryJson(new EachNullableScoreLessThanOrEqualQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Eve"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachNullableScoreLessThanOrEqualQuery().Result).TextValue
+        );
+    }
 }

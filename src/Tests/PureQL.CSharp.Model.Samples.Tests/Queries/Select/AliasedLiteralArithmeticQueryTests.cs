@@ -41,4 +41,47 @@ public sealed record AliasedLiteralArithmeticQueryTests
             new QueryJson(new AliasedLiteralArithmeticQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "sum",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "3"
+                    ],
+                    [
+                      "3"
+                    ],
+                    [
+                      "3"
+                    ],
+                    [
+                      "3"
+                    ],
+                    [
+                      "3"
+                    ],
+                    [
+                      "3"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new AliasedLiteralArithmeticQuery().Result).TextValue
+        );
+    }
 }

@@ -46,4 +46,35 @@ public sealed record EachTimeGreaterThanOrEqualQueryTests
             new QueryJson(new EachTimeGreaterThanOrEqualQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Dan"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachTimeGreaterThanOrEqualQuery().Result).TextValue
+        );
+    }
 }

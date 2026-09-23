@@ -53,4 +53,28 @@ public sealed record WholeSetHavingGreaterThanQueryTests
             new QueryJson(new WholeSetHavingGreaterThanQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "userCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WholeSetHavingGreaterThanQuery().Result).TextValue
+        );
+    }
 }

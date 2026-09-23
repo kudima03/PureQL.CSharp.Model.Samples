@@ -1,13 +1,20 @@
 using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
+using Pure.RelationalSchema.ColumnType;
 using Pure.RelationalSchema.Samples.Columns;
 using Pure.RelationalSchema.Samples.Schemas;
 using Pure.RelationalSchema.Samples.Tables;
+using Pure.RelationalSchema.Storage.Abstractions;
+using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
+using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Aggregates;
 using PureQL.CSharp.Model.ArrayReturnings;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Returnings;
+using Column = Pure.RelationalSchema.Column.Column;
 using ModelPagination = PureQL.CSharp.Model.Pagination;
+using String = Pure.Primitives.String.String;
+using Table = Pure.RelationalSchema.Table.Table;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Combined;
 
@@ -102,5 +109,24 @@ public sealed record PaginationSkipPastEndOfOrderedGroupsQuery
                 ),
             ],
             new ModelPagination(10, 5)
+        );
+
+    /// <summary>
+    /// The rows the query returns under SQL semantics over
+    /// <see cref="SchemaDataSetWithForeignKeys"/> and <see cref="AuditSchemaDataSet"/>,
+    /// in the order the query sorts them; rows tied on every sort key may come in either
+    /// order.
+    /// </summary>
+    public IStoredTableDataSet Result =>
+        new StoredTableDataSet(
+            new Table(
+                new EmptyString(),
+                [
+                    new OrderStatusColumn(),
+                    new Column(new String("orderCount"), new DoubleColumnType()),
+                ],
+                []
+            ),
+            []
         );
 }

@@ -61,4 +61,35 @@ public sealed record HavingNotQueryTests
             new QueryJson(new HavingNotQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000002-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new HavingNotQuery().Result).TextValue
+        );
+    }
 }

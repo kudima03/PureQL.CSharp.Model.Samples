@@ -46,4 +46,35 @@ public sealed record EachDateTimeGreaterThanQueryTests
             new QueryJson(new EachDateTimeGreaterThanQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachDateTimeGreaterThanQuery().Result).TextValue
+        );
+    }
 }

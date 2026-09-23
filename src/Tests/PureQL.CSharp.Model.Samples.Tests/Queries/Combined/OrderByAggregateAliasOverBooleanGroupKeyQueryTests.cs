@@ -64,4 +64,43 @@ public sealed record OrderByAggregateAliasOverBooleanGroupKeyQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "maxAge",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "True",
+                      "42"
+                    ],
+                    [
+                      "False",
+                      "25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new OrderByAggregateAliasOverBooleanGroupKeyQuery().Result
+            ).TextValue
+        );
+    }
 }

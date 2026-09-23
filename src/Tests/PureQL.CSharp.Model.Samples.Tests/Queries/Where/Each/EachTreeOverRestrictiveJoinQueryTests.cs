@@ -89,4 +89,28 @@ public sealed record EachTreeOverRestrictiveJoinQueryTests
             new QueryJson(new EachTreeOverRestrictiveJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachTreeOverRestrictiveJoinQuery().Result).TextValue
+        );
+    }
 }

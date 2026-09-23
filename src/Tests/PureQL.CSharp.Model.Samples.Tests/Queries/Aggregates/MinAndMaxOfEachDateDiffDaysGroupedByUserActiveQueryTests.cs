@@ -106,4 +106,49 @@ public sealed record MinAndMaxOfEachDateDiffDaysGroupedByUserActiveQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "minSpanDays",
+                      "type": "double"
+                    },
+                    {
+                      "name": "maxSpanDays",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "False",
+                      "1171",
+                      "1171"
+                    ],
+                    [
+                      "True",
+                      "579",
+                      "1792"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new MinAndMaxOfEachDateDiffDaysGroupedByUserActiveQuery().Result
+            ).TextValue
+        );
+    }
 }

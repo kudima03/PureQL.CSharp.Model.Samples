@@ -101,4 +101,52 @@ public sealed record AliasedAggregatesOfEveryTypeQueryTests
             new QueryJson(new AliasedAggregatesOfEveryTypeQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "totalSum",
+                      "type": "double"
+                    },
+                    {
+                      "name": "maxStatus",
+                      "type": "string"
+                    },
+                    {
+                      "name": "maxPlacedOn",
+                      "type": "date"
+                    },
+                    {
+                      "name": "minPlacedAt",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "maxShiftStart",
+                      "type": "time"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "826.25",
+                      "shipped",
+                      "2024-06-06",
+                      "2024-06-01T10:00:00",
+                      "11:30:00"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new AliasedAggregatesOfEveryTypeQuery().Result).TextValue
+        );
+    }
 }

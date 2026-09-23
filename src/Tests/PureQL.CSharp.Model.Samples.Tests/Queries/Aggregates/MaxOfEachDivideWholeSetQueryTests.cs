@@ -69,4 +69,32 @@ public sealed record MaxOfEachDivideWholeSetQueryTests
             new QueryJson(new MaxOfEachDivideWholeSetQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "maxRatio",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "10"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MaxOfEachDivideWholeSetQuery().Result).TextValue
+        );
+    }
 }

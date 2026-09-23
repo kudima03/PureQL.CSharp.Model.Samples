@@ -50,4 +50,32 @@ public sealed record WholeSetAggregateOverFilteredRowsQueryTests
             new QueryJson(new WholeSetAggregateOverFilteredRowsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "filteredSum",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "600.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WholeSetAggregateOverFilteredRowsQuery().Result).TextValue
+        );
+    }
 }

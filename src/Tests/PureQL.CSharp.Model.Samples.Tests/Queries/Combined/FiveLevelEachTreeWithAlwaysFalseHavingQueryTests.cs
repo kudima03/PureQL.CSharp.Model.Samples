@@ -316,4 +316,38 @@ public sealed record FiveLevelEachTreeWithAlwaysFalseHavingQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "qtySum",
+                      "type": "double"
+                    },
+                    {
+                      "name": "itemCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new FiveLevelEachTreeWithAlwaysFalseHavingQuery().Result
+            ).TextValue
+        );
+    }
 }

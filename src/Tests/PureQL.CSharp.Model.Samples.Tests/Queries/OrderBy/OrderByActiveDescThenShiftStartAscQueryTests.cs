@@ -51,4 +51,49 @@ public sealed record OrderByActiveDescThenShiftStartAscQueryTests
             new QueryJson(new OrderByActiveDescThenShiftStartAscQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Bob"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new OrderByActiveDescThenShiftStartAscQuery().Result
+            ).TextValue
+        );
+    }
 }

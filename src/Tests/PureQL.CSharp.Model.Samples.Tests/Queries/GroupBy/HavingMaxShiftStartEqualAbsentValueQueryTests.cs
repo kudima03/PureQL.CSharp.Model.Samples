@@ -58,4 +58,30 @@ public sealed record HavingMaxShiftStartEqualAbsentValueQueryTests
             new QueryJson(new HavingMaxShiftStartEqualAbsentValueQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new HavingMaxShiftStartEqualAbsentValueQuery().Result
+            ).TextValue
+        );
+    }
 }

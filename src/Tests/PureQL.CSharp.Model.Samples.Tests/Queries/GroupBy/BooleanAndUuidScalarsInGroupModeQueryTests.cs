@@ -48,4 +48,42 @@ public sealed record BooleanAndUuidScalarsInGroupModeQueryTests
             new QueryJson(new BooleanAndUuidScalarsInGroupModeQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "flag",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "marker",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "order_count",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "True",
+                      "9b2b1f6e-3c86-4c50-8f6a-2f6d1a8f2c11",
+                      "6"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new BooleanAndUuidScalarsInGroupModeQuery().Result).TextValue
+        );
+    }
 }

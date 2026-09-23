@@ -69,4 +69,32 @@ public sealed record DistinctOrderByPaginationOverJoinQueryTests
             new QueryJson(new DistinctOrderByPaginationOverJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DistinctOrderByPaginationOverJoinQuery().Result).TextValue
+        );
+    }
 }

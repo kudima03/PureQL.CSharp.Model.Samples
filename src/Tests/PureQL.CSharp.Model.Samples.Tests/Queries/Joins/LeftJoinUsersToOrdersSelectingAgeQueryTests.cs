@@ -53,4 +53,53 @@ public sealed record LeftJoinUsersToOrdersSelectingAgeQueryTests
             new QueryJson(new LeftJoinUsersToOrdersSelectingAgeQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "30"
+                    ],
+                    [
+                      "30"
+                    ],
+                    [
+                      "25"
+                    ],
+                    [
+                      "30"
+                    ],
+                    [
+                      "30"
+                    ],
+                    [
+                      "42"
+                    ],
+                    [
+                      "25"
+                    ],
+                    [
+                      "28"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LeftJoinUsersToOrdersSelectingAgeQuery().Result).TextValue
+        );
+    }
 }

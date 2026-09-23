@@ -65,4 +65,45 @@ public sealed record PaginationSkipZeroTakeAllQueryTests
             new QueryJson(new PaginationSkipZeroTakeAllQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "orderCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "1"
+                    ],
+                    [
+                      "pending",
+                      "2"
+                    ],
+                    [
+                      "shipped",
+                      "3"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new PaginationSkipZeroTakeAllQuery().Result).TextValue
+        );
+    }
 }

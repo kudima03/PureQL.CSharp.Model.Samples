@@ -1,9 +1,28 @@
+using Pure.Collections.Generic;
+using Pure.Primitives.Bool;
+using Pure.Primitives.Date;
+using Pure.Primitives.Number;
 using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
+using Pure.Primitives.Time;
+using Pure.RelationalSchema.Abstractions.Column;
+using Pure.RelationalSchema.ColumnType;
+using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Samples.Schemas;
 using Pure.RelationalSchema.Samples.Tables;
+using Pure.RelationalSchema.Storage;
+using Pure.RelationalSchema.Storage.Abstractions;
+using Pure.RelationalSchema.Storage.Samples.Cells;
+using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
+using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Returnings;
 using PureQL.CSharp.Model.Scalars;
+using Column = Pure.RelationalSchema.Column.Column;
+using DateTime = Pure.Primitives.DateTime.DateTime;
+using Double = Pure.Primitives.Number.Double;
+using Guid = Pure.Primitives.Guid.Guid;
+using String = Pure.Primitives.String.String;
+using Table = Pure.RelationalSchema.Table.Table;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
@@ -39,7 +58,9 @@ public sealed record AllSevenScalarTypesQuery
                 new SelectExpression(
                     new SingleValueReturning(
                         new DateTimeReturning(
-                            new DateTimeScalar(new DateTime(2024, 12, 31, 23, 59, 58))
+                            new DateTimeScalar(
+                                new System.DateTime(2024, 12, 31, 23, 59, 58)
+                            )
                         )
                     ),
                     "built_at"
@@ -62,11 +83,461 @@ public sealed record AllSevenScalarTypesQuery
                     new SingleValueReturning(
                         new UuidReturning(
                             new UuidScalar(
-                                new Guid("0f8fad5b-d9cb-469f-a165-70867728950e")
+                                new System.Guid("0f8fad5b-d9cb-469f-a165-70867728950e")
                             )
                         )
                     ),
                     "marker"
+                ),
+            ]
+        );
+
+    /// <summary>
+    /// The rows the query returns under SQL semantics over
+    /// <see cref="SchemaDataSetWithForeignKeys"/> and <see cref="AuditSchemaDataSet"/>,
+    /// in no particular order.
+    /// </summary>
+    public IStoredTableDataSet Result =>
+        new StoredTableDataSet(
+            new Table(
+                new EmptyString(),
+                [
+                    new Column(new String("active"), new BoolColumnType()),
+                    new Column(new String("release"), new DateColumnType()),
+                    new Column(new String("built_at"), new DateTimeColumnType()),
+                    new Column(new String("amount"), new DoubleColumnType()),
+                    new Column(new String("label"), new StringColumnType()),
+                    new Column(new String("cutoff"), new TimeColumnType()),
+                    new Column(new String("marker"), new UuidColumnType()),
+                ],
+                []
+            ),
+            [
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("active"), new BoolColumnType()),
+                                new InvariantCell(new True())
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("release"), new DateColumnType()),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("built_at"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(31),
+                                            new UShort(12),
+                                            new UShort(2024)
+                                        ),
+                                        new Time(
+                                            new UShort(23),
+                                            new UShort(59),
+                                            new UShort(58)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("amount"), new DoubleColumnType()),
+                                new InvariantCell(new Double(42.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("label"), new StringColumnType()),
+                                new InvariantCell(new String("v2"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("cutoff"), new TimeColumnType()),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(17),
+                                        new UShort(30),
+                                        new UShort(15)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("marker"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "0f8fad5b-d9cb-469f-a165-70867728950e"
+                                        )
+                                    )
+                                )
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("active"), new BoolColumnType()),
+                                new InvariantCell(new True())
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("release"), new DateColumnType()),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("built_at"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(31),
+                                            new UShort(12),
+                                            new UShort(2024)
+                                        ),
+                                        new Time(
+                                            new UShort(23),
+                                            new UShort(59),
+                                            new UShort(58)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("amount"), new DoubleColumnType()),
+                                new InvariantCell(new Double(42.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("label"), new StringColumnType()),
+                                new InvariantCell(new String("v2"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("cutoff"), new TimeColumnType()),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(17),
+                                        new UShort(30),
+                                        new UShort(15)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("marker"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "0f8fad5b-d9cb-469f-a165-70867728950e"
+                                        )
+                                    )
+                                )
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("active"), new BoolColumnType()),
+                                new InvariantCell(new True())
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("release"), new DateColumnType()),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("built_at"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(31),
+                                            new UShort(12),
+                                            new UShort(2024)
+                                        ),
+                                        new Time(
+                                            new UShort(23),
+                                            new UShort(59),
+                                            new UShort(58)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("amount"), new DoubleColumnType()),
+                                new InvariantCell(new Double(42.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("label"), new StringColumnType()),
+                                new InvariantCell(new String("v2"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("cutoff"), new TimeColumnType()),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(17),
+                                        new UShort(30),
+                                        new UShort(15)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("marker"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "0f8fad5b-d9cb-469f-a165-70867728950e"
+                                        )
+                                    )
+                                )
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("active"), new BoolColumnType()),
+                                new InvariantCell(new True())
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("release"), new DateColumnType()),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("built_at"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(31),
+                                            new UShort(12),
+                                            new UShort(2024)
+                                        ),
+                                        new Time(
+                                            new UShort(23),
+                                            new UShort(59),
+                                            new UShort(58)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("amount"), new DoubleColumnType()),
+                                new InvariantCell(new Double(42.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("label"), new StringColumnType()),
+                                new InvariantCell(new String("v2"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("cutoff"), new TimeColumnType()),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(17),
+                                        new UShort(30),
+                                        new UShort(15)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("marker"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "0f8fad5b-d9cb-469f-a165-70867728950e"
+                                        )
+                                    )
+                                )
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("active"), new BoolColumnType()),
+                                new InvariantCell(new True())
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("release"), new DateColumnType()),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("built_at"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(31),
+                                            new UShort(12),
+                                            new UShort(2024)
+                                        ),
+                                        new Time(
+                                            new UShort(23),
+                                            new UShort(59),
+                                            new UShort(58)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("amount"), new DoubleColumnType()),
+                                new InvariantCell(new Double(42.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("label"), new StringColumnType()),
+                                new InvariantCell(new String("v2"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("cutoff"), new TimeColumnType()),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(17),
+                                        new UShort(30),
+                                        new UShort(15)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("marker"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "0f8fad5b-d9cb-469f-a165-70867728950e"
+                                        )
+                                    )
+                                )
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("active"), new BoolColumnType()),
+                                new InvariantCell(new True())
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("release"), new DateColumnType()),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("built_at"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(31),
+                                            new UShort(12),
+                                            new UShort(2024)
+                                        ),
+                                        new Time(
+                                            new UShort(23),
+                                            new UShort(59),
+                                            new UShort(58)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("amount"), new DoubleColumnType()),
+                                new InvariantCell(new Double(42.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("label"), new StringColumnType()),
+                                new InvariantCell(new String("v2"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("cutoff"), new TimeColumnType()),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(17),
+                                        new UShort(30),
+                                        new UShort(15)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("marker"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "0f8fad5b-d9cb-469f-a165-70867728950e"
+                                        )
+                                    )
+                                )
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
                 ),
             ]
         );

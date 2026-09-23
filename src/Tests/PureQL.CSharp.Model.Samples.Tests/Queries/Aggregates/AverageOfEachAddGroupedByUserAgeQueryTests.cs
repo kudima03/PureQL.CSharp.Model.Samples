@@ -85,4 +85,45 @@ public sealed record AverageOfEachAddGroupedByUserAgeQueryTests
             new QueryJson(new AverageOfEachAddGroupedByUserAgeQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    },
+                    {
+                      "name": "meanTotalPlusAge",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "25",
+                      "225"
+                    ],
+                    [
+                      "30",
+                      "161.4375"
+                    ],
+                    [
+                      "42",
+                      "142.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new AverageOfEachAddGroupedByUserAgeQuery().Result).TextValue
+        );
+    }
 }

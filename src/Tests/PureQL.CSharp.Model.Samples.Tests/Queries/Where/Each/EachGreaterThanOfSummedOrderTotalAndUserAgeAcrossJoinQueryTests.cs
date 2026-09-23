@@ -83,4 +83,43 @@ public sealed record EachGreaterThanOfSummedOrderTotalAndUserAgeAcrossJoinQueryT
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000065-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000067-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000069-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "0000006a-0000-0000-0000-000000000000"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new EachGreaterThanOfSummedOrderTotalAndUserAgeAcrossJoinQuery().Result
+            ).TextValue
+        );
+    }
 }

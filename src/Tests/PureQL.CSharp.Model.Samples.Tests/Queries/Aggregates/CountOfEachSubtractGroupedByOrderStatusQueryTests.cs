@@ -87,4 +87,47 @@ public sealed record CountOfEachSubtractGroupedByOrderStatusQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "diffCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "1"
+                    ],
+                    [
+                      "pending",
+                      "2"
+                    ],
+                    [
+                      "shipped",
+                      "3"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new CountOfEachSubtractGroupedByOrderStatusQuery().Result
+            ).TextValue
+        );
+    }
 }

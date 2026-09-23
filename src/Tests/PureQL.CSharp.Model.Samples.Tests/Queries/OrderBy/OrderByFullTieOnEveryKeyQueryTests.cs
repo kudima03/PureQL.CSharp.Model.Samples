@@ -59,4 +59,47 @@ public sealed record OrderByFullTieOnEveryKeyQueryTests
             new QueryJson(new OrderByFullTieOnEveryKeyQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByFullTieOnEveryKeyQuery().Result).TextValue
+        );
+    }
 }

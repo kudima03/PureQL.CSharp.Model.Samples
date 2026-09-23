@@ -69,4 +69,32 @@ public sealed record WholeSetAverageOfEachSubtractQueryTests
             new QueryJson(new WholeSetAverageOfEachSubtractQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "meanDiff",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "106.54166666666667"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WholeSetAverageOfEachSubtractQuery().Result).TextValue
+        );
+    }
 }

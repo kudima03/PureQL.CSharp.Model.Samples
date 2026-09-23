@@ -37,4 +37,57 @@ public sealed record CalendarAndNumericQueryTests
             new QueryJson(new CalendarAndNumericQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_edge_datetime",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "user_precision_value",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2024-02-29T00:00:00",
+                      "1.7976931348623157E\u002B308"
+                    ],
+                    [
+                      "2024-12-31T23:59:59",
+                      "-1.7976931348623157E\u002B308"
+                    ],
+                    [
+                      "2024-03-10T02:30:00",
+                      "5E-324"
+                    ],
+                    [
+                      "2024-11-03T01:30:00",
+                      "-5E-324"
+                    ],
+                    [
+                      "0001-01-01T00:00:00",
+                      "1E\u002B308"
+                    ],
+                    [
+                      "9999-12-31T23:59:59",
+                      "123456789.123456"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new CalendarAndNumericQuery().Result).TextValue
+        );
+    }
 }

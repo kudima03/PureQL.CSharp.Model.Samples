@@ -58,4 +58,57 @@ public sealed record OrderByStatusAscThenTotalDescQueryTests
             new QueryJson(new OrderByStatusAscThenTotalDescQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "75.25"
+                    ],
+                    [
+                      "pending",
+                      "100.5"
+                    ],
+                    [
+                      "pending",
+                      "50"
+                    ],
+                    [
+                      "shipped",
+                      "300"
+                    ],
+                    [
+                      "shipped",
+                      "200"
+                    ],
+                    [
+                      "shipped",
+                      "100.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByStatusAscThenTotalDescQuery().Result).TextValue
+        );
+    }
 }

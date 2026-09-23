@@ -84,4 +84,47 @@ public sealed record MinOfEachDateAddDaysGroupedByOrderStatusQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "earliestProjectedDate",
+                      "type": "date"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "2019-08-09"
+                    ],
+                    [
+                      "pending",
+                      "2020-02-14"
+                    ],
+                    [
+                      "shipped",
+                      "2019-08-09"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new MinOfEachDateAddDaysGroupedByOrderStatusQuery().Result
+            ).TextValue
+        );
+    }
 }
