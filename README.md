@@ -50,6 +50,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 | Folder | Samples | Exercises |
 |---|---|---|
 | `Select` | 59 | Column projection and aliases, `DISTINCT` over every column type and over joins, scalar and literal-arithmetic columns, wide projections, and select lists an engine has to reject |
+| `Where/Scalar` | 44 | Single-value predicates over constants: equality and range comparison for every value type, `and`/`or`/`not` up to five levels deep, De Morgan pairs, and arithmetic inside a comparison |
 | `Pagination` | 13 | `skip`/`take` windows: in range, past the end, beyond `int.MaxValue`, zero and negative values, and after `DISTINCT`, `GROUP BY` and joins |
 
 ### Data sets
