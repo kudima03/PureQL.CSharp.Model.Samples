@@ -131,4 +131,54 @@ public sealed record MinAndMaxOfEachMultiplyGroupedByOrderUserIdQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "minLineValue",
+                      "type": "double"
+                    },
+                    {
+                      "name": "maxLineValue",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "19.98",
+                      "19.99"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "22.5",
+                      "22.5"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "29.97",
+                      "29.97"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new MinAndMaxOfEachMultiplyGroupedByOrderUserIdQuery().Result
+            ).TextValue
+        );
+    }
 }

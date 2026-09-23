@@ -34,4 +34,32 @@ public sealed record MaxShiftStartOverAllUsersQueryTests
             new QueryJson(new MaxShiftStartOverAllUsersQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "max_shift_start",
+                      "type": "time"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "11:30:00"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MaxShiftStartOverAllUsersQuery().Result).TextValue
+        );
+    }
 }

@@ -30,4 +30,47 @@ public sealed record ExtremeAndPrecisionSensitiveQueryTests
             new QueryJson(new ExtremeAndPrecisionSensitiveQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_precision_value",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "1.7976931348623157E\u002B308"
+                    ],
+                    [
+                      "-1.7976931348623157E\u002B308"
+                    ],
+                    [
+                      "5E-324"
+                    ],
+                    [
+                      "-5E-324"
+                    ],
+                    [
+                      "1E\u002B308"
+                    ],
+                    [
+                      "123456789.123456"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ExtremeAndPrecisionSensitiveQuery().Result).TextValue
+        );
+    }
 }

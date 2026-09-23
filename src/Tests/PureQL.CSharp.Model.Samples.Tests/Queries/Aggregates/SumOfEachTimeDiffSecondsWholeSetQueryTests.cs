@@ -43,4 +43,32 @@ public sealed record SumOfEachTimeDiffSecondsWholeSetQueryTests
             new QueryJson(new SumOfEachTimeDiffSecondsWholeSetQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "totalGapSeconds",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "30600"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new SumOfEachTimeDiffSecondsWholeSetQuery().Result).TextValue
+        );
+    }
 }

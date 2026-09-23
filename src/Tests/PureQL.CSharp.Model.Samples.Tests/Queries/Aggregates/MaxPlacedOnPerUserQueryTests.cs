@@ -43,4 +43,41 @@ public sealed record MaxPlacedOnPerUserQueryTests
             new QueryJson(new MaxPlacedOnPerUserQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "max_placed_on",
+                      "type": "date"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2024-06-02"
+                    ],
+                    [
+                      "2024-06-03"
+                    ],
+                    [
+                      "2024-06-06"
+                    ],
+                    [
+                      "2024-06-05"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MaxPlacedOnPerUserQuery().Result).TextValue
+        );
+    }
 }

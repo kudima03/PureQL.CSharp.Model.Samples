@@ -87,4 +87,47 @@ public sealed record SumOfQuantityTimesPriceGroupedByOrderQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "item_order_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "revenue",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000069-0000-0000-0000-000000000000",
+                      "29.97"
+                    ],
+                    [
+                      "00000065-0000-0000-0000-000000000000",
+                      "39.97"
+                    ],
+                    [
+                      "00000067-0000-0000-0000-000000000000",
+                      "22.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new SumOfQuantityTimesPriceGroupedByOrderQuery().Result
+            ).TextValue
+        );
+    }
 }

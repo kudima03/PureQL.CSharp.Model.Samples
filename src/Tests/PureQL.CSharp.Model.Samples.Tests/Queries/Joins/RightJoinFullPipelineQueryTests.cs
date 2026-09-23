@@ -118,4 +118,32 @@ public sealed record RightJoinFullPipelineQueryTests
             new QueryJson(new RightJoinFullPipelineQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "orderCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "1"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new RightJoinFullPipelineQuery().Result).TextValue
+        );
+    }
 }

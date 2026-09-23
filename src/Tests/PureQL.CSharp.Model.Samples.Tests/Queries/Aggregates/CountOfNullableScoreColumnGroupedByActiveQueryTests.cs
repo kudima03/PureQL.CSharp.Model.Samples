@@ -45,4 +45,37 @@ public sealed record CountOfNullableScoreColumnGroupedByActiveQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "n",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "1"
+                    ],
+                    [
+                      "3"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new CountOfNullableScoreColumnGroupedByActiveQuery().Result
+            ).TextValue
+        );
+    }
 }

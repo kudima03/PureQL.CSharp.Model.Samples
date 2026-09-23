@@ -57,4 +57,32 @@ public sealed record LeftJoinMinStatusQueryTests
             new QueryJson(new LeftJoinMinStatusQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "min_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LeftJoinMinStatusQuery().Result).TextValue
+        );
+    }
 }

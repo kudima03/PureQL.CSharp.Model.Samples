@@ -53,4 +53,47 @@ public sealed record LeftJoinWithNonMatchingInequalityQueryTests
             new QueryJson(new LeftJoinWithNonMatchingInequalityQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LeftJoinWithNonMatchingInequalityQuery().Result).TextValue
+        );
+    }
 }

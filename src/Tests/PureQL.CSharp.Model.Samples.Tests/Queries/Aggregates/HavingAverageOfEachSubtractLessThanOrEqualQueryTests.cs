@@ -118,4 +118,39 @@ public sealed record HavingAverageOfEachSubtractLessThanOrEqualQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "meanDiff",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "True",
+                      "92.85"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new HavingAverageOfEachSubtractLessThanOrEqualQuery().Result
+            ).TextValue
+        );
+    }
 }

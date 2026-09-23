@@ -30,4 +30,47 @@ public sealed record NumberScalarQueryTests
             new QueryJson(new NumberScalarQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "version",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "5"
+                    ],
+                    [
+                      "5"
+                    ],
+                    [
+                      "5"
+                    ],
+                    [
+                      "5"
+                    ],
+                    [
+                      "5"
+                    ],
+                    [
+                      "5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new NumberScalarQuery().Result).TextValue
+        );
+    }
 }

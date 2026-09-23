@@ -86,4 +86,59 @@ public sealed record TwoNumericAggregatesOverDifferentColumnsQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "orderTotalSum",
+                      "type": "double"
+                    },
+                    {
+                      "name": "avgAge",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "150.5",
+                      "30"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "200",
+                      "25"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "100.5",
+                      "42"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "375.25",
+                      "30"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new TwoNumericAggregatesOverDifferentColumnsQuery().Result
+            ).TextValue
+        );
+    }
 }

@@ -43,4 +43,41 @@ public sealed record CountAggregateQueryTests
             new QueryJson(new CountAggregateQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "group_count",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2"
+                    ],
+                    [
+                      "1"
+                    ],
+                    [
+                      "1"
+                    ],
+                    [
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new CountAggregateQuery().Result).TextValue
+        );
+    }
 }

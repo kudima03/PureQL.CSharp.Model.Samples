@@ -46,4 +46,35 @@ public sealed record UuidCasingQueryTests
             new QueryJson(new UuidCasingQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "lowercase"
+                    ],
+                    [
+                      "uppercase"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new UuidCasingQuery().Result).TextValue
+        );
+    }
 }

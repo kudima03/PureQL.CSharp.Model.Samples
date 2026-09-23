@@ -81,4 +81,67 @@ public sealed record FullJoinOrderByJoinedTotalDescendingQueryTests
             new QueryJson(new FullJoinOrderByJoinedTotalDescendingQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Eve",
+                      ""
+                    ],
+                    [
+                      "Fay",
+                      ""
+                    ],
+                    [
+                      "Cara",
+                      "300"
+                    ],
+                    [
+                      "Bob",
+                      "200"
+                    ],
+                    [
+                      "Ann",
+                      "100.5"
+                    ],
+                    [
+                      "Dan",
+                      "100.5"
+                    ],
+                    [
+                      "Cara",
+                      "75.25"
+                    ],
+                    [
+                      "Ann",
+                      "50"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new FullJoinOrderByJoinedTotalDescendingQuery().Result
+            ).TextValue
+        );
+    }
 }

@@ -85,4 +85,47 @@ public sealed record CountOfEachDateDiffDaysGroupedByUserAgeQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    },
+                    {
+                      "name": "spanCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "25",
+                      "1"
+                    ],
+                    [
+                      "30",
+                      "4"
+                    ],
+                    [
+                      "42",
+                      "1"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new CountOfEachDateDiffDaysGroupedByUserAgeQuery().Result
+            ).TextValue
+        );
+    }
 }

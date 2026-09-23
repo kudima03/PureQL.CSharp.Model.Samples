@@ -61,4 +61,51 @@ public sealed record MinOfEachDateTimeAddSecondsGroupedByOrderUserIdQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "earliestProjectedInstant",
+                      "type": "datetime"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "2024-06-01T10:30:00"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "2024-06-03T12:30:00"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "2024-06-06T15:30:00"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "2024-06-04T13:30:00"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new MinOfEachDateTimeAddSecondsGroupedByOrderUserIdQuery().Result
+            ).TextValue
+        );
+    }
 }

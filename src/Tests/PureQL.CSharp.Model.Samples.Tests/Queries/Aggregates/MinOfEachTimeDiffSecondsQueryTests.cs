@@ -59,4 +59,41 @@ public sealed record MinOfEachTimeDiffSecondsQueryTests
             new QueryJson(new MinOfEachTimeDiffSecondsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "minShiftGapSeconds",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "False",
+                      "0"
+                    ],
+                    [
+                      "True",
+                      "3600"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MinOfEachTimeDiffSecondsQuery().Result).TextValue
+        );
+    }
 }

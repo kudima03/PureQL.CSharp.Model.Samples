@@ -38,4 +38,57 @@ public sealed record DuplicateFieldOnceBareOnceAliasedQueryTests
             new QueryJson(new DuplicateFieldOnceBareOnceAliasedQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "status_alias",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped",
+                      "shipped"
+                    ],
+                    [
+                      "pending",
+                      "pending"
+                    ],
+                    [
+                      "shipped",
+                      "shipped"
+                    ],
+                    [
+                      "cancelled",
+                      "cancelled"
+                    ],
+                    [
+                      "shipped",
+                      "shipped"
+                    ],
+                    [
+                      "pending",
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DuplicateFieldOnceBareOnceAliasedQuery().Result).TextValue
+        );
+    }
 }

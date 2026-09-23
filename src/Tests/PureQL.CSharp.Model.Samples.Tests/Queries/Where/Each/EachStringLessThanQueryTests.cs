@@ -46,4 +46,32 @@ public sealed record EachStringLessThanQueryTests
             new QueryJson(new EachStringLessThanQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachStringLessThanQuery().Result).TextValue
+        );
+    }
 }

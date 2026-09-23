@@ -58,4 +58,28 @@ public sealed record HavingCountEqualAbsentValueQueryTests
             new QueryJson(new HavingCountEqualAbsentValueQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new HavingCountEqualAbsentValueQuery().Result).TextValue
+        );
+    }
 }

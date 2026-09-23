@@ -58,4 +58,28 @@ public sealed record HavingMaxPlacedAtLessThanConstantQueryTests
             new QueryJson(new HavingMaxPlacedAtLessThanConstantQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new HavingMaxPlacedAtLessThanConstantQuery().Result).TextValue
+        );
+    }
 }

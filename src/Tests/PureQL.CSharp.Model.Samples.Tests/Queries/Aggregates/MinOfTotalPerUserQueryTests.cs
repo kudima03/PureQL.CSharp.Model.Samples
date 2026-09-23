@@ -43,4 +43,41 @@ public sealed record MinOfTotalPerUserQueryTests
             new QueryJson(new MinOfTotalPerUserQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "min_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "50"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "75.25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MinOfTotalPerUserQuery().Result).TextValue
+        );
+    }
 }

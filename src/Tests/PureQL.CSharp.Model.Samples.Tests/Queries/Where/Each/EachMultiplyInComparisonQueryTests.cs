@@ -57,4 +57,32 @@ public sealed record EachMultiplyInComparisonQueryTests
             new QueryJson(new EachMultiplyInComparisonQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachMultiplyInComparisonQuery().Result).TextValue
+        );
+    }
 }

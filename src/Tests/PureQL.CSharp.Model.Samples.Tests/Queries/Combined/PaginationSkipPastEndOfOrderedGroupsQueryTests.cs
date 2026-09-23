@@ -65,4 +65,34 @@ public sealed record PaginationSkipPastEndOfOrderedGroupsQueryTests
             new QueryJson(new PaginationSkipPastEndOfOrderedGroupsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "orderCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new PaginationSkipPastEndOfOrderedGroupsQuery().Result
+            ).TextValue
+        );
+    }
 }

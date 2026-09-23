@@ -57,4 +57,32 @@ public sealed record LeftJoinMinPlacedOnQueryTests
             new QueryJson(new LeftJoinMinPlacedOnQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "min_placed_on",
+                      "type": "date"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2024-06-01"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LeftJoinMinPlacedOnQuery().Result).TextValue
+        );
+    }
 }

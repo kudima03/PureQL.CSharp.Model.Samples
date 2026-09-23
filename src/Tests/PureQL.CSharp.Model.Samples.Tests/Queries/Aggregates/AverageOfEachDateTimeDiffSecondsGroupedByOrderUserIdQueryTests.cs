@@ -85,4 +85,51 @@ public sealed record AverageOfEachDateTimeDiffSecondsGroupedByOrderUserIdQueryTe
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "meanGapSeconds",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "50400"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "96300"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "245700"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "473400"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new AverageOfEachDateTimeDiffSecondsGroupedByOrderUserIdQuery().Result
+            ).TextValue
+        );
+    }
 }

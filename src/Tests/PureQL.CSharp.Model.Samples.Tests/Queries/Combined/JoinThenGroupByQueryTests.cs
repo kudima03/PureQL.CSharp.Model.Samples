@@ -73,4 +73,49 @@ public sealed record JoinThenGroupByQueryTests
             new QueryJson(new JoinThenGroupByQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "orderCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Dan",
+                      "1"
+                    ],
+                    [
+                      "Ann",
+                      "2"
+                    ],
+                    [
+                      "Bob",
+                      "1"
+                    ],
+                    [
+                      "Cara",
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new JoinThenGroupByQuery().Result).TextValue
+        );
+    }
 }

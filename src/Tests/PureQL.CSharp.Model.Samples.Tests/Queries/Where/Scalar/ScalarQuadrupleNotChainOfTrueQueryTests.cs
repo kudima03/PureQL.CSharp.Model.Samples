@@ -48,4 +48,47 @@ public sealed record ScalarQuadrupleNotChainOfTrueQueryTests
             new QueryJson(new ScalarQuadrupleNotChainOfTrueQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "cancelled"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarQuadrupleNotChainOfTrueQuery().Result).TextValue
+        );
+    }
 }

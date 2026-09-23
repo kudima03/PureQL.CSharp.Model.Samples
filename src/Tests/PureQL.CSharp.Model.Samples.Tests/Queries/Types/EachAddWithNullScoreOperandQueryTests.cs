@@ -57,4 +57,41 @@ public sealed record EachAddWithNullScoreOperandQueryTests
             new QueryJson(new EachAddWithNullScoreOperandQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachAddWithNullScoreOperandQuery().Result).TextValue
+        );
+    }
 }

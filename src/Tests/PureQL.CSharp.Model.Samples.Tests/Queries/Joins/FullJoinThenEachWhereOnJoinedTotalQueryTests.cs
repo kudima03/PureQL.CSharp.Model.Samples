@@ -69,4 +69,43 @@ public sealed record FullJoinThenEachWhereOnJoinedTotalQueryTests
             new QueryJson(new FullJoinThenEachWhereOnJoinedTotalQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Dan"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new FullJoinThenEachWhereOnJoinedTotalQuery().Result
+            ).TextValue
+        );
+    }
 }

@@ -38,4 +38,49 @@ public sealed record DistinctOnMultiColumnProjectionQueryTests
             new QueryJson(new DistinctOnMultiColumnProjectionQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    },
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "28",
+                      "True"
+                    ],
+                    [
+                      "30",
+                      "True"
+                    ],
+                    [
+                      "42",
+                      "True"
+                    ],
+                    [
+                      "25",
+                      "False"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DistinctOnMultiColumnProjectionQuery().Result).TextValue
+        );
+    }
 }

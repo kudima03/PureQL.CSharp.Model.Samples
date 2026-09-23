@@ -82,4 +82,32 @@ public sealed record HavingAndOfCountAndMaxComparisonsQueryTests
             new QueryJson(new HavingAndOfCountAndMaxComparisonsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000003-0000-0000-0000-000000000000"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new HavingAndOfCountAndMaxComparisonsQuery().Result).TextValue
+        );
+    }
 }

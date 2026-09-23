@@ -61,4 +61,45 @@ public sealed record OrderByAggregateResultQueryTests
             new QueryJson(new OrderByAggregateResultQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "totalSum",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "75.25"
+                    ],
+                    [
+                      "pending",
+                      "150.5"
+                    ],
+                    [
+                      "shipped",
+                      "600.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByAggregateResultQuery().Result).TextValue
+        );
+    }
 }

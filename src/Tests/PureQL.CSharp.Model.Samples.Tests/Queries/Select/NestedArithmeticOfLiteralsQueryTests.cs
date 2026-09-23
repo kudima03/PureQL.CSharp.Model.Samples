@@ -52,4 +52,47 @@ public sealed record NestedArithmeticOfLiteralsQueryTests
             new QueryJson(new NestedArithmeticOfLiteralsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "result",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "9"
+                    ],
+                    [
+                      "9"
+                    ],
+                    [
+                      "9"
+                    ],
+                    [
+                      "9"
+                    ],
+                    [
+                      "9"
+                    ],
+                    [
+                      "9"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new NestedArithmeticOfLiteralsQuery().Result).TextValue
+        );
+    }
 }

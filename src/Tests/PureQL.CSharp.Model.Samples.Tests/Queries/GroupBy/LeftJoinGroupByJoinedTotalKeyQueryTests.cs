@@ -73,4 +73,57 @@ public sealed record LeftJoinGroupByJoinedTotalKeyQueryTests
             new QueryJson(new LeftJoinGroupByJoinedTotalKeyQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    },
+                    {
+                      "name": "ageSum",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "",
+                      "53"
+                    ],
+                    [
+                      "200",
+                      "25"
+                    ],
+                    [
+                      "75.25",
+                      "30"
+                    ],
+                    [
+                      "300",
+                      "30"
+                    ],
+                    [
+                      "100.5",
+                      "72"
+                    ],
+                    [
+                      "50",
+                      "30"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LeftJoinGroupByJoinedTotalKeyQuery().Result).TextValue
+        );
+    }
 }

@@ -53,4 +53,53 @@ public sealed record RightJoinQueryTests
             new QueryJson(new RightJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new RightJoinQuery().Result).TextValue
+        );
+    }
 }

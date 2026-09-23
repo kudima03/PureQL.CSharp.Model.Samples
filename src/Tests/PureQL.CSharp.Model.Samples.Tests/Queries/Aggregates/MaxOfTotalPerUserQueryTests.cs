@@ -43,4 +43,41 @@ public sealed record MaxOfTotalPerUserQueryTests
             new QueryJson(new MaxOfTotalPerUserQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "max_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "200"
+                    ],
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "300"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MaxOfTotalPerUserQuery().Result).TextValue
+        );
+    }
 }

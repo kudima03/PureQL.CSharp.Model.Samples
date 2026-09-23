@@ -41,6 +41,83 @@ public sealed record SkipAndTakeQuery
 
 `Value` builds a fresh `Query` on every read. Two instances of the same sample always produce the same PureQL document.
 
+## Expected results
+
+525 of the 606 samples also carry a `Result`: the table the query returns, hard-coded in the same style as the query itself.
+
+```csharp
+IStoredTableDataSet expected = new SkipAndTakeQuery().Result;
+```
+
+The result is an `IStoredTableDataSet` (`StoredTableDataSet` from `Pure.RelationalSchema.Storage.Samples`). Its table schema has an empty name, no indexes and one column per `select` item, named by the item's alias, else its field name, else the empty string, and typed by the item's PureQL value type (`number` → `DoubleColumnType`, `string` → `StringColumnType`, …). When a column's name and type match a `Pure.RelationalSchema.Samples` column, that column is used as is (`new OrderTotalColumn()`). Rows are `Row`s of `InvariantCell`s over the typed `Pure.Primitives` values, NULL being `EmptyCell`. The property's summary names the stored data sets the result is computed over.
+
+### How the results were computed
+
+The results come from SQL semantics, not from any PureQL engine, so an engine can be tested against them. Every query was translated to SQL and run on PostgreSQL 17 over exactly the fixture rows of `Pure.RelationalSchema.Storage.Samples`. Where SQL leaves a choice to the implementation, the PostgreSQL behaviour applies, together with these conventions:
+
+- **Numbers** are exact decimals (`numeric`) throughout, and each final value is rounded to the nearest `double`. An engine computing in `double` should compare with a tolerance.
+- **Strings** compare and sort by code point (the `C` collation), so `min`, `max` and `ORDER BY` over strings are ordinal.
+- **NULL** follows three-valued logic. Aggregates skip NULLs; `count` over nothing is 0, and `sum`, `average`, `min` and `max` over nothing are NULL. `ORDER BY` puts NULLs last ascending and first descending. `GROUP BY` puts all NULL keys in one group.
+- **Uuids** compare case-insensitively and sort in PostgreSQL's byte order. Booleans sort `false` before `true`.
+- **Dates and times:** `eachDateDiffDays(left, right)` is `left − right` in whole days, and the `…DiffSeconds` operators are signed. `eachTimeAddSeconds` wraps past midnight.
+- **`HAVING` without `GROUP BY`** treats the whole row set as one group, so it yields at most one row, even over an empty set.
+- **Entities:** a field may name the `from` entity by its full name or by its alias. An `orderBy` field that is not a column of its entity refers to the `select` item with that alias.
+
+**Row order:** when the query has an `orderBy`, rows are in that order, but rows tied on every sort key may come in either order. Without an `orderBy`, the rows are a multiset in no particular order. Each result was also checked against a copy of the fixtures loaded in reverse row order, and no result depends on physical row order.
+
+### Samples without a result
+
+81 samples have no `Result`, for these reasons:
+
+<details>
+<summary>SQL rejects the query — unknown entity or column, division by zero, a column neither grouped nor aggregated, `avg` over dates, a negative `OFFSET`/`LIMIT`, a repeated table name (30)</summary>
+
+`Aggregates.AggregateOverEachDivideByZeroDenominatorQuery`, `Aggregates.AverageOfEachDateAddDaysQuery`, `Errors.AggregateInsideWhereComparisonQuery`, `Errors.EachDivideByZeroQuery`, `Errors.FromEntityNotInSuppliedDatasetsQuery`, `Errors.GroupBySelectFieldNotOnResolvedTableQuery`, `Errors.GroupByUnknownEntityQuery`, `Errors.HavingAggregateArgumentUnknownEntityQuery`, `Errors.HavingAggregateOverUnknownFieldOnKnownEntityQuery`, `Errors.JoinEntityNotInSuppliedDatasetsQuery`, `Errors.JoinOnEntityNeitherBaseNorJoinedQuery`, `Errors.OrderByFieldNotOnResolvedTableQuery`, `Errors.OrderByUnknownEntityQuery`, `Errors.SelectFieldNotOnResolvedTableQuery`, `Errors.SelectUnknownEntityQuery`, `Errors.TypeMismatchNumberFieldAgainstStringColumnQuery`, `Errors.WhereEachFieldUnknownEntityQuery`, `Errors.WhereFieldNotOnResolvedTableQuery`, `GroupBy.HavingWithoutGroupByQuery`, `Joins.JoinOnConditionViaUndeclaredAliasQuery`, `Joins.JoinOnSameEntityAsFromQuery`, `Joins.SelectOfCollidingColumnViaUndeclaredAliasQuery`, `OrderBy.OrderByOriginalFieldNameInGroupByQuery`, `Pagination.NegativeSkipQuery`, `Pagination.NegativeTakeQuery`, `Select.BareEachSubtractInGroupBySelectQuery`, `Select.LiteralArithmeticDivideByZeroQuery`, `Where.Each.EachDivideByZeroComparedAgainstItselfQuery`, `Where.Each.EachDivideByZeroUnderComparisonQuery`, `Where.Each.EachDivideByZeroUnderEqualityQuery`
+
+</details>
+
+<details>
+<summary>A literal array is an operand of an `each*` operator. The specification zips it with the rows element by element, which depends on a row order and array length SQL does not define (22)</summary>
+
+`Where.Each.EachAndOfFieldLiteralArrayAndNestedArithmeticOperandsQuery`, `Where.Each.EachEqualBooleanLiteralArrayQuery`, `Where.Each.EachEqualBooleanMultiElementLiteralArrayQuery`, `Where.Each.EachEqualDateLiteralArrayQuery`, `Where.Each.EachEqualDateLiteralArrayWithNoMatchQuery`, `Where.Each.EachEqualDateMultiElementLiteralArrayQuery`, `Where.Each.EachEqualDateTimeLiteralArrayQuery`, `Where.Each.EachEqualDateTimeMultiElementLiteralArrayQuery`, `Where.Each.EachEqualTimeLiteralArrayQuery`, `Where.Each.EachEqualTimeMultiElementLiteralArrayQuery`, `Where.Each.EachEqualUuidLiteralArrayQuery`, `Where.Each.EachEqualUuidMultiElementLiteralArrayQuery`, `Where.Each.EachGreaterThanDateLiteralArrayQuery`, `Where.Each.EachGreaterThanDateTimeLiteralArrayQuery`, `Where.Each.EachGreaterThanOrEqualTimeLiteralArrayQuery`, `Where.Each.EachLessThanDateMultiElementLiteralArrayQuery`, `Where.Each.EachLessThanTimeLiteralArrayQuery`, `Where.Each.EachNotOfBooleanLiteralArrayEqualityQuery`, `Where.Each.EachNumberMultiElementLiteralArrayOperandQuery`, `Where.Each.EachOrOfLiteralStringArrayFieldAndNestedDateArithmeticOperandsQuery`, `Where.Each.EachStringMultiElementLiteralArrayOperandQuery`, `Where.Each.ThreeOperandShapesOverJoinedColumnsQuery`
+
+</details>
+
+<details>
+<summary>A single-value `equal` or comparison has a field operand, so it compares a whole column as one ordered sequence — again an order SQL does not define (16)</summary>
+
+`Types.NotOfScalarFieldEqualityOverNullableScoreQuery`, `Types.ScalarFieldEqualityQuery`, `Where.Each.WholeArrayEqualityOfFieldAgainstLiteralQuery`, `Where.Each.WholeArrayEqualityOfLiteralAgainstFieldQuery`, `Where.Each.WholeBooleanArrayEqualityOfFieldAgainstLiteralQuery`, `Where.Each.WholeBooleanArrayEqualityOfLiteralAgainstFieldQuery`, `Where.Each.WholeDateArrayEqualityOfFieldAgainstLiteralQuery`, `Where.Each.WholeDateArrayEqualityOfLiteralAgainstFieldQuery`, `Where.Each.WholeDateTimeArrayEqualityOfFieldAgainstLiteralQuery`, `Where.Each.WholeDateTimeArrayEqualityOfLiteralAgainstFieldQuery`, `Where.Each.WholeStringArrayEqualityOfFieldAgainstLiteralQuery`, `Where.Each.WholeStringArrayEqualityOfLiteralAgainstFieldQuery`, `Where.Each.WholeTimeArrayEqualityOfFieldAgainstLiteralQuery`, `Where.Each.WholeTimeArrayEqualityOfLiteralAgainstFieldQuery`, `Where.Each.WholeUuidArrayEqualityOfFieldAgainstLiteralQuery`, `Where.Each.WholeUuidArrayEqualityOfLiteralAgainstFieldQuery`
+
+</details>
+
+<details>
+<summary>The query holds a parameter, and the model has no way to bind one (6)</summary>
+
+`GroupBy.HavingUuidParameterEqualityQuery`, `Parameters.NumberParameterInEachEqualityQuery`, `Parameters.StringParameterInEachEqualityQuery`, `Select.NumberParameterInSelectQuery`, `Select.ParameterAlongsideAggregateQuery`, `Select.SingleValueArithmeticWithParameterOperandInSelectQuery`
+
+</details>
+
+<details>
+<summary>A field is typed as `null`, which has no SQL counterpart (5)</summary>
+
+`OrderBy.NullFieldAsSecondaryKeyAscendingQuery`, `OrderBy.NullFieldAsSecondaryKeyDescendingQuery`, `OrderBy.OrderByNullFieldAscendingQuery`, `OrderBy.OrderByNullFieldDescendingQuery`, `Select.GroupByNullFieldKeyQuery`
+
+</details>
+
+<details>
+<summary>The exact answer is larger than a `double` can hold (1)</summary>
+
+`Select.BareEachMultiplyInSelectWithoutGroupByQuery`
+
+</details>
+
+<details>
+<summary>Two output columns share a name and type, which one `IRow` cannot hold apart (1)</summary>
+
+`Select.DuplicateFieldWithoutAliasesQuery`
+
+</details>
+
 ## Catalogue
 
 `namespace PureQL.CSharp.Model.Samples.Queries.<Folder>`
@@ -83,12 +160,17 @@ Some samples are deliberately unanswerable — an entity no data set holds, a fi
 
 ## Dependencies
 
-- [`PureQL.CSharp.Model` 0.1.0-preview.11.0.1](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.11.0.1) — the query AST every sample builds
-- [`Pure.RelationalSchema.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Samples/tree/0.1.0-preview.1.0.0) — the schema, table and column fixtures entity and field names are derived from
-- [`Pure.Primitives` 3.6.5](https://github.com/kudima03/Pure.Primitives/tree/3.6.5) — `DotString`, the `schema.table` separator
-- [`Pure.Primitives.String.Operations` 1.5.1](https://github.com/kudima03/Pure.Primitives.String.Operations/tree/1.5.1) — `JoinedString`, which composes the entity name
+- [`PureQL.CSharp.Model` 0.1.0-preview.11.0.1](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.11.0.1): the query AST every sample builds
+- [`Pure.RelationalSchema.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Samples/tree/0.1.0-preview.1.0.0): the schema, table and column fixtures that entity, field and result column names come from
+- [`Pure.RelationalSchema.Storage.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples/tree/0.1.0-preview.1.0.0): the fixture rows the results are computed over, and `StoredTableDataSet`, `InvariantCell` and `EmptyCell`, which the results are built from
+- [`Pure.RelationalSchema` 2.0.3](https://github.com/kudima03/Pure.RelationalSchema/tree/2.0.3): `Table`, `Column` and the column types of a result's schema
+- [`Pure.RelationalSchema.Storage` 0.1.0-preview.8.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage/tree/0.1.0-preview.8.0.0): `Row`
+- [`Pure.RelationalSchema.HashCodes` 3.3.0](https://github.com/kudima03/Pure.RelationalSchema.HashCodes/tree/3.3.0): `ColumnHash`, which keys a row's cells
+- [`Pure.Collections.Generic` 0.1.0-preview.3.0.0](https://github.com/kudima03/Pure.Collections.Generic/tree/0.1.0-preview.3.0.0): the hash-keyed dictionary behind `IRow.Cells`
+- [`Pure.Primitives` 3.6.5](https://github.com/kudima03/Pure.Primitives/tree/3.6.5): `DotString`, the `schema.table` separator, and the typed values a result's cells wrap
+- [`Pure.Primitives.String.Operations` 1.5.1](https://github.com/kudima03/Pure.Primitives.String.Operations/tree/1.5.1): `JoinedString`, which composes the entity name
 
-`Pure.RelationalSchema.Storage.Samples` is not referenced: the queries only need the names, not the rows. It is what a consumer runs them against.
+No PureQL engine is referenced. Engines are what these samples test.
 
 ## Target Frameworks
 

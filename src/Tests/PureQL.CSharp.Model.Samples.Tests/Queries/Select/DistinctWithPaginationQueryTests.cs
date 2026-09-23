@@ -46,4 +46,35 @@ public sealed record DistinctWithPaginationQueryTests
             new QueryJson(new DistinctWithPaginationQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled"
+                    ],
+                    [
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DistinctWithPaginationQuery().Result).TextValue
+        );
+    }
 }

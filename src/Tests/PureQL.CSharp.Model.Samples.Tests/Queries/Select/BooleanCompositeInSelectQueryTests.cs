@@ -39,4 +39,47 @@ public sealed record BooleanCompositeInSelectQueryTests
             new QueryJson(new BooleanCompositeInSelectQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "flag",
+                      "type": "bool"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "True"
+                    ],
+                    [
+                      "True"
+                    ],
+                    [
+                      "True"
+                    ],
+                    [
+                      "True"
+                    ],
+                    [
+                      "True"
+                    ],
+                    [
+                      "True"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new BooleanCompositeInSelectQuery().Result).TextValue
+        );
+    }
 }

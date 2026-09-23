@@ -53,4 +53,86 @@ public sealed record InnerJoinOnPriceLessThanTotalQueryTests
             new QueryJson(new InnerJoinOnPriceLessThanTotalQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "product_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Widget"
+                    ],
+                    [
+                      "Widget"
+                    ],
+                    [
+                      "Widget"
+                    ],
+                    [
+                      "Widget"
+                    ],
+                    [
+                      "Widget"
+                    ],
+                    [
+                      "Widget"
+                    ],
+                    [
+                      "Gadget"
+                    ],
+                    [
+                      "Gadget"
+                    ],
+                    [
+                      "Gadget"
+                    ],
+                    [
+                      "Gadget"
+                    ],
+                    [
+                      "Gadget"
+                    ],
+                    [
+                      "Gadget"
+                    ],
+                    [
+                      "Gizmo"
+                    ],
+                    [
+                      "Gizmo"
+                    ],
+                    [
+                      "Gizmo"
+                    ],
+                    [
+                      "Gizmo"
+                    ],
+                    [
+                      "Gizmo"
+                    ],
+                    [
+                      "Gizmo"
+                    ],
+                    [
+                      "Deluxe"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new InnerJoinOnPriceLessThanTotalQuery().Result).TextValue
+        );
+    }
 }

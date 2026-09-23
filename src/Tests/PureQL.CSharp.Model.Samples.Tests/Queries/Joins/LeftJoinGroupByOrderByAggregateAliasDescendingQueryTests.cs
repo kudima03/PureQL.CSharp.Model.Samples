@@ -96,4 +96,59 @@ public sealed record LeftJoinGroupByOrderByAggregateAliasDescendingQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "orderCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann",
+                      "2"
+                    ],
+                    [
+                      "Cara",
+                      "2"
+                    ],
+                    [
+                      "Bob",
+                      "1"
+                    ],
+                    [
+                      "Dan",
+                      "1"
+                    ],
+                    [
+                      "Eve",
+                      "0"
+                    ],
+                    [
+                      "Fay",
+                      "0"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new LeftJoinGroupByOrderByAggregateAliasDescendingQuery().Result
+            ).TextValue
+        );
+    }
 }

@@ -34,4 +34,35 @@ public sealed record ScalarWithPaginationQueryTests
             new QueryJson(new ScalarWithPaginationQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "page_marker",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "9"
+                    ],
+                    [
+                      "9"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarWithPaginationQuery().Result).TextValue
+        );
+    }
 }

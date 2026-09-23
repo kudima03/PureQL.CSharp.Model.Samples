@@ -57,4 +57,35 @@ public sealed record EachDivideInComparisonQueryTests
             new QueryJson(new EachDivideInComparisonQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "pending"
+                    ],
+                    [
+                      "cancelled"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachDivideInComparisonQuery().Result).TextValue
+        );
+    }
 }

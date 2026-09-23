@@ -53,4 +53,30 @@ public sealed record InnerJoinOnNeverMatchingUuidLiteralQueryTests
             new QueryJson(new InnerJoinOnNeverMatchingUuidLiteralQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "hours",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new InnerJoinOnNeverMatchingUuidLiteralQuery().Result
+            ).TextValue
+        );
+    }
 }

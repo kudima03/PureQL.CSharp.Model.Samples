@@ -46,4 +46,28 @@ public sealed record EachDateEqualityWithAbsentValueQueryTests
             new QueryJson(new EachDateEqualityWithAbsentValueQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachDateEqualityWithAbsentValueQuery().Result).TextValue
+        );
+    }
 }

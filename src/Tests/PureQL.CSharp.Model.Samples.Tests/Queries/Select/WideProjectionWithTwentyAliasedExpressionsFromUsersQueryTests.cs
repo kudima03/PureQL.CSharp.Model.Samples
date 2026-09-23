@@ -185,4 +185,239 @@ public sealed record WideProjectionWithTwentyAliasedExpressionsFromUsersQueryTes
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "wide_0",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_1",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_2",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_3",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_4",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_5",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_6",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_7",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_8",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_9",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_10",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_11",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_12",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_13",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_14",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_15",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_16",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_17",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_18",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_19",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann",
+                      "Ann"
+                    ],
+                    [
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob",
+                      "Bob"
+                    ],
+                    [
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara",
+                      "Cara"
+                    ],
+                    [
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan",
+                      "Dan"
+                    ],
+                    [
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve",
+                      "Eve"
+                    ],
+                    [
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay",
+                      "Fay"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new WideProjectionWithTwentyAliasedExpressionsFromUsersQuery().Result
+            ).TextValue
+        );
+    }
 }

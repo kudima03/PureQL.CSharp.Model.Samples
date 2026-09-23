@@ -182,4 +182,49 @@ public sealed record MultiJoinFiveLevelScalarTreeOrderByMultiKeyThenPaginateQuer
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "item_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "item_qty",
+                      "type": "double"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "0000012e-0000-0000-0000-000000000000",
+                      "1",
+                      "100.5"
+                    ],
+                    [
+                      "0000012f-0000-0000-0000-000000000000",
+                      "5",
+                      "200"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new MultiJoinFiveLevelScalarTreeOrderByMultiKeyThenPaginateQuery().Result
+            ).TextValue
+        );
+    }
 }

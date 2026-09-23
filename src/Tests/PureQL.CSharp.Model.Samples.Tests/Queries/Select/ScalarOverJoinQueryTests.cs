@@ -60,4 +60,57 @@ public sealed record ScalarOverJoinQueryTests
             new QueryJson(new ScalarOverJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "source",
+                      "type": "string"
+                    },
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "joined",
+                      "Ann"
+                    ],
+                    [
+                      "joined",
+                      "Ann"
+                    ],
+                    [
+                      "joined",
+                      "Bob"
+                    ],
+                    [
+                      "joined",
+                      "Cara"
+                    ],
+                    [
+                      "joined",
+                      "Cara"
+                    ],
+                    [
+                      "joined",
+                      "Dan"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarOverJoinQuery().Result).TextValue
+        );
+    }
 }

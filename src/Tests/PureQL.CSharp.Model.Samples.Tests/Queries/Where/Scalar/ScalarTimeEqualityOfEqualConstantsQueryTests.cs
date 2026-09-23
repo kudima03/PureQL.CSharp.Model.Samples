@@ -45,4 +45,49 @@ public sealed record ScalarTimeEqualityOfEqualConstantsQueryTests
             new QueryJson(new ScalarTimeEqualityOfEqualConstantsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "cancelled"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new ScalarTimeEqualityOfEqualConstantsQuery().Result
+            ).TextValue
+        );
+    }
 }

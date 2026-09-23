@@ -88,4 +88,28 @@ public sealed record UnsatisfiableEachTreeQueryTests
             new QueryJson(new UnsatisfiableEachTreeQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new UnsatisfiableEachTreeQuery().Result).TextValue
+        );
+    }
 }

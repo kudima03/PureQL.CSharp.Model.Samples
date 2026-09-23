@@ -43,4 +43,47 @@ public sealed record OrderByAliasWithoutGroupByQueryTests
             new QueryJson(new OrderByAliasWithoutGroupByQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "years",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "42"
+                    ],
+                    [
+                      "30"
+                    ],
+                    [
+                      "30"
+                    ],
+                    [
+                      "28"
+                    ],
+                    [
+                      "25"
+                    ],
+                    [
+                      "25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrderByAliasWithoutGroupByQuery().Result).TextValue
+        );
+    }
 }

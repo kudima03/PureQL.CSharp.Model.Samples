@@ -46,4 +46,41 @@ public sealed record EachNumberGreaterThanQueryTests
             new QueryJson(new EachNumberGreaterThanQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachNumberGreaterThanQuery().Result).TextValue
+        );
+    }
 }

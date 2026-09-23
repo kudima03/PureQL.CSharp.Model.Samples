@@ -85,4 +85,51 @@ public sealed record SumOfEachDateDiffDaysGroupedByOrderUserIdQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "totalSpanDays",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "3199"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "1171"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "579"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "3583"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new SumOfEachDateDiffDaysGroupedByOrderUserIdQuery().Result
+            ).TextValue
+        );
+    }
 }

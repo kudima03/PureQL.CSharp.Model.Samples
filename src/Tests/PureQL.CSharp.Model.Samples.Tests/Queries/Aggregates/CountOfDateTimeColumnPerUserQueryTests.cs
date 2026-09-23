@@ -43,4 +43,41 @@ public sealed record CountOfDateTimeColumnPerUserQueryTests
             new QueryJson(new CountOfDateTimeColumnPerUserQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "n",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2"
+                    ],
+                    [
+                      "1"
+                    ],
+                    [
+                      "1"
+                    ],
+                    [
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new CountOfDateTimeColumnPerUserQuery().Result).TextValue
+        );
+    }
 }

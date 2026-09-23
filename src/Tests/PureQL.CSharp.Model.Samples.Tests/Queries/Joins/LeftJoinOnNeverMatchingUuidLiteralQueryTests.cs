@@ -61,4 +61,59 @@ public sealed record LeftJoinOnNeverMatchingUuidLiteralQueryTests
             new QueryJson(new LeftJoinOnNeverMatchingUuidLiteralQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "hours",
+                      "type": "double"
+                    },
+                    {
+                      "name": "customer",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "100.5",
+                      ""
+                    ],
+                    [
+                      "50",
+                      ""
+                    ],
+                    [
+                      "200",
+                      ""
+                    ],
+                    [
+                      "75.25",
+                      ""
+                    ],
+                    [
+                      "300",
+                      ""
+                    ],
+                    [
+                      "100.5",
+                      ""
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new LeftJoinOnNeverMatchingUuidLiteralQuery().Result
+            ).TextValue
+        );
+    }
 }

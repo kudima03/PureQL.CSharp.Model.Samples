@@ -31,4 +31,47 @@ public sealed record AliasedOrderStatusQueryTests
             new QueryJson(new AliasedOrderStatusQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "state",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "cancelled"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new AliasedOrderStatusQuery().Result).TextValue
+        );
+    }
 }

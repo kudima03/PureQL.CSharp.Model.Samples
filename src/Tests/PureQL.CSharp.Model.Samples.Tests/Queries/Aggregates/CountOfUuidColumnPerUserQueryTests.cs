@@ -43,4 +43,41 @@ public sealed record CountOfUuidColumnPerUserQueryTests
             new QueryJson(new CountOfUuidColumnPerUserQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "n",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2"
+                    ],
+                    [
+                      "1"
+                    ],
+                    [
+                      "1"
+                    ],
+                    [
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new CountOfUuidColumnPerUserQuery().Result).TextValue
+        );
+    }
 }

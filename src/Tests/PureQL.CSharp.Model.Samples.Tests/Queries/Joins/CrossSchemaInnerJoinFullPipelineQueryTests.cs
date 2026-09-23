@@ -83,4 +83,35 @@ public sealed record CrossSchemaInnerJoinFullPipelineQueryTests
             new QueryJson(new CrossSchemaInnerJoinFullPipelineQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "loginCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2"
+                    ],
+                    [
+                      "1"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new CrossSchemaInnerJoinFullPipelineQuery().Result).TextValue
+        );
+    }
 }

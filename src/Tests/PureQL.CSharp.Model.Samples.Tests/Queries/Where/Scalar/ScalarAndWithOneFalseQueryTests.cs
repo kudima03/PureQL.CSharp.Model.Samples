@@ -47,4 +47,28 @@ public sealed record ScalarAndWithOneFalseQueryTests
             new QueryJson(new ScalarAndWithOneFalseQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarAndWithOneFalseQuery().Result).TextValue
+        );
+    }
 }

@@ -85,4 +85,41 @@ public sealed record SumOfEachAddGroupedByUserActiveQueryTests
             new QueryJson(new SumOfEachAddGroupedByUserActiveQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "totalPlusAge",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "False",
+                      "225"
+                    ],
+                    [
+                      "True",
+                      "788.25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new SumOfEachAddGroupedByUserActiveQuery().Result).TextValue
+        );
+    }
 }

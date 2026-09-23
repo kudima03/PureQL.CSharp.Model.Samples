@@ -72,4 +72,107 @@ public sealed record AllSevenScalarTypesQueryTests
             new QueryJson(new AllSevenScalarTypesQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "release",
+                      "type": "date"
+                    },
+                    {
+                      "name": "built_at",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "amount",
+                      "type": "double"
+                    },
+                    {
+                      "name": "label",
+                      "type": "string"
+                    },
+                    {
+                      "name": "cutoff",
+                      "type": "time"
+                    },
+                    {
+                      "name": "marker",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "True",
+                      "2024-12-31",
+                      "2024-12-31T23:59:58",
+                      "42.5",
+                      "v2",
+                      "17:30:15",
+                      "0f8fad5b-d9cb-469f-a165-70867728950e"
+                    ],
+                    [
+                      "True",
+                      "2024-12-31",
+                      "2024-12-31T23:59:58",
+                      "42.5",
+                      "v2",
+                      "17:30:15",
+                      "0f8fad5b-d9cb-469f-a165-70867728950e"
+                    ],
+                    [
+                      "True",
+                      "2024-12-31",
+                      "2024-12-31T23:59:58",
+                      "42.5",
+                      "v2",
+                      "17:30:15",
+                      "0f8fad5b-d9cb-469f-a165-70867728950e"
+                    ],
+                    [
+                      "True",
+                      "2024-12-31",
+                      "2024-12-31T23:59:58",
+                      "42.5",
+                      "v2",
+                      "17:30:15",
+                      "0f8fad5b-d9cb-469f-a165-70867728950e"
+                    ],
+                    [
+                      "True",
+                      "2024-12-31",
+                      "2024-12-31T23:59:58",
+                      "42.5",
+                      "v2",
+                      "17:30:15",
+                      "0f8fad5b-d9cb-469f-a165-70867728950e"
+                    ],
+                    [
+                      "True",
+                      "2024-12-31",
+                      "2024-12-31T23:59:58",
+                      "42.5",
+                      "v2",
+                      "17:30:15",
+                      "0f8fad5b-d9cb-469f-a165-70867728950e"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new AllSevenScalarTypesQuery().Result).TextValue
+        );
+    }
 }

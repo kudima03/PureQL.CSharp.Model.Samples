@@ -83,4 +83,75 @@ public sealed record MultipleAggregatesOfDifferentTypesQueryTests
             new QueryJson(new MultipleAggregatesOfDifferentTypesQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "orderCount",
+                      "type": "double"
+                    },
+                    {
+                      "name": "totalSum",
+                      "type": "double"
+                    },
+                    {
+                      "name": "earliestPlacedOn",
+                      "type": "date"
+                    },
+                    {
+                      "name": "maxStatus",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "2",
+                      "150.5",
+                      "2024-06-01",
+                      "shipped"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "1",
+                      "200",
+                      "2024-06-03",
+                      "shipped"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "1",
+                      "100.5",
+                      "2024-06-06",
+                      "pending"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "2",
+                      "375.25",
+                      "2024-06-04",
+                      "shipped"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new MultipleAggregatesOfDifferentTypesQuery().Result
+            ).TextValue
+        );
+    }
 }

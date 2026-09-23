@@ -60,4 +60,44 @@ public sealed record WhereOnJoinedBooleanFieldQueryTests
             new QueryJson(new WhereOnJoinedBooleanFieldQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000065-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000066-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000068-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000069-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "0000006a-0000-0000-0000-000000000000"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WhereOnJoinedBooleanFieldQuery().Result).TextValue
+        );
+    }
 }

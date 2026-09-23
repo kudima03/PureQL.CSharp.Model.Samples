@@ -56,4 +56,119 @@ public sealed record InnerJoinOnNegatedKeyEqualityQueryTests
             new QueryJson(new InnerJoinOnNegatedKeyEqualityQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Cara"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new InnerJoinOnNegatedKeyEqualityQuery().Result).TextValue
+        );
+    }
 }

@@ -73,4 +73,41 @@ public sealed record GroupByJoinedBooleanKeyQueryTests
             new QueryJson(new GroupByJoinedBooleanKeyQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "totalByActive",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "False",
+                      "200"
+                    ],
+                    [
+                      "True",
+                      "626.25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new GroupByJoinedBooleanKeyQuery().Result).TextValue
+        );
+    }
 }

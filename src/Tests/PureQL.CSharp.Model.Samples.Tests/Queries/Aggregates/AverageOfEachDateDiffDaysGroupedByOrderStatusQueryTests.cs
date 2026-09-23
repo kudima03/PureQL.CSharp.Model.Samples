@@ -85,4 +85,47 @@ public sealed record AverageOfEachDateDiffDaysGroupedByOrderStatusQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    },
+                    {
+                      "name": "meanSpanDays",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled",
+                      "1791"
+                    ],
+                    [
+                      "pending",
+                      "1089.5"
+                    ],
+                    [
+                      "shipped",
+                      "1520.6666666666667"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new AverageOfEachDateDiffDaysGroupedByOrderStatusQuery().Result
+            ).TextValue
+        );
+    }
 }

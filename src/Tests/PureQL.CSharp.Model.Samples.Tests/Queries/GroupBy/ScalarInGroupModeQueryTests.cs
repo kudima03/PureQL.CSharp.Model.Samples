@@ -50,4 +50,45 @@ public sealed record ScalarInGroupModeQueryTests
             new QueryJson(new ScalarInGroupModeQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "version",
+                      "type": "double"
+                    },
+                    {
+                      "name": "status_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "1",
+                      "75.25"
+                    ],
+                    [
+                      "1",
+                      "150.5"
+                    ],
+                    [
+                      "1",
+                      "600.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarInGroupModeQuery().Result).TextValue
+        );
+    }
 }

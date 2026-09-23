@@ -31,4 +31,41 @@ public sealed record DistinctOverNullRowsQueryTests
             new QueryJson(new DistinctOverNullRowsQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_score",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      ""
+                    ],
+                    [
+                      "10"
+                    ],
+                    [
+                      "28"
+                    ],
+                    [
+                      "30"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DistinctOverNullRowsQuery().Result).TextValue
+        );
+    }
 }

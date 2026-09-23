@@ -74,4 +74,38 @@ public sealed record InnerJoinOnKeyAndQuantityQueryTests
             new QueryJson(new InnerJoinOnKeyAndQuantityQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "item_qty",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2"
+                    ],
+                    [
+                      "5"
+                    ],
+                    [
+                      "3"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new InnerJoinOnKeyAndQuantityQuery().Result).TextValue
+        );
+    }
 }

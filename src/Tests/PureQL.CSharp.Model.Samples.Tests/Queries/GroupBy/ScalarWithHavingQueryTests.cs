@@ -69,4 +69,41 @@ public sealed record ScalarWithHavingQueryTests
             new QueryJson(new ScalarWithHavingQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "tag",
+                      "type": "string"
+                    },
+                    {
+                      "name": "order_count",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "repeat-buyer",
+                      "2"
+                    ],
+                    [
+                      "repeat-buyer",
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new ScalarWithHavingQuery().Result).TextValue
+        );
+    }
 }

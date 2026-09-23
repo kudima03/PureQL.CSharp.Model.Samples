@@ -39,4 +39,38 @@ public sealed record GroupByStringKeyQueryTests
             new QueryJson(new GroupByStringKeyQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "cancelled"
+                    ],
+                    [
+                      "pending"
+                    ],
+                    [
+                      "shipped"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new GroupByStringKeyQuery().Result).TextValue
+        );
+    }
 }

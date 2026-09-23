@@ -69,4 +69,37 @@ public sealed record HavingAverageQueryTests
             new QueryJson(new HavingAverageQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "avg_score",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "True",
+                      "29.333333333333332"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new HavingAverageQuery().Result).TextValue
+        );
+    }
 }

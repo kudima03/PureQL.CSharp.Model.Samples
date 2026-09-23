@@ -61,4 +61,49 @@ public sealed record CountOfEachArithmeticQueryTests
             new QueryJson(new CountOfEachArithmeticQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "rowCount",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "2"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "1"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "1"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "2"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new CountOfEachArithmeticQuery().Result).TextValue
+        );
+    }
 }

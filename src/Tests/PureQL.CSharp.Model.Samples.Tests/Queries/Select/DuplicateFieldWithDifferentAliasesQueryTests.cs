@@ -39,4 +39,59 @@ public sealed record DuplicateFieldWithDifferentAliasesQueryTests
             new QueryJson(new DuplicateFieldWithDifferentAliasesQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "state_a",
+                      "type": "string"
+                    },
+                    {
+                      "name": "state_b",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped",
+                      "shipped"
+                    ],
+                    [
+                      "pending",
+                      "pending"
+                    ],
+                    [
+                      "shipped",
+                      "shipped"
+                    ],
+                    [
+                      "cancelled",
+                      "cancelled"
+                    ],
+                    [
+                      "shipped",
+                      "shipped"
+                    ],
+                    [
+                      "pending",
+                      "pending"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new DuplicateFieldWithDifferentAliasesQuery().Result
+            ).TextValue
+        );
+    }
 }

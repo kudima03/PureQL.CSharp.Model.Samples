@@ -55,4 +55,30 @@ public sealed record WholeBooleanArrayEqualityOfTwoReorderedLiteralArraysQueryTe
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new WholeBooleanArrayEqualityOfTwoReorderedLiteralArraysQuery().Result
+            ).TextValue
+        );
+    }
 }

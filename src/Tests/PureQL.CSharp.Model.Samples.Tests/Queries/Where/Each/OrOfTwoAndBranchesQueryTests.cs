@@ -109,4 +109,38 @@ public sealed record OrOfTwoAndBranchesQueryTests
             new QueryJson(new OrOfTwoAndBranchesQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "pending"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "shipped"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new OrOfTwoAndBranchesQuery().Result).TextValue
+        );
+    }
 }

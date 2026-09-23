@@ -169,4 +169,219 @@ public sealed record WideProjectionWithEighteenAliasedExpressionsFromOrdersQuery
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "wide_0",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_1",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_2",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_3",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_4",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_5",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_6",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_7",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_8",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_9",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_10",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_11",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_12",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_13",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_14",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_15",
+                      "type": "double"
+                    },
+                    {
+                      "name": "wide_16",
+                      "type": "string"
+                    },
+                    {
+                      "name": "wide_17",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5",
+                      "shipped",
+                      "100.5"
+                    ],
+                    [
+                      "pending",
+                      "50",
+                      "pending",
+                      "50",
+                      "pending",
+                      "50",
+                      "pending",
+                      "50",
+                      "pending",
+                      "50",
+                      "pending",
+                      "50",
+                      "pending",
+                      "50",
+                      "pending",
+                      "50",
+                      "pending",
+                      "50"
+                    ],
+                    [
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200",
+                      "shipped",
+                      "200"
+                    ],
+                    [
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25",
+                      "cancelled",
+                      "75.25"
+                    ],
+                    [
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300",
+                      "shipped",
+                      "300"
+                    ],
+                    [
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5",
+                      "pending",
+                      "100.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new WideProjectionWithEighteenAliasedExpressionsFromOrdersQuery().Result
+            ).TextValue
+        );
+    }
 }

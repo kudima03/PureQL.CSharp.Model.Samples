@@ -51,4 +51,41 @@ public sealed record GroupByAgeOrderedByAgeDescQueryTests
             new QueryJson(new GroupByAgeOrderedByAgeDescQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "42"
+                    ],
+                    [
+                      "30"
+                    ],
+                    [
+                      "28"
+                    ],
+                    [
+                      "25"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new GroupByAgeOrderedByAgeDescQuery().Result).TextValue
+        );
+    }
 }

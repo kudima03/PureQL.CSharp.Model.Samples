@@ -39,4 +39,34 @@ public sealed record SelectIdAndNameFromTableWithoutIndexesQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": []
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new SelectIdAndNameFromTableWithoutIndexesQuery().Result
+            ).TextValue
+        );
+    }
 }

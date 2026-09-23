@@ -44,4 +44,69 @@ public sealed record SelectUserColumnsOutOfDeclaredOrderQueryTests
             new QueryJson(new SelectUserColumnsOutOfDeclaredOrderQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    },
+                    {
+                      "name": "user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "30",
+                      "00000001-0000-0000-0000-000000000000",
+                      "True"
+                    ],
+                    [
+                      "25",
+                      "00000002-0000-0000-0000-000000000000",
+                      "False"
+                    ],
+                    [
+                      "30",
+                      "00000003-0000-0000-0000-000000000000",
+                      "True"
+                    ],
+                    [
+                      "42",
+                      "00000004-0000-0000-0000-000000000000",
+                      "True"
+                    ],
+                    [
+                      "25",
+                      "00000005-0000-0000-0000-000000000000",
+                      "False"
+                    ],
+                    [
+                      "28",
+                      "00000006-0000-0000-0000-000000000000",
+                      "True"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new SelectUserColumnsOutOfDeclaredOrderQuery().Result
+            ).TextValue
+        );
+    }
 }

@@ -54,4 +54,38 @@ public sealed record DistinctOverItemsToProductsJoinQueryTests
             new QueryJson(new DistinctOverItemsToProductsJoinQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "item_order_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000069-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000065-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "00000067-0000-0000-0000-000000000000"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new DistinctOverItemsToProductsJoinQuery().Result).TextValue
+        );
+    }
 }

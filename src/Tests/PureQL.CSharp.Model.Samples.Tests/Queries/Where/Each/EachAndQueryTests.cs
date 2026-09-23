@@ -67,4 +67,38 @@ public sealed record EachAndQueryTests
             new QueryJson(new EachAndQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "shipped"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new EachAndQuery().Result).TextValue
+        );
+    }
 }

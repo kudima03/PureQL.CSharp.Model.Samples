@@ -43,4 +43,41 @@ public sealed record MaxStatusPerUserQueryTests
             new QueryJson(new MaxStatusPerUserQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "max_status",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "shipped"
+                    ],
+                    [
+                      "pending"
+                    ],
+                    [
+                      "shipped"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MaxStatusPerUserQuery().Result).TextValue
+        );
+    }
 }

@@ -61,4 +61,35 @@ public sealed record WhereThenOrderByThenPaginateQueryTests
             new QueryJson(new WhereThenOrderByThenPaginateQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "100.5"
+                    ],
+                    [
+                      "100.5"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new WhereThenOrderByThenPaginateQuery().Result).TextValue
+        );
+    }
 }

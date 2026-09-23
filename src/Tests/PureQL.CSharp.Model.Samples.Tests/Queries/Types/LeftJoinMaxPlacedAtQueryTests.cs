@@ -57,4 +57,32 @@ public sealed record LeftJoinMaxPlacedAtQueryTests
             new QueryJson(new LeftJoinMaxPlacedAtQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "max_placed_at",
+                      "type": "datetime"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "2024-06-06T15:00:00"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LeftJoinMaxPlacedAtQuery().Result).TextValue
+        );
+    }
 }

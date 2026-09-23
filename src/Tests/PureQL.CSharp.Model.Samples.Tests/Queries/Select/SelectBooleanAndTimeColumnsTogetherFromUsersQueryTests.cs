@@ -39,4 +39,59 @@ public sealed record SelectBooleanAndTimeColumnsTogetherFromUsersQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "shift_start",
+                      "type": "time"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "True",
+                      "09:00:00"
+                    ],
+                    [
+                      "False",
+                      "10:00:00"
+                    ],
+                    [
+                      "True",
+                      "09:00:00"
+                    ],
+                    [
+                      "True",
+                      "11:30:00"
+                    ],
+                    [
+                      "False",
+                      "08:00:00"
+                    ],
+                    [
+                      "True",
+                      "09:00:00"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new SelectBooleanAndTimeColumnsTogetherFromUsersQuery().Result
+            ).TextValue
+        );
+    }
 }

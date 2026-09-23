@@ -53,4 +53,62 @@ public sealed record InnerJoinOnLastLoginAfterLoginAtQueryTests
             new QueryJson(new InnerJoinOnLastLoginAfterLoginAtQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Fay"
+                    ],
+                    [
+                      "Bob"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Dan"
+                    ],
+                    [
+                      "Eve"
+                    ],
+                    [
+                      "Eve"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new InnerJoinOnLastLoginAfterLoginAtQuery().Result).TextValue
+        );
+    }
 }

@@ -43,4 +43,32 @@ public sealed record MaxOfEachTimeAddSecondsWholeSetQueryTests
             new QueryJson(new MaxOfEachTimeAddSecondsWholeSetQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "latestProjectedTime",
+                      "type": "time"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "12:30:00"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MaxOfEachTimeAddSecondsWholeSetQuery().Result).TextValue
+        );
+    }
 }

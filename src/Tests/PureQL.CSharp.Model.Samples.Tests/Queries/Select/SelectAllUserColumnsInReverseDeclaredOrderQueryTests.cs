@@ -74,4 +74,109 @@ public sealed record SelectAllUserColumnsInReverseDeclaredOrderQueryTests
             ).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "shift_start",
+                      "type": "time"
+                    },
+                    {
+                      "name": "last_login",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "signup_date",
+                      "type": "date"
+                    },
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "user_age",
+                      "type": "double"
+                    },
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "user_id",
+                      "type": "uuid"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "09:00:00",
+                      "2024-06-01T08:30:00",
+                      "2020-01-15",
+                      "True",
+                      "30",
+                      "Ann",
+                      "00000001-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "10:00:00",
+                      "2024-06-02T09:15:00",
+                      "2021-03-20",
+                      "False",
+                      "25",
+                      "Bob",
+                      "00000002-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "09:00:00",
+                      "2024-05-30T14:00:00",
+                      "2019-07-10",
+                      "True",
+                      "30",
+                      "Cara",
+                      "00000003-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "11:30:00",
+                      "2024-06-03T18:45:00",
+                      "2022-11-05",
+                      "True",
+                      "42",
+                      "Dan",
+                      "00000004-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "08:00:00",
+                      "2024-06-04T07:05:00",
+                      "2023-02-28",
+                      "False",
+                      "25",
+                      "Eve",
+                      "00000005-0000-0000-0000-000000000000"
+                    ],
+                    [
+                      "09:00:00",
+                      "2024-06-01T08:30:00",
+                      "2020-01-15",
+                      "True",
+                      "28",
+                      "Fay",
+                      "00000006-0000-0000-0000-000000000000"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(
+                new SelectAllUserColumnsInReverseDeclaredOrderQuery().Result
+            ).TextValue
+        );
+    }
 }

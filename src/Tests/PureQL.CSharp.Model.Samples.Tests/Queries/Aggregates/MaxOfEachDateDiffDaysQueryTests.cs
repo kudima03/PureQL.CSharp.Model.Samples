@@ -83,4 +83,49 @@ public sealed record MaxOfEachDateDiffDaysQueryTests
             new QueryJson(new MaxOfEachDateDiffDaysQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "maxSpanDays",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000001-0000-0000-0000-000000000000",
+                      "1600"
+                    ],
+                    [
+                      "00000002-0000-0000-0000-000000000000",
+                      "1171"
+                    ],
+                    [
+                      "00000004-0000-0000-0000-000000000000",
+                      "579"
+                    ],
+                    [
+                      "00000003-0000-0000-0000-000000000000",
+                      "1792"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new MaxOfEachDateDiffDaysQuery().Result).TextValue
+        );
+    }
 }
