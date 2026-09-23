@@ -54,6 +54,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 | `Where/Each` | 138 | Per-row (`each*`) predicates: equality and comparison for every value type, per-row arithmetic and date/time/datetime shifts and differences, literal-array operands, whole-array equality, nested boolean trees, and predicates over joined columns |
 | `Where` | 9 | Filters over joined columns, and filters that match nothing, on their own and followed by `GROUP BY`, `HAVING` and pagination |
 | `Joins` | 70 | Inner, left, right and full joins on key, composite, non-equi, negated, constant and uuid-literal conditions; cross-schema and chained joins; `FROM` aliases; and joins followed by every later clause |
+| `GroupBy` | 84 | Grouping by every key type and by composite and joined keys, `HAVING` over every aggregate and comparison operator, nested `HAVING` trees, whole-set `HAVING`, and scalars and mixed projections in group mode |
 | `Pagination` | 13 | `skip`/`take` windows: in range, past the end, beyond `int.MaxValue`, zero and negative values, and after `DISTINCT`, `GROUP BY` and joins |
 
 ### Data sets
