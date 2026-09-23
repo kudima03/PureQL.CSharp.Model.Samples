@@ -53,6 +53,7 @@ The folders mirror the clause-oriented layout of the Projection test suite.
 | `Where/Scalar` | 44 | Single-value predicates over constants: equality and range comparison for every value type, `and`/`or`/`not` up to five levels deep, De Morgan pairs, and arithmetic inside a comparison |
 | `Where/Each` | 138 | Per-row (`each*`) predicates: equality and comparison for every value type, per-row arithmetic and date/time/datetime shifts and differences, literal-array operands, whole-array equality, nested boolean trees, and predicates over joined columns |
 | `Where` | 9 | Filters over joined columns, and filters that match nothing, on their own and followed by `GROUP BY`, `HAVING` and pagination |
+| `Joins` | 70 | Inner, left, right and full joins on key, composite, non-equi, negated, constant and uuid-literal conditions; cross-schema and chained joins; `FROM` aliases; and joins followed by every later clause |
 | `Pagination` | 13 | `skip`/`take` windows: in range, past the end, beyond `int.MaxValue`, zero and negative values, and after `DISTINCT`, `GROUP BY` and joins |
 
 ### Data sets
