@@ -13,36 +13,69 @@ public sealed record RightJoinQueryTests
                 """
                 {
                   "from": {
-                    "entity": "schema_with_foreign_keys.orders"
+                    "entity": "schema_with_foreign_keys.users"
                   },
-                  "select": [
-                    {
-                      "entity": "schema_with_foreign_keys.users",
-                      "field": "user_name",
-                      "type": {
-                        "name": "string"
-                      }
-                    }
-                  ],
                   "joins": [
                     {
                       "type": "right",
-                      "entity": "schema_with_foreign_keys.users",
+                      "entity": "schema_with_foreign_keys.orders",
                       "on": {
-                        "operator": "eachEqual",
-                        "left": {
-                          "entity": "schema_with_foreign_keys.orders",
-                          "field": "order_user_id",
-                          "type": {
-                            "name": "uuid"
+                        "operator": "and",
+                        "conditions": [
+                          {
+                            "operator": "equal",
+                            "left": {
+                              "source": "schema_with_foreign_keys.users",
+                              "field": "user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            },
+                            "right": {
+                              "source": "schema_with_foreign_keys.orders",
+                              "field": "order_user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          },
+                          {
+                            "source": "schema_with_foreign_keys.users",
+                            "field": "user_active",
+                            "type": {
+                              "name": "boolean"
+                            }
                           }
-                        },
-                        "right": {
-                          "entity": "schema_with_foreign_keys.users",
-                          "field": "user_id",
-                          "type": {
-                            "name": "uuid"
-                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "select": [
+                    {
+                      "alias": "order_id",
+                      "type": {
+                        "name": "uuid"
+                      },
+                      "expression": {
+                        "source": "schema_with_foreign_keys.orders",
+                        "field": "order_id",
+                        "type": {
+                          "name": "uuid"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "user_name",
+                      "type": {
+                        "name": "string",
+                        "nullable": true
+                      },
+                      "expression": {
+                        "source": "schema_with_foreign_keys.users",
+                        "field": "user_name",
+                        "type": {
+                          "name": "string",
+                          "nullable": true
                         }
                       }
                     }
@@ -65,6 +98,10 @@ public sealed record RightJoinQueryTests
                   "name": "",
                   "columns": [
                     {
+                      "name": "order_id",
+                      "type": "uuid"
+                    },
+                    {
                       "name": "user_name",
                       "type": "string"
                     }
@@ -72,28 +109,28 @@ public sealed record RightJoinQueryTests
                   "indexes": 0,
                   "rows": [
                     [
+                      "00000065-0000-0000-0000-000000000000",
                       "Ann"
                     ],
                     [
+                      "00000066-0000-0000-0000-000000000000",
                       "Ann"
                     ],
                     [
-                      "Bob"
+                      "00000067-0000-0000-0000-000000000000",
+                      ""
                     ],
                     [
+                      "00000068-0000-0000-0000-000000000000",
                       "Cara"
                     ],
                     [
+                      "00000069-0000-0000-0000-000000000000",
                       "Cara"
                     ],
                     [
+                      "0000006a-0000-0000-0000-000000000000",
                       "Dan"
-                    ],
-                    [
-                      "Eve"
-                    ],
-                    [
-                      "Fay"
                     ]
                   ]
                 }
