@@ -365,3 +365,6 @@ FodyWeavers.xsd
 
 # Stryker mutation testing output
 StrykerOutput/
+
+# macOS Finder metadata
+.DS_Store
