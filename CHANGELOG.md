@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0-preview.1.0.0] - 2026-10-10
+
 ### Changed
 
 - **Breaking:** rebuilt the catalogue for `PureQL.CSharp.Model` 0.1.0-preview.12.0.0, which models PureQL specification 0.1.0-preview.1.0.0. A sample's `Value` is now a `PureQLQuery`, and every previous sample is removed.
