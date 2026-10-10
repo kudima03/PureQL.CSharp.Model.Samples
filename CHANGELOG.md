@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Breaking:** `GroupBy.GroupedRevenueQuery.Result` now computes `share_of_all_lines` as the specification defines it. `count` with `over: "all"` counts the 4 rows left by `where`, not the 3 left by `having`, so the shares are 0.5 and 0.25 instead of 0.6666666666666666 and 0.3333333333333333 (#28).
+
 ## [0.1.0-preview.1.0.0] - 2026-10-10
 
 ### Changed

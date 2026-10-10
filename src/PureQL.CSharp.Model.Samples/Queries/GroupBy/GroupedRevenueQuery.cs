@@ -425,7 +425,7 @@ public sealed record GroupedRevenueQuery
                                     new String("share_of_all_lines"),
                                     new DoubleColumnType()
                                 ),
-                                new InvariantCell(new Double(0.6666666666666666))
+                                new InvariantCell(new Double(0.5))
                             ),
                         ],
                         pair => pair.Key,
@@ -462,7 +462,7 @@ public sealed record GroupedRevenueQuery
                                     new String("share_of_all_lines"),
                                     new DoubleColumnType()
                                 ),
-                                new InvariantCell(new Double(0.3333333333333333))
+                                new InvariantCell(new Double(0.25))
                             ),
                         ],
                         pair => pair.Key,
