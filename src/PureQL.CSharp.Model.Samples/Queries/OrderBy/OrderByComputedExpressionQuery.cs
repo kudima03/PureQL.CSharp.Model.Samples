@@ -13,23 +13,24 @@ using Pure.RelationalSchema.Storage.Samples.Cells;
 using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
-using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
 using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
+using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
 
-namespace PureQL.CSharp.Model.Samples.Queries.Joins;
+namespace PureQL.CSharp.Model.Samples.Queries.OrderBy;
 
 /// <summary>
-/// Selects login_user_id or else employee_user_id as user_id and employee_name or else
-/// none as employee from audit.logins full joined with schema_with_foreign_keys.employees
-/// on login_user_id equal to employee_user_id.
+/// Selects item_id and product_price times item_qty as subtotal from
+/// schema_with_foreign_keys.order_items inner joined with
+/// schema_with_foreign_keys.products on item_product_id equal to product_id, ordered by
+/// product_price times item_qty descending.
 /// </summary>
-public sealed record FullJoinQuery
+public sealed record OrderByComputedExpressionQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
@@ -39,51 +40,28 @@ public sealed record FullJoinQuery
                     new FromEntity(
                         new JoinedString(
                             new DotString(),
-                            [new AuditRelationalSchema().Name, new LoginsTable().Name]
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrderItemsTable().Name,
+                            ]
                         ).TextValue
                     )
                 ),
                 [
                     new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionUuidNullable(
-                                "user_id",
-                                new UuidNullableProjection(
-                                    new ConditionalUuidNullableProjection(
-                                        new CoalesceUuidNullableProjection([
-                                            new UuidNullableProjection(
-                                                new FieldAsUuidNullable(
-                                                    new FieldUuidNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new AuditRelationalSchema().Name,
-                                                                new LoginsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new LoginUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableProjection(
-                                                new FieldAsUuidNullable(
-                                                    new FieldUuidNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new EmployeeUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                        ])
+                        new SelectItemProjectionNonNullable(
+                            new SelectItemProjectionUuid(
+                                "item_id",
+                                new UuidProjection(
+                                    new FieldUuid(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrderItemsTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new ItemIdColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -91,30 +69,39 @@ public sealed record FullJoinQuery
                     ),
                     new SelectItemProjection(
                         new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "employee",
-                                new StringProjection(
-                                    new ConditionalStringProjection(
-                                        new CoalesceStringProjection([
-                                            new StringNullableProjection(
-                                                new FieldAsStringNullable(
-                                                    new FieldStringNullable(
+                            new SelectItemProjectionDecimal(
+                                "subtotal",
+                                new DecimalProjection(
+                                    new ArithmeticDecimalProjection(
+                                        new MultiplyDecimalProjection([
+                                            new DecimalProjection(
+                                                new FieldAsDecimal(
+                                                    new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
                                                             [
                                                                 new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
+                                                                new ProductsTable().Name,
                                                             ]
                                                         ).TextValue,
-                                                        new EmployeeNameColumn()
+                                                        new ProductPriceColumn()
                                                             .Name
                                                             .TextValue
                                                     )
                                                 )
                                             ),
-                                            new StringNullableProjection(
-                                                new LiteralAsStringNullable(
-                                                    new LiteralString("none")
+                                            new DecimalProjection(
+                                                new FieldAsDecimal(
+                                                    new FieldDecimal(
+                                                        new JoinedString(
+                                                            new DotString(),
+                                                            [
+                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                new OrderItemsTable().Name,
+                                                            ]
+                                                        ).TextValue,
+                                                        new ItemQtyColumn().Name.TextValue
+                                                    )
                                                 )
                                             ),
                                         ])
@@ -128,12 +115,12 @@ public sealed record FullJoinQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Full,
+                            JoinType.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
                                     new RelationalSchemaWithForeignKeys().Name,
-                                    new EmployeesTable().Name,
+                                    new ProductsTable().Name,
                                 ]
                             ).TextValue,
                             new BooleanRow(
@@ -146,11 +133,11 @@ public sealed record FullJoinQuery
                                                         new JoinedString(
                                                             new DotString(),
                                                             [
-                                                                new AuditRelationalSchema().Name,
-                                                                new LoginsTable().Name,
+                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                new OrderItemsTable().Name,
                                                             ]
                                                         ).TextValue,
-                                                        new LoginUserIdColumn()
+                                                        new ItemProductIdColumn()
                                                             .Name
                                                             .TextValue
                                                     )
@@ -163,10 +150,10 @@ public sealed record FullJoinQuery
                                                             new DotString(),
                                                             [
                                                                 new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
+                                                                new ProductsTable().Name,
                                                             ]
                                                         ).TextValue,
-                                                        new EmployeeUserIdColumn()
+                                                        new ProductIdColumn()
                                                             .Name
                                                             .TextValue
                                                     )
@@ -180,7 +167,49 @@ public sealed record FullJoinQuery
                     ),
                 ],
                 where: null,
-                orderBy: null,
+                [
+                    new OrderItemProjection(
+                        new ValueProjection(
+                            new DecimalNullableProjection(
+                                new ArithmeticDecimalNullableProjection(
+                                    new MultiplyDecimalNullableProjection([
+                                        new DecimalNullableProjection(
+                                            new FieldAsDecimalNullable(
+                                                new FieldDecimal(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new ProductsTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new ProductPriceColumn()
+                                                        .Name
+                                                        .TextValue
+                                                )
+                                            )
+                                        ),
+                                        new DecimalNullableProjection(
+                                            new FieldAsDecimalNullable(
+                                                new FieldDecimal(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrderItemsTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new ItemQtyColumn().Name.TextValue
+                                                )
+                                            )
+                                        ),
+                                    ])
+                                )
+                            )
+                        ),
+                        SortDirection.Desc
+                    ),
+                ],
                 pagination: null,
                 distinct: false
             )
@@ -189,15 +218,15 @@ public sealed record FullJoinQuery
     /// <summary>
     /// The rows the query returns under the PureQL specification's semantics over
     /// <see cref="SchemaDataSetWithForeignKeys"/> and
-    /// <see cref="AuditSchemaDataSet"/>, in no particular order.
+    /// <see cref="AuditSchemaDataSet"/>, in this order.
     /// </summary>
     public IStoredTableDataSet Result =>
         new StoredTableDataSet(
             new Table(
                 new EmptyString(),
                 [
-                    new UserIdColumn(),
-                    new Column(new String("employee"), new StringColumnType()),
+                    new ItemIdColumn(),
+                    new Column(new String("subtotal"), new DoubleColumnType()),
                 ],
                 []
             ),
@@ -206,21 +235,21 @@ public sealed record FullJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new UserIdColumn(),
+                                new ItemIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000001-0000-0000-0000-000000000000"
+                                            "00000130-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("employee"),
-                                    new StringColumnType()
+                                    new String("subtotal"),
+                                    new DoubleColumnType()
                                 ),
-                                new InvariantCell(new String("Grace"))
+                                new InvariantCell(new Double(29.97))
                             ),
                         ],
                         pair => pair.Key,
@@ -232,21 +261,21 @@ public sealed record FullJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new UserIdColumn(),
+                                new ItemIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000001-0000-0000-0000-000000000000"
+                                            "0000012f-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("employee"),
-                                    new StringColumnType()
+                                    new String("subtotal"),
+                                    new DoubleColumnType()
                                 ),
-                                new InvariantCell(new String("Grace"))
+                                new InvariantCell(new Double(22.5))
                             ),
                         ],
                         pair => pair.Key,
@@ -258,21 +287,21 @@ public sealed record FullJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new UserIdColumn(),
+                                new ItemIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000002-0000-0000-0000-000000000000"
+                                            "0000012e-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("employee"),
-                                    new StringColumnType()
+                                    new String("subtotal"),
+                                    new DoubleColumnType()
                                 ),
-                                new InvariantCell(new String("Hank"))
+                                new InvariantCell(new Double(19.99))
                             ),
                         ],
                         pair => pair.Key,
@@ -284,73 +313,21 @@ public sealed record FullJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new UserIdColumn(),
+                                new ItemIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000005-0000-0000-0000-000000000000"
+                                            "0000012d-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("employee"),
-                                    new StringColumnType()
+                                    new String("subtotal"),
+                                    new DoubleColumnType()
                                 ),
-                                new InvariantCell(new String("none"))
-                            ),
-                        ],
-                        pair => pair.Key,
-                        pair => pair.Value,
-                        column => new ColumnHash(column)
-                    )
-                ),
-                new Row(
-                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
-                        [
-                            new KeyValuePair<IColumn, ICell>(
-                                new UserIdColumn(),
-                                new InvariantCell(
-                                    new Guid(
-                                        new System.Guid(
-                                            "00000004-0000-0000-0000-000000000000"
-                                        )
-                                    )
-                                )
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(
-                                    new String("employee"),
-                                    new StringColumnType()
-                                ),
-                                new InvariantCell(new String("Jack"))
-                            ),
-                        ],
-                        pair => pair.Key,
-                        pair => pair.Value,
-                        column => new ColumnHash(column)
-                    )
-                ),
-                new Row(
-                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
-                        [
-                            new KeyValuePair<IColumn, ICell>(
-                                new UserIdColumn(),
-                                new InvariantCell(
-                                    new Guid(
-                                        new System.Guid(
-                                            "00000003-0000-0000-0000-000000000000"
-                                        )
-                                    )
-                                )
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(
-                                    new String("employee"),
-                                    new StringColumnType()
-                                ),
-                                new InvariantCell(new String("Iris"))
+                                new InvariantCell(new Double(19.98))
                             ),
                         ],
                         pair => pair.Key,

@@ -10,9 +10,9 @@ namespace PureQL.CSharp.Model.Samples.Tests;
 // document asserts the whole query tree at once.
 internal sealed record QueryJson
 {
-    private readonly Query _query;
+    private readonly PureQLQuery _query;
 
-    public QueryJson(Query query)
+    public QueryJson(PureQLQuery query)
     {
         _query = query;
     }
@@ -21,11 +21,8 @@ internal sealed record QueryJson
 
     private static JsonSerializerOptions Options()
     {
-        JsonSerializerOptions options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true,
-        };
+        // Deeply nested expressions can exceed the default depth of 64.
+        JsonSerializerOptions options = new JsonSerializerOptions { MaxDepth = 256 };
 
         foreach (JsonConverter converter in new PureQLConverters())
         {

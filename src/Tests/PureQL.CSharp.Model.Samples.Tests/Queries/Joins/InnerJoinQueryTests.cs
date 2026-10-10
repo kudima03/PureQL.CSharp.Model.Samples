@@ -2,7 +2,7 @@ using PureQL.CSharp.Model.Samples.Queries.Joins;
 
 namespace PureQL.CSharp.Model.Samples.Tests.Queries.Joins;
 
-public sealed record RightJoinQueryTests
+public sealed record InnerJoinQueryTests
 {
     [Fact]
     public void ValueSerializesToExpectedJson()
@@ -13,40 +13,28 @@ public sealed record RightJoinQueryTests
                 """
                 {
                   "from": {
-                    "entity": "schema_with_foreign_keys.users"
+                    "entity": "schema_with_foreign_keys.orders"
                   },
                   "joins": [
                     {
-                      "type": "right",
-                      "entity": "schema_with_foreign_keys.orders",
+                      "type": "inner",
+                      "entity": "schema_with_foreign_keys.users",
                       "on": {
-                        "operator": "and",
-                        "conditions": [
-                          {
-                            "operator": "equal",
-                            "left": {
-                              "source": "schema_with_foreign_keys.users",
-                              "field": "user_id",
-                              "type": {
-                                "name": "uuid"
-                              }
-                            },
-                            "right": {
-                              "source": "schema_with_foreign_keys.orders",
-                              "field": "order_user_id",
-                              "type": {
-                                "name": "uuid"
-                              }
-                            }
-                          },
-                          {
-                            "source": "schema_with_foreign_keys.users",
-                            "field": "user_active",
-                            "type": {
-                              "name": "boolean"
-                            }
+                        "operator": "equal",
+                        "left": {
+                          "source": "schema_with_foreign_keys.orders",
+                          "field": "order_user_id",
+                          "type": {
+                            "name": "uuid"
                           }
-                        ]
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
                       }
                     }
                   ],
@@ -67,15 +55,13 @@ public sealed record RightJoinQueryTests
                     {
                       "alias": "user_name",
                       "type": {
-                        "name": "string",
-                        "nullable": true
+                        "name": "string"
                       },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",
                         "type": {
-                          "name": "string",
-                          "nullable": true
+                          "name": "string"
                         }
                       }
                     }
@@ -83,7 +69,7 @@ public sealed record RightJoinQueryTests
                 }
                 """
             ).TextValue,
-            new QueryJson(new RightJoinQuery().Value).TextValue
+            new QueryJson(new InnerJoinQuery().Value).TextValue
         );
     }
 
@@ -118,7 +104,7 @@ public sealed record RightJoinQueryTests
                     ],
                     [
                       "00000067-0000-0000-0000-000000000000",
-                      ""
+                      "Bob"
                     ],
                     [
                       "00000068-0000-0000-0000-000000000000",
@@ -136,7 +122,7 @@ public sealed record RightJoinQueryTests
                 }
                 """
             ).TextValue,
-            new DataSetJson(new RightJoinQuery().Result).TextValue
+            new DataSetJson(new InnerJoinQuery().Result).TextValue
         );
     }
 }

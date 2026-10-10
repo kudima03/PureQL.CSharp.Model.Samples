@@ -1,8 +1,8 @@
-using PureQL.CSharp.Model.Samples.Queries.Joins;
+using PureQL.CSharp.Model.Samples.Queries.Subqueries;
 
-namespace PureQL.CSharp.Model.Samples.Tests.Queries.Joins;
+namespace PureQL.CSharp.Model.Samples.Tests.Queries.Subqueries;
 
-public sealed record RightJoinQueryTests
+public sealed record InSubqueryColumnQueryTests
 {
     [Fact]
     public void ValueSerializesToExpectedJson()
@@ -12,44 +12,58 @@ public sealed record RightJoinQueryTests
                 /*lang=json,strict*/
                 """
                 {
-                  "from": {
-                    "entity": "schema_with_foreign_keys.users"
-                  },
-                  "joins": [
+                  "subqueries": [
                     {
-                      "type": "right",
-                      "entity": "schema_with_foreign_keys.orders",
-                      "on": {
-                        "operator": "and",
-                        "conditions": [
+                      "name": "active_users",
+                      "query": {
+                        "from": {
+                          "entity": "schema_with_foreign_keys.users"
+                        },
+                        "where": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_active",
+                          "type": {
+                            "name": "boolean"
+                          }
+                        },
+                        "select": [
                           {
-                            "operator": "equal",
-                            "left": {
+                            "alias": "id",
+                            "type": {
+                              "name": "uuid"
+                            },
+                            "expression": {
                               "source": "schema_with_foreign_keys.users",
                               "field": "user_id",
                               "type": {
                                 "name": "uuid"
                               }
-                            },
-                            "right": {
-                              "source": "schema_with_foreign_keys.orders",
-                              "field": "order_user_id",
-                              "type": {
-                                "name": "uuid"
-                              }
-                            }
-                          },
-                          {
-                            "source": "schema_with_foreign_keys.users",
-                            "field": "user_active",
-                            "type": {
-                              "name": "boolean"
                             }
                           }
                         ]
                       }
                     }
                   ],
+                  "from": {
+                    "entity": "schema_with_foreign_keys.orders"
+                  },
+                  "where": {
+                    "operator": "in",
+                    "value": {
+                      "source": "schema_with_foreign_keys.orders",
+                      "field": "order_user_id",
+                      "type": {
+                        "name": "uuid"
+                      }
+                    },
+                    "list": {
+                      "subquery": "active_users",
+                      "field": "id",
+                      "type": {
+                        "name": "uuid"
+                      }
+                    }
+                  },
                   "select": [
                     {
                       "alias": "order_id",
@@ -65,17 +79,15 @@ public sealed record RightJoinQueryTests
                       }
                     },
                     {
-                      "alias": "user_name",
+                      "alias": "order_total",
                       "type": {
-                        "name": "string",
-                        "nullable": true
+                        "name": "decimal"
                       },
                       "expression": {
-                        "source": "schema_with_foreign_keys.users",
-                        "field": "user_name",
+                        "source": "schema_with_foreign_keys.orders",
+                        "field": "order_total",
                         "type": {
-                          "name": "string",
-                          "nullable": true
+                          "name": "decimal"
                         }
                       }
                     }
@@ -83,7 +95,7 @@ public sealed record RightJoinQueryTests
                 }
                 """
             ).TextValue,
-            new QueryJson(new RightJoinQuery().Value).TextValue
+            new QueryJson(new InSubqueryColumnQuery().Value).TextValue
         );
     }
 
@@ -102,41 +114,37 @@ public sealed record RightJoinQueryTests
                       "type": "uuid"
                     },
                     {
-                      "name": "user_name",
-                      "type": "string"
+                      "name": "order_total",
+                      "type": "double"
                     }
                   ],
                   "indexes": 0,
                   "rows": [
                     [
                       "00000065-0000-0000-0000-000000000000",
-                      "Ann"
+                      "100.5"
                     ],
                     [
                       "00000066-0000-0000-0000-000000000000",
-                      "Ann"
-                    ],
-                    [
-                      "00000067-0000-0000-0000-000000000000",
-                      ""
+                      "50"
                     ],
                     [
                       "00000068-0000-0000-0000-000000000000",
-                      "Cara"
+                      "75.25"
                     ],
                     [
                       "00000069-0000-0000-0000-000000000000",
-                      "Cara"
+                      "300"
                     ],
                     [
                       "0000006a-0000-0000-0000-000000000000",
-                      "Dan"
+                      "100.5"
                     ]
                   ]
                 }
                 """
             ).TextValue,
-            new DataSetJson(new RightJoinQuery().Result).TextValue
+            new DataSetJson(new InSubqueryColumnQuery().Result).TextValue
         );
     }
 }

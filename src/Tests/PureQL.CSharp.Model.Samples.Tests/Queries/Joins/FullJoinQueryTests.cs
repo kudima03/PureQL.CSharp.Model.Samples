@@ -13,37 +13,83 @@ public sealed record FullJoinQueryTests
                 """
                 {
                   "from": {
-                    "entity": "schema_with_foreign_keys.orders"
+                    "entity": "audit.logins"
                   },
-                  "select": [
-                    {
-                      "entity": "schema_with_foreign_keys.users",
-                      "field": "user_name",
-                      "type": {
-                        "name": "string"
-                      }
-                    }
-                  ],
                   "joins": [
                     {
                       "type": "full",
-                      "entity": "schema_with_foreign_keys.users",
+                      "entity": "schema_with_foreign_keys.employees",
                       "on": {
-                        "operator": "eachEqual",
+                        "operator": "equal",
                         "left": {
-                          "entity": "schema_with_foreign_keys.orders",
-                          "field": "order_user_id",
+                          "source": "audit.logins",
+                          "field": "login_user_id",
                           "type": {
                             "name": "uuid"
                           }
                         },
                         "right": {
-                          "entity": "schema_with_foreign_keys.users",
-                          "field": "user_id",
+                          "source": "schema_with_foreign_keys.employees",
+                          "field": "employee_user_id",
                           "type": {
                             "name": "uuid"
                           }
                         }
+                      }
+                    }
+                  ],
+                  "select": [
+                    {
+                      "alias": "user_id",
+                      "type": {
+                        "name": "uuid",
+                        "nullable": true
+                      },
+                      "expression": {
+                        "operator": "coalesce",
+                        "values": [
+                          {
+                            "source": "audit.logins",
+                            "field": "login_user_id",
+                            "type": {
+                              "name": "uuid",
+                              "nullable": true
+                            }
+                          },
+                          {
+                            "source": "schema_with_foreign_keys.employees",
+                            "field": "employee_user_id",
+                            "type": {
+                              "name": "uuid",
+                              "nullable": true
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "alias": "employee",
+                      "type": {
+                        "name": "string"
+                      },
+                      "expression": {
+                        "operator": "coalesce",
+                        "values": [
+                          {
+                            "source": "schema_with_foreign_keys.employees",
+                            "field": "employee_name",
+                            "type": {
+                              "name": "string",
+                              "nullable": true
+                            }
+                          },
+                          {
+                            "type": {
+                              "name": "string"
+                            },
+                            "value": "none"
+                          }
+                        ]
                       }
                     }
                   ]
@@ -65,35 +111,39 @@ public sealed record FullJoinQueryTests
                   "name": "",
                   "columns": [
                     {
-                      "name": "user_name",
+                      "name": "user_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "employee",
                       "type": "string"
                     }
                   ],
                   "indexes": 0,
                   "rows": [
                     [
-                      "Ann"
+                      "00000001-0000-0000-0000-000000000000",
+                      "Grace"
                     ],
                     [
-                      "Ann"
+                      "00000001-0000-0000-0000-000000000000",
+                      "Grace"
                     ],
                     [
-                      "Bob"
+                      "00000002-0000-0000-0000-000000000000",
+                      "Hank"
                     ],
                     [
-                      "Cara"
+                      "00000005-0000-0000-0000-000000000000",
+                      "none"
                     ],
                     [
-                      "Cara"
+                      "00000004-0000-0000-0000-000000000000",
+                      "Jack"
                     ],
                     [
-                      "Dan"
-                    ],
-                    [
-                      "Eve"
-                    ],
-                    [
-                      "Fay"
+                      "00000003-0000-0000-0000-000000000000",
+                      "Iris"
                     ]
                   ]
                 }

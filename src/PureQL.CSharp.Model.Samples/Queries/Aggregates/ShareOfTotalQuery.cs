@@ -2,6 +2,7 @@ using Pure.Collections.Generic;
 using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.RelationalSchema.Abstractions.Column;
+using Pure.RelationalSchema.ColumnType;
 using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Samples.Columns;
 using Pure.RelationalSchema.Samples.Schemas;
@@ -15,18 +16,19 @@ using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
 using PureQL.CSharp.Model.SelectItems;
+using Column = Pure.RelationalSchema.Column.Column;
+using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
 
-namespace PureQL.CSharp.Model.Samples.Queries.Joins;
+namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
 /// <summary>
-/// Selects order_id and the nullable user_name from schema_with_foreign_keys.users right
-/// joined with schema_with_foreign_keys.orders on user_id equal to order_user_id and
-/// user_active.
+/// Selects order_id, order_total and order_total divided by the sum of order_total as
+/// share_of_total from schema_with_foreign_keys.orders.
 /// </summary>
-public sealed record RightJoinQuery
+public sealed record ShareOfTotalQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
@@ -38,7 +40,7 @@ public sealed record RightJoinQuery
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
-                                new UsersTable().Name,
+                                new OrdersTable().Name,
                             ]
                         ).TextValue
                     )
@@ -64,65 +66,55 @@ public sealed record RightJoinQuery
                         )
                     ),
                     new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionStringNullable(
-                                "user_name",
-                                new StringNullableProjection(
-                                    new FieldAsStringNullable(
-                                        new FieldStringNullable(
+                        new SelectItemProjectionNonNullable(
+                            new SelectItemProjectionDecimal(
+                                "order_total",
+                                new DecimalProjection(
+                                    new FieldAsDecimal(
+                                        new FieldDecimal(
                                             new JoinedString(
                                                 new DotString(),
                                                 [
                                                     new RelationalSchemaWithForeignKeys().Name,
-                                                    new UsersTable().Name,
+                                                    new OrdersTable().Name,
                                                 ]
                                             ).TextValue,
-                                            new UserNameColumn().Name.TextValue
+                                            new OrderTotalColumn().Name.TextValue
                                         )
                                     )
                                 )
                             )
                         )
                     ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinType.Right,
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new RelationalSchemaWithForeignKeys().Name,
-                                    new OrdersTable().Name,
-                                ]
-                            ).TextValue,
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new AndRow([
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new EqualRow(
-                                                    new EqualUuidRow(
-                                                        new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new UsersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new UserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
-                                                                new FieldUuid(
+                    new SelectItemProjection(
+                        new SelectItemProjectionNonNullable(
+                            new SelectItemProjectionDecimal(
+                                "share_of_total",
+                                new DecimalProjection(
+                                    new ArithmeticDecimalProjection(
+                                        new DivideDecimalProjection([
+                                            new DecimalProjection(
+                                                new FieldAsDecimal(
+                                                    new FieldDecimal(
+                                                        new JoinedString(
+                                                            new DotString(),
+                                                            [
+                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                new OrdersTable().Name,
+                                                            ]
+                                                        ).TextValue,
+                                                        new OrderTotalColumn()
+                                                            .Name
+                                                            .TextValue
+                                                    )
+                                                )
+                                            ),
+                                            new DecimalProjection(
+                                                new AggregateDecimalProjection(
+                                                    new SumDecimalProjection(
+                                                        new DecimalNullableRow(
+                                                            new FieldAsDecimalNullable(
+                                                                new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),
                                                                         [
@@ -130,7 +122,7 @@ public sealed record RightJoinQuery
                                                                             new OrdersTable().Name,
                                                                         ]
                                                                     ).TextValue,
-                                                                    new OrderUserIdColumn()
+                                                                    new OrderTotalColumn()
                                                                         .Name
                                                                         .TextValue
                                                                 )
@@ -138,30 +130,14 @@ public sealed record RightJoinQuery
                                                         )
                                                     )
                                                 )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new FieldBoolean(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new UsersTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new UserActiveColumn().Name.TextValue
-                                            )
-                                        ),
-                                    ])
+                                            ),
+                                        ])
+                                    )
                                 )
                             )
                         )
                     ),
-                ],
-                where: null,
-                orderBy: null,
-                pagination: null,
-                distinct: false
+                ]
             )
         );
 
@@ -172,7 +148,15 @@ public sealed record RightJoinQuery
     /// </summary>
     public IStoredTableDataSet Result =>
         new StoredTableDataSet(
-            new Table(new EmptyString(), [new OrderIdColumn(), new UserNameColumn()], []),
+            new Table(
+                new EmptyString(),
+                [
+                    new OrderIdColumn(),
+                    new OrderTotalColumn(),
+                    new Column(new String("share_of_total"), new DoubleColumnType()),
+                ],
+                []
+            ),
             [
                 new Row(
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
@@ -188,8 +172,15 @@ public sealed record RightJoinQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Ann"))
+                                new OrderTotalColumn(),
+                                new InvariantCell(new Double(100.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("share_of_total"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(0.12163388804841149))
                             ),
                         ],
                         pair => pair.Key,
@@ -211,8 +202,15 @@ public sealed record RightJoinQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Ann"))
+                                new OrderTotalColumn(),
+                                new InvariantCell(new Double(50))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("share_of_total"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(0.060514372163388806))
                             ),
                         ],
                         pair => pair.Key,
@@ -234,8 +232,15 @@ public sealed record RightJoinQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new EmptyCell()
+                                new OrderTotalColumn(),
+                                new InvariantCell(new Double(200))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("share_of_total"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(0.24205748865355523))
                             ),
                         ],
                         pair => pair.Key,
@@ -257,8 +262,15 @@ public sealed record RightJoinQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Cara"))
+                                new OrderTotalColumn(),
+                                new InvariantCell(new Double(75.25))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("share_of_total"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(0.09107413010590015))
                             ),
                         ],
                         pair => pair.Key,
@@ -280,8 +292,15 @@ public sealed record RightJoinQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Cara"))
+                                new OrderTotalColumn(),
+                                new InvariantCell(new Double(300))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("share_of_total"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(0.3630862329803328))
                             ),
                         ],
                         pair => pair.Key,
@@ -303,8 +322,15 @@ public sealed record RightJoinQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Dan"))
+                                new OrderTotalColumn(),
+                                new InvariantCell(new Double(100.5))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("share_of_total"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(0.12163388804841149))
                             ),
                         ],
                         pair => pair.Key,

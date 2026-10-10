@@ -13,20 +13,17 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.RowExpressions;
 using PureQL.CSharp.Model.SelectItems;
+using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
-using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
 
-namespace PureQL.CSharp.Model.Samples.Queries.Joins;
+namespace PureQL.CSharp.Model.Samples.Queries.Nulls;
 
 /// <summary>
-/// Selects order_id and the nullable user_name from schema_with_foreign_keys.users right
-/// joined with schema_with_foreign_keys.orders on user_id equal to order_user_id and
-/// user_active.
+/// Selects user_id and the nullable user_score from schema_with_foreign_keys.users.
 /// </summary>
-public sealed record RightJoinQuery
+public sealed record NullableColumnQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
@@ -47,17 +44,17 @@ public sealed record RightJoinQuery
                     new SelectItemProjection(
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionUuid(
-                                "order_id",
+                                "user_id",
                                 new UuidProjection(
                                     new FieldUuid(
                                         new JoinedString(
                                             new DotString(),
                                             [
                                                 new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
+                                                new UsersTable().Name,
                                             ]
                                         ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
+                                        new UserIdColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -65,11 +62,11 @@ public sealed record RightJoinQuery
                     ),
                     new SelectItemProjection(
                         new SelectItemProjectionNullable(
-                            new SelectItemProjectionStringNullable(
-                                "user_name",
-                                new StringNullableProjection(
-                                    new FieldAsStringNullable(
-                                        new FieldStringNullable(
+                            new SelectItemProjectionDecimalNullable(
+                                "user_score",
+                                new DecimalNullableProjection(
+                                    new FieldAsDecimalNullable(
+                                        new FieldDecimalNullable(
                                             new JoinedString(
                                                 new DotString(),
                                                 [
@@ -77,91 +74,14 @@ public sealed record RightJoinQuery
                                                     new UsersTable().Name,
                                                 ]
                                             ).TextValue,
-                                            new UserNameColumn().Name.TextValue
+                                            new UserScoreColumn().Name.TextValue
                                         )
                                     )
                                 )
                             )
                         )
                     ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinType.Right,
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new RelationalSchemaWithForeignKeys().Name,
-                                    new OrdersTable().Name,
-                                ]
-                            ).TextValue,
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new AndRow([
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new EqualRow(
-                                                    new EqualUuidRow(
-                                                        new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new UsersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new UserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderUserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new FieldBoolean(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new UsersTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new UserActiveColumn().Name.TextValue
-                                            )
-                                        ),
-                                    ])
-                                )
-                            )
-                        )
-                    ),
-                ],
-                where: null,
-                orderBy: null,
-                pagination: null,
-                distinct: false
+                ]
             )
         );
 
@@ -172,24 +92,24 @@ public sealed record RightJoinQuery
     /// </summary>
     public IStoredTableDataSet Result =>
         new StoredTableDataSet(
-            new Table(new EmptyString(), [new OrderIdColumn(), new UserNameColumn()], []),
+            new Table(new EmptyString(), [new UserIdColumn(), new UserScoreColumn()], []),
             [
                 new Row(
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new OrderIdColumn(),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000065-0000-0000-0000-000000000000"
+                                            "00000001-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Ann"))
+                                new UserScoreColumn(),
+                                new InvariantCell(new Double(30))
                             ),
                         ],
                         pair => pair.Key,
@@ -201,40 +121,17 @@ public sealed record RightJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new OrderIdColumn(),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000066-0000-0000-0000-000000000000"
+                                            "00000002-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Ann"))
-                            ),
-                        ],
-                        pair => pair.Key,
-                        pair => pair.Value,
-                        column => new ColumnHash(column)
-                    )
-                ),
-                new Row(
-                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
-                        [
-                            new KeyValuePair<IColumn, ICell>(
-                                new OrderIdColumn(),
-                                new InvariantCell(
-                                    new Guid(
-                                        new System.Guid(
-                                            "00000067-0000-0000-0000-000000000000"
-                                        )
-                                    )
-                                )
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
+                                new UserScoreColumn(),
                                 new EmptyCell()
                             ),
                         ],
@@ -247,18 +144,18 @@ public sealed record RightJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new OrderIdColumn(),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000068-0000-0000-0000-000000000000"
+                                            "00000003-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Cara"))
+                                new UserScoreColumn(),
+                                new InvariantCell(new Double(30))
                             ),
                         ],
                         pair => pair.Key,
@@ -270,18 +167,18 @@ public sealed record RightJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new OrderIdColumn(),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "00000069-0000-0000-0000-000000000000"
+                                            "00000004-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Cara"))
+                                new UserScoreColumn(),
+                                new EmptyCell()
                             ),
                         ],
                         pair => pair.Key,
@@ -293,18 +190,41 @@ public sealed record RightJoinQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new OrderIdColumn(),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
-                                            "0000006a-0000-0000-0000-000000000000"
+                                            "00000005-0000-0000-0000-000000000000"
                                         )
                                     )
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new UserNameColumn(),
-                                new InvariantCell(new String("Dan"))
+                                new UserScoreColumn(),
+                                new InvariantCell(new Double(10))
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new UserIdColumn(),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000006-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new UserScoreColumn(),
+                                new InvariantCell(new Double(28))
                             ),
                         ],
                         pair => pair.Key,
