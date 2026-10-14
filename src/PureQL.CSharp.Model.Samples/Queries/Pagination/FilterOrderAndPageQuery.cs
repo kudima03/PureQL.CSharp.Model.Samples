@@ -60,18 +60,16 @@ public sealed record FilterOrderAndPageQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "amount",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new OrdersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new OrderTotalColumn().Name.TextValue
-                                        )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -88,7 +86,7 @@ public sealed record FilterOrderAndPageQuery
                                     new EqualRow(
                                         new EqualStringRow(
                                             new StringNullableRow(
-                                                new FieldAsStringNullable(
+                                                new StringRow(
                                                     new FieldString(
                                                         new JoinedString(
                                                             new DotString(),
@@ -104,7 +102,7 @@ public sealed record FilterOrderAndPageQuery
                                                 )
                                             ),
                                             new StringNullableRow(
-                                                new LiteralAsStringNullable(
+                                                new StringRow(
                                                     new LiteralString("shipped")
                                                 )
                                             )
@@ -117,7 +115,7 @@ public sealed record FilterOrderAndPageQuery
                                     new GreaterThanRow(
                                         new GreaterThanDecimalRow(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -133,7 +131,7 @@ public sealed record FilterOrderAndPageQuery
                                                 )
                                             ),
                                             new DecimalNullableRow(
-                                                new ParamAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new ParamDecimal("min_total")
                                                 )
                                             )
@@ -146,9 +144,9 @@ public sealed record FilterOrderAndPageQuery
                 ),
                 [
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new DecimalNullableProjection(
-                                new FieldAsDecimalNullable(
+                                new ExactDecimalProjection(
                                     new FieldDecimal(
                                         new JoinedString(
                                             new DotString(),
@@ -165,9 +163,9 @@ public sealed record FilterOrderAndPageQuery
                         SortDirection.Desc
                     ),
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new UuidNullableProjection(
-                                new FieldAsUuidNullable(
+                                new UuidProjection(
                                     new FieldUuid(
                                         new JoinedString(
                                             new DotString(),
@@ -184,7 +182,7 @@ public sealed record FilterOrderAndPageQuery
                     ),
                 ],
                 new ModelPagination(0, 20),
-                distinct: false
+                distinctBy: null
             )
         );
 }

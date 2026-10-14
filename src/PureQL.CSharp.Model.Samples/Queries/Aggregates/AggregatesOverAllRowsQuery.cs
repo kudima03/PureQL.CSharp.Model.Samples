@@ -18,9 +18,9 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
 using PureQL.CSharp.Model.SelectItems;
+using PureQL.CSharp.Model.TotalExpressions;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
 using Double = Pure.Primitives.Number.Double;
@@ -30,18 +30,18 @@ using Table = Pure.RelationalSchema.Table.Table;
 namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 
 /// <summary>
-/// Selects the count of rows as orders, the sum of order_total as revenue, the min of
-/// order_total as smallest, the max of placed_at as latest, the average of order_total as
-/// average, whether any order_status is cancelled as any_cancelled and whether every
-/// order_total is greater than the integer 0 as all_positive, from
-/// schema_with_foreign_keys.orders.
+/// Aggregates schema_with_foreign_keys.orders into one row: the count of rows as orders,
+/// the sum of order_total as revenue, the min of order_total as smallest, the max of
+/// placed_at as latest, the average of order_total as average, whether any order_status
+/// is cancelled as any_cancelled and whether every order_total is greater than the
+/// integer 0 as all_positive.
 /// </summary>
 public sealed record AggregatesOverAllRowsQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
         new PureQLQuery(
-            new MainPlainQuery(
+            new MainTotalQuery(
                 new From(
                     new FromEntity(
                         new JoinedString(
@@ -54,37 +54,33 @@ public sealed record AggregatesOverAllRowsQuery
                     )
                 ),
                 [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
+                    new SelectItemTotal(
+                        new SelectItemTotalNonNullable(
+                            new SelectItemTotalInteger(
                                 "orders",
-                                new IntegerProjection(
-                                    new AggregateIntegerProjection(new CountProjection())
+                                new IntegerTotal(
+                                    new AggregateIntegerTotal(new CountTotal())
                                 )
                             )
                         )
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
+                    new SelectItemTotal(
+                        new SelectItemTotalNonNullable(
+                            new SelectItemTotalDecimal(
                                 "revenue",
-                                new DecimalProjection(
-                                    new AggregateDecimalProjection(
-                                        new SumDecimalProjection(
-                                            new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderTotalColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
+                                new ExactDecimalTotal(
+                                    new SumDecimalTotal(
+                                        new DecimalNullableRow(
+                                            new ExactDecimalRow(
+                                                new FieldDecimal(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrdersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new OrderTotalColumn().Name.TextValue
                                                 )
                                             )
                                         )
@@ -93,15 +89,15 @@ public sealed record AggregatesOverAllRowsQuery
                             )
                         )
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionDecimalNullable(
+                    new SelectItemTotal(
+                        new SelectItemTotalNullable(
+                            new SelectItemTotalDecimalNullable(
                                 "smallest",
-                                new DecimalNullableProjection(
-                                    new AggregateDecimalNullableProjection(
-                                        new MinDecimalNullableProjection(
+                                new ExactDecimalNullableTotal(
+                                    new AggregateDecimalNullableTotal(
+                                        new MinDecimalNullableTotal(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -122,15 +118,15 @@ public sealed record AggregatesOverAllRowsQuery
                             )
                         )
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionDatetimeNullable(
+                    new SelectItemTotal(
+                        new SelectItemTotalNullable(
+                            new SelectItemTotalDatetimeNullable(
                                 "latest",
-                                new DatetimeNullableProjection(
-                                    new AggregateDatetimeProjection(
-                                        new MaxDatetimeNullableProjection(
+                                new ExactDatetimeNullableTotal(
+                                    new AggregateDatetimeNullableTotal(
+                                        new MaxDatetimeNullableTotal(
                                             new DatetimeNullableRow(
-                                                new FieldAsDatetimeNullable(
+                                                new DatetimeRow(
                                                     new FieldDatetime(
                                                         new JoinedString(
                                                             new DotString(),
@@ -151,15 +147,15 @@ public sealed record AggregatesOverAllRowsQuery
                             )
                         )
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionDecimalNullable(
+                    new SelectItemTotal(
+                        new SelectItemTotalNullable(
+                            new SelectItemTotalDecimalNullable(
                                 "average",
-                                new DecimalNullableProjection(
-                                    new AggregateDecimalNullableProjection(
-                                        new AverageDecimalNullableProjection(
+                                new ExactDecimalNullableTotal(
+                                    new AggregateDecimalNullableTotal(
+                                        new AverageDecimalNullableTotal(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -180,19 +176,19 @@ public sealed record AggregatesOverAllRowsQuery
                             )
                         )
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionBoolean(
+                    new SelectItemTotal(
+                        new SelectItemTotalNonNullable(
+                            new SelectItemTotalBoolean(
                                 "any_cancelled",
-                                new BooleanProjection(
-                                    new AggregateBooleanProjection(
-                                        new AnyProjection(
+                                new BooleanTotal(
+                                    new AggregateBooleanTotal(
+                                        new AnyTotal(
                                             new BooleanRow(
                                                 new ComparisonRow(
                                                     new EqualRow(
                                                         new EqualStringRow(
                                                             new StringNullableRow(
-                                                                new FieldAsStringNullable(
+                                                                new StringRow(
                                                                     new FieldString(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -208,7 +204,7 @@ public sealed record AggregatesOverAllRowsQuery
                                                                 )
                                                             ),
                                                             new StringNullableRow(
-                                                                new LiteralAsStringNullable(
+                                                                new StringRow(
                                                                     new LiteralString(
                                                                         "cancelled"
                                                                     )
@@ -224,19 +220,19 @@ public sealed record AggregatesOverAllRowsQuery
                             )
                         )
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionBoolean(
+                    new SelectItemTotal(
+                        new SelectItemTotalNonNullable(
+                            new SelectItemTotalBoolean(
                                 "all_positive",
-                                new BooleanProjection(
-                                    new AggregateBooleanProjection(
-                                        new AllProjection(
+                                new BooleanTotal(
+                                    new AggregateBooleanTotal(
+                                        new AllTotal(
                                             new BooleanRow(
                                                 new ComparisonRow(
                                                     new GreaterThanRow(
                                                         new GreaterThanDecimalRow(
                                                             new DecimalNullableRow(
-                                                                new FieldAsDecimalNullable(
+                                                                new ExactDecimalRow(
                                                                     new FieldDecimal(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -252,7 +248,7 @@ public sealed record AggregatesOverAllRowsQuery
                                                                 )
                                                             ),
                                                             new DecimalNullableRow(
-                                                                new LiteralAsDecimalNullable(
+                                                                new IntegerRow(
                                                                     new LiteralInteger(0)
                                                                 )
                                                             )

@@ -18,9 +18,6 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -31,9 +28,6 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                     },
                     {
                       "alias": "an_integer",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "type": {
                           "name": "integer"
@@ -43,21 +37,15 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                     },
                     {
                       "alias": "a_decimal",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "type": {
                           "name": "decimal"
                         },
-                        "value": 19.99
+                        "value": "19.99"
                       }
                     },
                     {
                       "alias": "a_string",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "type": {
                           "name": "string"
@@ -67,9 +55,6 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                     },
                     {
                       "alias": "a_boolean",
-                      "type": {
-                        "name": "boolean"
-                      },
                       "expression": {
                         "type": {
                           "name": "boolean"
@@ -79,9 +64,6 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                     },
                     {
                       "alias": "a_date",
-                      "type": {
-                        "name": "date"
-                      },
                       "expression": {
                         "type": {
                           "name": "date"
@@ -91,9 +73,6 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                     },
                     {
                       "alias": "a_time",
-                      "type": {
-                        "name": "time"
-                      },
                       "expression": {
                         "type": {
                           "name": "time"
@@ -103,9 +82,6 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                     },
                     {
                       "alias": "a_datetime",
-                      "type": {
-                        "name": "datetime"
-                      },
                       "expression": {
                         "type": {
                           "name": "datetime"
@@ -115,9 +91,6 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                     },
                     {
                       "alias": "a_uuid",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "type": {
                           "name": "uuid"

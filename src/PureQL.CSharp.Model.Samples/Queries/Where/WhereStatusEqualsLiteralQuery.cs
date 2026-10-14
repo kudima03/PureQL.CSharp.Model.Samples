@@ -67,18 +67,16 @@ public sealed record WhereStatusEqualsLiteralQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "order_total",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new OrdersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new OrderTotalColumn().Name.TextValue
-                                        )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -92,7 +90,7 @@ public sealed record WhereStatusEqualsLiteralQuery
                         new EqualRow(
                             new EqualStringRow(
                                 new StringNullableRow(
-                                    new FieldAsStringNullable(
+                                    new StringRow(
                                         new FieldString(
                                             new JoinedString(
                                                 new DotString(),
@@ -106,9 +104,7 @@ public sealed record WhereStatusEqualsLiteralQuery
                                     )
                                 ),
                                 new StringNullableRow(
-                                    new LiteralAsStringNullable(
-                                        new LiteralString("shipped")
-                                    )
+                                    new StringRow(new LiteralString("shipped"))
                                 )
                             )
                         )
@@ -116,7 +112,7 @@ public sealed record WhereStatusEqualsLiteralQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

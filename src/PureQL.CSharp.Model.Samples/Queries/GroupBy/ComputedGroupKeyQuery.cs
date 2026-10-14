@@ -54,6 +54,7 @@ public sealed record ComputedGroupKeyQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyString(
+                                "size_bucket",
                                 new StringRow(
                                     new ConditionalStringRow(
                                         new IfStringRow(
@@ -62,7 +63,7 @@ public sealed record ComputedGroupKeyQuery
                                                     new GreaterThanRow(
                                                         new GreaterThanDecimalRow(
                                                             new DecimalNullableRow(
-                                                                new FieldAsDecimalNullable(
+                                                                new ExactDecimalRow(
                                                                     new FieldDecimal(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -78,7 +79,7 @@ public sealed record ComputedGroupKeyQuery
                                                                 )
                                                             ),
                                                             new DecimalNullableRow(
-                                                                new LiteralAsDecimalNullable(
+                                                                new ExactDecimalRow(
                                                                     new LiteralDecimal(
                                                                         100m
                                                                     )
@@ -92,8 +93,7 @@ public sealed record ComputedGroupKeyQuery
                                             new StringRow(new LiteralString("small"))
                                         )
                                     )
-                                ),
-                                "size_bucket"
+                                )
                             )
                         )
                     ),
@@ -103,7 +103,7 @@ public sealed record ComputedGroupKeyQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupString(
                                 "size_bucket",
-                                new StringGroup(new KeyString(0))
+                                new StringGroup(new KeyString("size_bucket"))
                             )
                         )
                     ),
@@ -121,11 +121,11 @@ public sealed record ComputedGroupKeyQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupDecimal(
                                 "average_total",
-                                new DecimalGroup(
+                                new ExactDecimalGroup(
                                     new AggregateDecimalGroup(
                                         new AverageDecimalGroup(
                                             new DecimalRow(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -153,15 +153,15 @@ public sealed record ComputedGroupKeyQuery
                 having: null,
                 [
                     new OrderItemGroup(
-                        new ValueGroup(
+                        new ExprGroup(
                             new StringNullableGroup(
-                                new KeyAsStringNullable(new KeyString(0))
+                                new StringGroup(new KeyString("size_bucket"))
                             )
                         )
                     ),
                 ],
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

@@ -89,19 +89,17 @@ public sealed record TimeAndDatetimeMathQuery
                                             )
                                         ),
                                         new DecimalProjection(
-                                            new ArithmeticDecimalProjection(
-                                                new MultiplyDecimalProjection([
-                                                    new DecimalProjection(
-                                                        new LiteralAsDecimal(
+                                            new IntegerProjection(
+                                                new ArithmeticIntegerProjection(
+                                                    new MultiplyIntegerProjection([
+                                                        new IntegerProjection(
                                                             new LiteralInteger(16)
-                                                        )
-                                                    ),
-                                                    new DecimalProjection(
-                                                        new LiteralAsDecimal(
+                                                        ),
+                                                        new IntegerProjection(
                                                             new LiteralInteger(3600)
-                                                        )
-                                                    ),
-                                                ])
+                                                        ),
+                                                    ])
+                                                )
                                             )
                                         )
                                     )
@@ -113,7 +111,7 @@ public sealed record TimeAndDatetimeMathQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "seconds_since_june",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new DifferenceDecimalProjection(
                                         new DatetimeDiffSecondsDecimalProjection(
                                             new DatetimeProjection(
@@ -158,7 +156,7 @@ public sealed record TimeAndDatetimeMathQuery
                                     new GreaterThanOrEqualRow(
                                         new GreaterThanOrEqualDatetimeRow(
                                             new DatetimeNullableRow(
-                                                new FieldAsDatetimeNullable(
+                                                new DatetimeRow(
                                                     new FieldDatetime(
                                                         new JoinedString(
                                                             new DotString(),
@@ -174,7 +172,7 @@ public sealed record TimeAndDatetimeMathQuery
                                                 )
                                             ),
                                             new DatetimeNullableRow(
-                                                new LiteralAsDatetimeNullable(
+                                                new DatetimeRow(
                                                     new LiteralDatetime(
                                                         new DateTimeOffset(
                                                             2024,
@@ -197,7 +195,7 @@ public sealed record TimeAndDatetimeMathQuery
                                     new LessThanRow(
                                         new LessThanTimeRow(
                                             new TimeNullableRow(
-                                                new FieldAsTimeNullable(
+                                                new TimeRow(
                                                     new FieldTime(
                                                         new JoinedString(
                                                             new DotString(),
@@ -213,7 +211,7 @@ public sealed record TimeAndDatetimeMathQuery
                                                 )
                                             ),
                                             new TimeNullableRow(
-                                                new LiteralAsTimeNullable(
+                                                new TimeRow(
                                                     new LiteralTime(
                                                         new TimeOnly(10, 0, 0)
                                                     )
@@ -228,7 +226,7 @@ public sealed record TimeAndDatetimeMathQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

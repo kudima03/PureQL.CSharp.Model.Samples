@@ -77,7 +77,7 @@ public sealed record IntegerArithmeticQuery
                                                 new RoundingIntegerProjection(
                                                     new RoundIntegerProjection(
                                                         new DecimalProjection(
-                                                            new FieldAsDecimal(
+                                                            new ExactDecimalProjection(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -113,7 +113,7 @@ public sealed record IntegerArithmeticQuery
                                                 new RoundingIntegerProjection(
                                                     new RoundIntegerProjection(
                                                         new DecimalProjection(
-                                                            new FieldAsDecimal(
+                                                            new ExactDecimalProjection(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -149,7 +149,7 @@ public sealed record IntegerArithmeticQuery
                                                 new RoundingIntegerProjection(
                                                     new RoundIntegerProjection(
                                                         new DecimalProjection(
-                                                            new FieldAsDecimal(
+                                                            new ExactDecimalProjection(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),

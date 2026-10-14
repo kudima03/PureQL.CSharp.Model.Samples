@@ -19,9 +19,6 @@ public sealed record FieldsThroughFromAliasQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "o",
                         "field": "order_id",
@@ -32,9 +29,6 @@ public sealed record FieldsThroughFromAliasQueryTests
                     },
                     {
                       "alias": "placed_at",
-                      "type": {
-                        "name": "datetime"
-                      },
                       "expression": {
                         "source": "o",
                         "field": "placed_at",
@@ -45,9 +39,6 @@ public sealed record FieldsThroughFromAliasQueryTests
                     },
                     {
                       "alias": "amount",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "o",
                         "field": "order_total",

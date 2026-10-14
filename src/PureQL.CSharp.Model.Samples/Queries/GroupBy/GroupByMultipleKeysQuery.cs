@@ -53,6 +53,7 @@ public sealed record GroupByMultipleKeysQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyUuid(
+                                "order_user_id",
                                 new UuidRow(
                                     new FieldUuid(
                                         new JoinedString(
@@ -71,6 +72,7 @@ public sealed record GroupByMultipleKeysQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyString(
+                                "order_status",
                                 new StringRow(
                                     new FieldString(
                                         new JoinedString(
@@ -92,7 +94,7 @@ public sealed record GroupByMultipleKeysQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupUuid(
                                 "order_user_id",
-                                new UuidGroup(new KeyUuid(0))
+                                new UuidGroup(new KeyUuid("order_user_id"))
                             )
                         )
                     ),
@@ -100,7 +102,7 @@ public sealed record GroupByMultipleKeysQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupString(
                                 "order_status",
-                                new StringGroup(new KeyString(1))
+                                new StringGroup(new KeyString("order_status"))
                             )
                         )
                     ),
@@ -118,11 +120,11 @@ public sealed record GroupByMultipleKeysQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupDecimal(
                                 "revenue",
-                                new DecimalGroup(
+                                new ExactDecimalGroup(
                                     new AggregateDecimalGroup(
                                         new SumDecimalGroup(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),

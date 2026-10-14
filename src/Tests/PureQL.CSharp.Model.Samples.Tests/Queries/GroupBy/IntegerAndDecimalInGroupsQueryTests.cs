@@ -17,10 +17,13 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.orders",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_order_id",
@@ -38,10 +41,13 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                       }
                     },
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.products",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_product_id",
@@ -61,11 +67,20 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                   ],
                   "where": {
                     "operator": "equal",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "operator": "modulo",
+                      "type": {
+                        "name": "integer"
+                      },
                       "left": {
                         "operator": "round",
-                        "value": {
+                        "type": {
+                          "name": "integer"
+                        },
+                        "operand": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_qty",
                           "type": {
@@ -89,9 +104,7 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                   },
                   "groupBy": [
                     {
-                      "type": {
-                        "name": "uuid"
-                      },
+                      "alias": "order_user_id",
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_user_id",
@@ -104,11 +117,8 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                   "select": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "order_user_id",
                         "type": {
                           "name": "uuid"
                         }
@@ -116,14 +126,17 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                     },
                     {
                       "alias": "units",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "sum",
+                        "type": {
+                          "name": "integer"
+                        },
                         "selector": {
                           "operator": "round",
-                          "value": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "operand": {
                             "source": "schema_with_foreign_keys.order_items",
                             "field": "item_qty",
                             "type": {
@@ -135,19 +148,28 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                     },
                     {
                       "alias": "revenue",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "round",
-                        "value": {
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
                           "operator": "sum",
+                          "type": {
+                            "name": "decimal"
+                          },
                           "selector": {
                             "operator": "multiply",
+                            "type": {
+                              "name": "decimal"
+                            },
                             "values": [
                               {
                                 "operator": "round",
-                                "value": {
+                                "type": {
+                                  "name": "integer"
+                                },
+                                "operand": {
                                   "source": "schema_with_foreign_keys.order_items",
                                   "field": "item_qty",
                                   "type": {
@@ -175,13 +197,16 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                     },
                     {
                       "alias": "tens_of_lines",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "integerDivide",
+                        "type": {
+                          "name": "integer"
+                        },
                         "left": {
-                          "operator": "count"
+                          "operator": "count",
+                          "type": {
+                            "name": "integer"
+                          }
                         },
                         "right": {
                           "type": {
@@ -193,13 +218,16 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                     },
                     {
                       "alias": "reorder_estimate",
-                      "type": {
-                        "name": "date"
-                      },
                       "expression": {
                         "operator": "dateAddDays",
+                        "type": {
+                          "name": "date"
+                        },
                         "left": {
                           "operator": "max",
+                          "type": {
+                            "name": "date"
+                          },
                           "selector": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "placed_on",
@@ -210,8 +238,14 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                         },
                         "right": {
                           "operator": "floor",
-                          "value": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "operand": {
                             "operator": "average",
+                            "type": {
+                              "name": "decimal"
+                            },
                             "selector": {
                               "source": "schema_with_foreign_keys.order_items",
                               "field": "item_qty",

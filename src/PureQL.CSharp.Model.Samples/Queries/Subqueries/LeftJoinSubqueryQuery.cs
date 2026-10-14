@@ -79,7 +79,7 @@ public sealed record LeftJoinSubqueryQuery
                                     new ConditionalIntegerProjection(
                                         new CoalesceIntegerProjection([
                                             new IntegerNullableProjection(
-                                                new FieldAsIntegerNullable(
+                                                new ExactIntegerNullableProjection(
                                                     new FieldIntegerNullable(
                                                         "user_totals",
                                                         "orders"
@@ -87,7 +87,7 @@ public sealed record LeftJoinSubqueryQuery
                                                 )
                                             ),
                                             new IntegerNullableProjection(
-                                                new LiteralAsIntegerNullable(
+                                                new IntegerProjection(
                                                     new LiteralInteger(0)
                                                 )
                                             ),
@@ -101,10 +101,8 @@ public sealed record LeftJoinSubqueryQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDecimalNullable(
                                 "total",
-                                new DecimalNullableProjection(
-                                    new FieldAsDecimalNullable(
-                                        new FieldDecimalNullable("user_totals", "total")
-                                    )
+                                new ExactDecimalNullableProjection(
+                                    new FieldDecimalNullable("user_totals", "total")
                                 )
                             )
                         )
@@ -130,6 +128,7 @@ public sealed record LeftJoinSubqueryQuery
                                     new GroupKey(
                                         new GroupKeyNonNullable(
                                             new GroupKeyUuid(
+                                                "user_id",
                                                 new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
@@ -153,7 +152,7 @@ public sealed record LeftJoinSubqueryQuery
                                         new SelectItemGroupNonNullable(
                                             new SelectItemGroupUuid(
                                                 "user_id",
-                                                new UuidGroup(new KeyUuid(0))
+                                                new UuidGroup(new KeyUuid("user_id"))
                                             )
                                         )
                                     ),
@@ -161,11 +160,11 @@ public sealed record LeftJoinSubqueryQuery
                                         new SelectItemGroupNonNullable(
                                             new SelectItemGroupDecimal(
                                                 "total",
-                                                new DecimalGroup(
+                                                new ExactDecimalGroup(
                                                     new AggregateDecimalGroup(
                                                         new SumDecimalGroup(
                                                             new DecimalNullableRow(
-                                                                new FieldAsDecimalNullable(
+                                                                new ExactDecimalRow(
                                                                     new FieldDecimal(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -205,7 +204,7 @@ public sealed record LeftJoinSubqueryQuery
                                         new EqualRow(
                                             new EqualStringRow(
                                                 new StringNullableRow(
-                                                    new FieldAsStringNullable(
+                                                    new StringRow(
                                                         new FieldString(
                                                             new JoinedString(
                                                                 new DotString(),
@@ -221,7 +220,7 @@ public sealed record LeftJoinSubqueryQuery
                                                     )
                                                 ),
                                                 new StringNullableRow(
-                                                    new LiteralAsStringNullable(
+                                                    new StringRow(
                                                         new LiteralString("shipped")
                                                     )
                                                 )
@@ -232,7 +231,7 @@ public sealed record LeftJoinSubqueryQuery
                                 having: null,
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -240,14 +239,14 @@ public sealed record LeftJoinSubqueryQuery
                 [
                     new Join(
                         new JoinSubquery(
-                            JoinType.Left,
+                            JoinKind.Left,
                             "user_totals",
                             new BooleanRow(
                                 new ComparisonRow(
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -261,7 +260,7 @@ public sealed record LeftJoinSubqueryQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         "user_totals",
                                                         "user_id"
@@ -278,7 +277,7 @@ public sealed record LeftJoinSubqueryQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

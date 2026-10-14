@@ -18,11 +18,11 @@ public sealed record CoalesceQueryTests
                   "select": [
                     {
                       "alias": "score_or_age",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.users",
@@ -44,12 +44,12 @@ public sealed record CoalesceQueryTests
                     },
                     {
                       "alias": "score_or_null",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "decimal",
+                          "nullable": true
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.users",

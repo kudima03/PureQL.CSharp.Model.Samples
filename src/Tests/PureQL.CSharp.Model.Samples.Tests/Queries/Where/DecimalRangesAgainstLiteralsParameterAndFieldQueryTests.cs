@@ -17,9 +17,15 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "greaterThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_age",
@@ -31,11 +37,14 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQueryTests
                           "type": {
                             "name": "decimal"
                           },
-                          "value": 10.5
+                          "value": "10.5"
                         }
                       },
                       {
                         "operator": "lessThan",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_age",
@@ -52,6 +61,9 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQueryTests
                       },
                       {
                         "operator": "greaterThan",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_age",
@@ -60,7 +72,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQueryTests
                           }
                         },
                         "right": {
-                          "param_name": "min_age",
+                          "param": "min_age",
                           "type": {
                             "name": "decimal"
                           }
@@ -68,6 +80,9 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQueryTests
                       },
                       {
                         "operator": "lessThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_age",
@@ -89,9 +104,6 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -102,9 +114,6 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQueryTests
                     },
                     {
                       "alias": "user_age",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_age",

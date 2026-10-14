@@ -54,6 +54,7 @@ public sealed record DateMathEverywhereQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyUuid(
+                                "order_user_id",
                                 new UuidRow(
                                     new FieldUuid(
                                         new JoinedString(
@@ -75,7 +76,7 @@ public sealed record DateMathEverywhereQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupUuid(
                                 "order_user_id",
-                                new UuidGroup(new KeyUuid(0))
+                                new UuidGroup(new KeyUuid("order_user_id"))
                             )
                         )
                     ),
@@ -138,36 +139,28 @@ public sealed record DateMathEverywhereQuery
                         new LessThanOrEqualRow(
                             new LessThanOrEqualDecimalRow(
                                 new DecimalNullableRow(
-                                    new DifferenceDecimalNullableRow(
-                                        new DateDiffDaysIntegerNullableRow(
-                                            new DateNullableRow(
-                                                new FieldAsDateNullable(
-                                                    new FieldDate(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedOnColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
+                                    new IntegerRow(
+                                        new DateDiffDaysIntegerRow(
+                                            new DateRow(
+                                                new FieldDate(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrdersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new PlacedOnColumn().Name.TextValue
                                                 )
                                             ),
-                                            new DateNullableRow(
-                                                new LiteralAsDateNullable(
-                                                    new LiteralDate(
-                                                        new DateOnly(2024, 6, 1)
-                                                    )
-                                                )
+                                            new DateRow(
+                                                new LiteralDate(new DateOnly(2024, 6, 1))
                                             )
                                         )
                                     )
                                 ),
                                 new DecimalNullableRow(
-                                    new LiteralAsDecimalNullable(new LiteralInteger(4))
+                                    new IntegerRow(new LiteralInteger(4))
                                 )
                             )
                         )
@@ -178,10 +171,10 @@ public sealed record DateMathEverywhereQuery
                         new GreaterThanOrEqualGroup(
                             new GreaterThanOrEqualDateGroup(
                                 new DateNullableGroup(
-                                    new AggregateDateNullableGroup(
-                                        new MaxDateNullableGroup(
-                                            new DateNullableRow(
-                                                new FieldAsDateNullable(
+                                    new DateGroup(
+                                        new AggregateDateGroup(
+                                            new MaxDateGroup(
+                                                new DateRow(
                                                     new FieldDate(
                                                         new JoinedString(
                                                             new DotString(),
@@ -200,16 +193,12 @@ public sealed record DateMathEverywhereQuery
                                     )
                                 ),
                                 new DateNullableGroup(
-                                    new DateAddDaysDateNullableGroup(
-                                        new DateNullableGroup(
-                                            new LiteralAsDateNullable(
+                                    new DateGroup(
+                                        new DateAddDaysDateGroup(
+                                            new DateGroup(
                                                 new LiteralDate(new DateOnly(2024, 6, 30))
-                                            )
-                                        ),
-                                        new IntegerNullableGroup(
-                                            new LiteralAsIntegerNullable(
-                                                new LiteralInteger(-27)
-                                            )
+                                            ),
+                                            new IntegerGroup(new LiteralInteger(-27))
                                         )
                                     )
                                 )
@@ -219,7 +208,7 @@ public sealed record DateMathEverywhereQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

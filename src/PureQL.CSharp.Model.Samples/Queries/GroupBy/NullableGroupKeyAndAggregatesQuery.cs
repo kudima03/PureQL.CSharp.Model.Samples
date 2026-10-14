@@ -59,21 +59,19 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                     new GroupKey(
                         new GroupKeyNullable(
                             new GroupKeyStringNullable(
-                                new StringNullableRow(
-                                    new FieldAsStringNullable(
-                                        new FieldStringNullable(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new UsersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new UserNameColumn().Name.TextValue
-                                        )
+                                "buyer",
+                                new ExactStringNullableRow(
+                                    new FieldStringNullable(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserNameColumn().Name.TextValue
                                     )
-                                ),
-                                "buyer"
+                                )
                             )
                         )
                     ),
@@ -83,8 +81,8 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                         new SelectItemGroupNullable(
                             new SelectItemGroupStringNullable(
                                 "buyer",
-                                new StringNullableGroup(
-                                    new KeyAsStringNullable(new KeyStringNullable(0))
+                                new ExactStringNullableGroup(
+                                    new KeyStringNullable("buyer")
                                 )
                             )
                         )
@@ -143,52 +141,54 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupDecimal(
                                 "min_large_total",
-                                new DecimalGroup(
+                                new ExactDecimalGroup(
                                     new ConditionalDecimalGroup(
                                         new CoalesceDecimalGroup([
                                             new DecimalNullableGroup(
-                                                new AggregateDecimalNullableGroup(
-                                                    new MinDecimalNullableGroup(
-                                                        new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                                new ExactDecimalNullableGroup(
+                                                    new AggregateDecimalNullableGroup(
+                                                        new MinDecimalNullableGroup(
+                                                            new DecimalNullableRow(
+                                                                new ExactDecimalRow(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrdersTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new OrderTotalColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
-                                                            )
-                                                        ),
-                                                        new BooleanRow(
-                                                            new ComparisonRow(
-                                                                new GreaterThanRow(
-                                                                    new GreaterThanDecimalRow(
-                                                                        new DecimalNullableRow(
-                                                                            new FieldAsDecimalNullable(
-                                                                                new FieldDecimal(
-                                                                                    new JoinedString(
-                                                                                        new DotString(),
-                                                                                        [
-                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                            new OrdersTable().Name,
-                                                                                        ]
-                                                                                    ).TextValue,
-                                                                                    new OrderTotalColumn()
-                                                                                        .Name
-                                                                                        .TextValue
+                                                            ),
+                                                            new BooleanRow(
+                                                                new ComparisonRow(
+                                                                    new GreaterThanRow(
+                                                                        new GreaterThanDecimalRow(
+                                                                            new DecimalNullableRow(
+                                                                                new ExactDecimalRow(
+                                                                                    new FieldDecimal(
+                                                                                        new JoinedString(
+                                                                                            new DotString(),
+                                                                                            [
+                                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                                new OrdersTable().Name,
+                                                                                            ]
+                                                                                        ).TextValue,
+                                                                                        new OrderTotalColumn()
+                                                                                            .Name
+                                                                                            .TextValue
+                                                                                    )
                                                                                 )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalNullableRow(
-                                                                            new LiteralAsDecimalNullable(
-                                                                                new LiteralInteger(
-                                                                                    100
+                                                                            ),
+                                                                            new DecimalNullableRow(
+                                                                                new IntegerRow(
+                                                                                    new LiteralInteger(
+                                                                                        100
+                                                                                    )
                                                                                 )
                                                                             )
                                                                         )
@@ -200,9 +200,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                                 )
                                             ),
                                             new DecimalNullableGroup(
-                                                new LiteralAsDecimalNullable(
-                                                    new LiteralInteger(0)
-                                                )
+                                                new IntegerGroup(new LiteralInteger(0))
                                             ),
                                         ])
                                     )
@@ -215,7 +213,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Left,
+                            JoinKind.Left,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -231,7 +229,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                                 new EqualRow(
                                                     new EqualUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -247,7 +245,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                                             )
                                                         ),
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -290,10 +288,10 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                         new GreaterThanGroup(
                             new GreaterThanDatetimeGroup(
                                 new DatetimeNullableGroup(
-                                    new AggregateDatetimeNullableGroup(
-                                        new MaxDatetimeNullableGroup(
-                                            new DatetimeNullableRow(
-                                                new FieldAsDatetimeNullable(
+                                    new DatetimeGroup(
+                                        new AggregateDatetimeGroup(
+                                            new MaxDatetimeGroup(
+                                                new DatetimeRow(
                                                     new FieldDatetime(
                                                         new JoinedString(
                                                             new DotString(),
@@ -312,7 +310,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                     )
                                 ),
                                 new DatetimeNullableGroup(
-                                    new LiteralAsDatetimeNullable(
+                                    new DatetimeGroup(
                                         new LiteralDatetime(
                                             new DateTimeOffset(
                                                 2024,
@@ -332,15 +330,17 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                 ),
                 [
                     new OrderItemGroup(
-                        new ValueGroup(
+                        new ExprGroup(
                             new StringNullableGroup(
-                                new KeyAsStringNullable(new KeyStringNullable(0))
+                                new ExactStringNullableGroup(
+                                    new KeyStringNullable("buyer")
+                                )
                             )
                         )
                     ),
                 ],
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

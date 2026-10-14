@@ -79,7 +79,7 @@ public sealed record JoinOnNullableKeyQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -95,7 +95,7 @@ public sealed record JoinOnNullableKeyQuery
                                                 new EqualRow(
                                                     new EqualUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new ExactUuidNullableRow(
                                                                 new FieldUuidNullable(
                                                                     "a",
                                                                     new EmployeeManagerIdColumn()
@@ -105,7 +105,7 @@ public sealed record JoinOnNullableKeyQuery
                                                             )
                                                         ),
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new ExactUuidNullableRow(
                                                                 new FieldUuidNullable(
                                                                     "b",
                                                                     new EmployeeManagerIdColumn()
@@ -123,7 +123,7 @@ public sealed record JoinOnNullableKeyQuery
                                                 new NotEqualRow(
                                                     new NotEqualUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new ExactUuidNullableRow(
                                                                 new FieldUuidNullable(
                                                                     "a",
                                                                     new EmployeeManagerIdColumn()
@@ -133,7 +133,7 @@ public sealed record JoinOnNullableKeyQuery
                                                             )
                                                         ),
                                                         new UuidNullableRow(
-                                                            new LiteralAsUuidNullable(
+                                                            new ExactUuidNullableRow(
                                                                 new LiteralUuidNullable()
                                                             )
                                                         )
@@ -146,7 +146,7 @@ public sealed record JoinOnNullableKeyQuery
                                                 new NotEqualRow(
                                                     new NotEqualUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     "a",
                                                                     new EmployeeIdColumn()
@@ -156,7 +156,7 @@ public sealed record JoinOnNullableKeyQuery
                                                             )
                                                         ),
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     "b",
                                                                     new EmployeeIdColumn()
@@ -179,7 +179,7 @@ public sealed record JoinOnNullableKeyQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

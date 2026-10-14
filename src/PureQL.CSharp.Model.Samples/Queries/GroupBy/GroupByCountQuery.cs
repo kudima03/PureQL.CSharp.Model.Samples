@@ -50,6 +50,7 @@ public sealed record GroupByCountQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyString(
+                                "order_status",
                                 new StringRow(
                                     new FieldString(
                                         new JoinedString(
@@ -71,7 +72,7 @@ public sealed record GroupByCountQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupString(
                                 "order_status",
-                                new StringGroup(new KeyString(0))
+                                new StringGroup(new KeyString("order_status"))
                             )
                         )
                     ),

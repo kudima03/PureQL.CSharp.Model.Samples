@@ -18,11 +18,11 @@ public sealed record ConcatQueryTests
                   "select": [
                     {
                       "alias": "label",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "operator": "concat",
+                        "type": {
+                          "name": "string"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.products",

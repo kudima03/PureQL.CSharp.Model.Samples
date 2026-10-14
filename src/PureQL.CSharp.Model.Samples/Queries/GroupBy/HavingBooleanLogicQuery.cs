@@ -41,6 +41,7 @@ public sealed record HavingBooleanLogicQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyUuid(
+                                "order_user_id",
                                 new UuidRow(
                                     new FieldUuid(
                                         new JoinedString(
@@ -62,7 +63,7 @@ public sealed record HavingBooleanLogicQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupUuid(
                                 "order_user_id",
-                                new UuidGroup(new KeyUuid(0))
+                                new UuidGroup(new KeyUuid("order_user_id"))
                             )
                         )
                     ),
@@ -70,11 +71,11 @@ public sealed record HavingBooleanLogicQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupDecimal(
                                 "revenue",
-                                new DecimalGroup(
+                                new ExactDecimalGroup(
                                     new AggregateDecimalGroup(
                                         new SumDecimalGroup(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -110,21 +111,23 @@ public sealed record HavingBooleanLogicQuery
                                                 new GreaterThanGroup(
                                                     new GreaterThanDecimalGroup(
                                                         new DecimalNullableGroup(
-                                                            new AggregateDecimalNullableGroup(
-                                                                new SumDecimalGroup(
-                                                                    new DecimalNullableRow(
-                                                                        new FieldAsDecimalNullable(
-                                                                            new FieldDecimal(
-                                                                                new JoinedString(
-                                                                                    new DotString(),
-                                                                                    [
-                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                        new OrdersTable().Name,
-                                                                                    ]
-                                                                                ).TextValue,
-                                                                                new OrderTotalColumn()
-                                                                                    .Name
-                                                                                    .TextValue
+                                                            new ExactDecimalGroup(
+                                                                new AggregateDecimalGroup(
+                                                                    new SumDecimalGroup(
+                                                                        new DecimalNullableRow(
+                                                                            new ExactDecimalRow(
+                                                                                new FieldDecimal(
+                                                                                    new JoinedString(
+                                                                                        new DotString(),
+                                                                                        [
+                                                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                                                            new OrdersTable().Name,
+                                                                                        ]
+                                                                                    ).TextValue,
+                                                                                    new OrderTotalColumn()
+                                                                                        .Name
+                                                                                        .TextValue
+                                                                                )
                                                                             )
                                                                         )
                                                                     )
@@ -132,7 +135,7 @@ public sealed record HavingBooleanLogicQuery
                                                             )
                                                         ),
                                                         new DecimalNullableGroup(
-                                                            new LiteralAsDecimalNullable(
+                                                            new IntegerGroup(
                                                                 new LiteralInteger(250)
                                                             )
                                                         )
@@ -151,7 +154,7 @@ public sealed record HavingBooleanLogicQuery
                                                                         new EqualRow(
                                                                             new EqualStringRow(
                                                                                 new StringNullableRow(
-                                                                                    new FieldAsStringNullable(
+                                                                                    new StringRow(
                                                                                         new FieldString(
                                                                                             new JoinedString(
                                                                                                 new DotString(),
@@ -167,7 +170,7 @@ public sealed record HavingBooleanLogicQuery
                                                                                     )
                                                                                 ),
                                                                                 new StringNullableRow(
-                                                                                    new LiteralAsStringNullable(
+                                                                                    new StringRow(
                                                                                         new LiteralString(
                                                                                             "cancelled"
                                                                                         )
@@ -191,12 +194,14 @@ public sealed record HavingBooleanLogicQuery
                                     new GreaterThanOrEqualGroup(
                                         new GreaterThanOrEqualDecimalGroup(
                                             new DecimalNullableGroup(
-                                                new AggregateDecimalNullableGroup(
-                                                    new CountGroup()
+                                                new IntegerGroup(
+                                                    new AggregateIntegerGroup(
+                                                        new CountGroup()
+                                                    )
                                                 )
                                             ),
                                             new DecimalNullableGroup(
-                                                new ParamAsDecimalNullable(
+                                                new IntegerGroup(
                                                     new ParamInteger("min_orders")
                                                 )
                                             )
@@ -209,7 +214,7 @@ public sealed record HavingBooleanLogicQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 }

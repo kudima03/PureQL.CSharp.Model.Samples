@@ -17,6 +17,9 @@ public sealed record ParametersInWhereAndSelectQueryTests
                   },
                   "where": {
                     "operator": "greaterThanOrEqual",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "source": "schema_with_foreign_keys.orders",
                       "field": "placed_at",
@@ -25,7 +28,7 @@ public sealed record ParametersInWhereAndSelectQueryTests
                       }
                     },
                     "right": {
-                      "param_name": "since",
+                      "param": "since",
                       "type": {
                         "name": "datetime"
                       }
@@ -34,9 +37,6 @@ public sealed record ParametersInWhereAndSelectQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -47,11 +47,8 @@ public sealed record ParametersInWhereAndSelectQueryTests
                     },
                     {
                       "alias": "report_currency",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
-                        "param_name": "currency",
+                        "param": "currency",
                         "type": {
                           "name": "string"
                         }

@@ -21,10 +21,13 @@ public sealed record SubqueryPipelineQueryTests
                         },
                         "joins": [
                           {
-                            "type": "inner",
+                            "kind": "inner",
                             "entity": "schema_with_foreign_keys.orders",
                             "on": {
                               "operator": "equal",
+                              "type": {
+                                "name": "boolean"
+                              },
                               "left": {
                                 "source": "schema_with_foreign_keys.order_items",
                                 "field": "item_order_id",
@@ -42,10 +45,13 @@ public sealed record SubqueryPipelineQueryTests
                             }
                           },
                           {
-                            "type": "inner",
+                            "kind": "inner",
                             "entity": "schema_with_foreign_keys.products",
                             "on": {
                               "operator": "equal",
+                              "type": {
+                                "name": "boolean"
+                              },
                               "left": {
                                 "source": "schema_with_foreign_keys.order_items",
                                 "field": "item_product_id",
@@ -65,6 +71,9 @@ public sealed record SubqueryPipelineQueryTests
                         ],
                         "where": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",
@@ -82,9 +91,6 @@ public sealed record SubqueryPipelineQueryTests
                         "select": [
                           {
                             "alias": "user_id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_user_id",
@@ -95,11 +101,11 @@ public sealed record SubqueryPipelineQueryTests
                           },
                           {
                             "alias": "line_total",
-                            "type": {
-                              "name": "decimal"
-                            },
                             "expression": {
                               "operator": "multiply",
+                              "type": {
+                                "name": "decimal"
+                              },
                               "values": [
                                 {
                                   "source": "schema_with_foreign_keys.products",
@@ -129,9 +135,7 @@ public sealed record SubqueryPipelineQueryTests
                         },
                         "groupBy": [
                           {
-                            "type": {
-                              "name": "uuid"
-                            },
+                            "alias": "user_id",
                             "expression": {
                               "source": "shipped_lines",
                               "field": "user_id",
@@ -143,8 +147,14 @@ public sealed record SubqueryPipelineQueryTests
                         ],
                         "having": {
                           "operator": "greaterThan",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "operator": "sum",
+                            "type": {
+                              "name": "decimal"
+                            },
                             "selector": {
                               "source": "shipped_lines",
                               "field": "line_total",
@@ -163,11 +173,8 @@ public sealed record SubqueryPipelineQueryTests
                         "select": [
                           {
                             "alias": "user_id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
-                              "key": 0,
+                              "key": "user_id",
                               "type": {
                                 "name": "uuid"
                               }
@@ -175,11 +182,11 @@ public sealed record SubqueryPipelineQueryTests
                           },
                           {
                             "alias": "revenue",
-                            "type": {
-                              "name": "decimal"
-                            },
                             "expression": {
                               "operator": "sum",
+                              "type": {
+                                "name": "decimal"
+                              },
                               "selector": {
                                 "source": "shipped_lines",
                                 "field": "line_total",
@@ -191,11 +198,11 @@ public sealed record SubqueryPipelineQueryTests
                           },
                           {
                             "alias": "lines",
-                            "type": {
-                              "name": "integer"
-                            },
                             "expression": {
-                              "operator": "count"
+                              "operator": "count",
+                              "type": {
+                                "name": "integer"
+                              }
                             }
                           }
                         ]
@@ -209,6 +216,9 @@ public sealed record SubqueryPipelineQueryTests
                         },
                         "where": {
                           "operator": "lessThan",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.users",
                             "field": "last_login",
@@ -226,9 +236,6 @@ public sealed record SubqueryPipelineQueryTests
                         "select": [
                           {
                             "alias": "id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
                               "source": "schema_with_foreign_keys.users",
                               "field": "user_id",
@@ -247,10 +254,13 @@ public sealed record SubqueryPipelineQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "subquery": "user_revenue",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "u",
                           "field": "user_id",
@@ -270,9 +280,15 @@ public sealed record SubqueryPipelineQueryTests
                   ],
                   "where": {
                     "operator": "not",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "condition": {
                       "operator": "in",
-                      "value": {
+                      "type": {
+                        "name": "boolean"
+                      },
+                      "operand": {
                         "source": "u",
                         "field": "user_id",
                         "type": {
@@ -291,9 +307,6 @@ public sealed record SubqueryPipelineQueryTests
                   "select": [
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "u",
                         "field": "user_name",
@@ -304,9 +317,6 @@ public sealed record SubqueryPipelineQueryTests
                     },
                     {
                       "alias": "revenue",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "user_revenue",
                         "field": "revenue",
@@ -317,11 +327,11 @@ public sealed record SubqueryPipelineQueryTests
                     },
                     {
                       "alias": "average_line",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "divide",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "user_revenue",

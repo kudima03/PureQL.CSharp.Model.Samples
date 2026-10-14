@@ -17,6 +17,9 @@ public sealed record WhereStatusEqualsLiteralQueryTests
                   },
                   "where": {
                     "operator": "equal",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "source": "schema_with_foreign_keys.orders",
                       "field": "order_status",
@@ -34,9 +37,6 @@ public sealed record WhereStatusEqualsLiteralQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -47,9 +47,6 @@ public sealed record WhereStatusEqualsLiteralQueryTests
                     },
                     {
                       "alias": "order_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_total",

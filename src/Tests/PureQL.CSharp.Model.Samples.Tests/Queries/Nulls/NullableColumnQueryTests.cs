@@ -18,9 +18,6 @@ public sealed record NullableColumnQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -31,10 +28,6 @@ public sealed record NullableColumnQueryTests
                     },
                     {
                       "alias": "user_score",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_score",

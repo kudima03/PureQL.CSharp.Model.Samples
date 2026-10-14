@@ -69,18 +69,16 @@ public sealed record ShareOfTotalQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "order_total",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new OrdersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new OrderTotalColumn().Name.TextValue
-                                        )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -90,11 +88,11 @@ public sealed record ShareOfTotalQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "share_of_total",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ArithmeticDecimalProjection(
                                         new DivideDecimalProjection([
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -110,21 +108,23 @@ public sealed record ShareOfTotalQuery
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new AggregateDecimalProjection(
-                                                    new SumDecimalProjection(
-                                                        new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                                new ExactDecimalProjection(
+                                                    new AggregateDecimalProjection(
+                                                        new SumDecimalProjection(
+                                                            new DecimalNullableRow(
+                                                                new ExactDecimalRow(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrdersTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new OrderTotalColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
                                                             )
                                                         )

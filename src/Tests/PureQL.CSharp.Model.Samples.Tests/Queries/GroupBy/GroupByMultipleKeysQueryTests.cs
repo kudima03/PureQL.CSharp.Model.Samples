@@ -17,9 +17,7 @@ public sealed record GroupByMultipleKeysQueryTests
                   },
                   "groupBy": [
                     {
-                      "type": {
-                        "name": "uuid"
-                      },
+                      "alias": "order_user_id",
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_user_id",
@@ -29,9 +27,7 @@ public sealed record GroupByMultipleKeysQueryTests
                       }
                     },
                     {
-                      "type": {
-                        "name": "string"
-                      },
+                      "alias": "order_status",
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_status",
@@ -44,11 +40,8 @@ public sealed record GroupByMultipleKeysQueryTests
                   "select": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "order_user_id",
                         "type": {
                           "name": "uuid"
                         }
@@ -56,11 +49,8 @@ public sealed record GroupByMultipleKeysQueryTests
                     },
                     {
                       "alias": "order_status",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
-                        "key": 1,
+                        "key": "order_status",
                         "type": {
                           "name": "string"
                         }
@@ -68,20 +58,20 @@ public sealed record GroupByMultipleKeysQueryTests
                     },
                     {
                       "alias": "orders",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       }
                     },
                     {
                       "alias": "revenue",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",

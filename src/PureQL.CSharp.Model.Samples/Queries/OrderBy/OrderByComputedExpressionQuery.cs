@@ -71,11 +71,11 @@ public sealed record OrderByComputedExpressionQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "subtotal",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ArithmeticDecimalProjection(
                                         new MultiplyDecimalProjection([
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -91,7 +91,7 @@ public sealed record OrderByComputedExpressionQuery
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -115,7 +115,7 @@ public sealed record OrderByComputedExpressionQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -128,7 +128,7 @@ public sealed record OrderByComputedExpressionQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -144,7 +144,7 @@ public sealed record OrderByComputedExpressionQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -169,41 +169,43 @@ public sealed record OrderByComputedExpressionQuery
                 where: null,
                 [
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new DecimalNullableProjection(
-                                new ArithmeticDecimalNullableProjection(
-                                    new MultiplyDecimalNullableProjection([
-                                        new DecimalNullableProjection(
-                                            new FieldAsDecimalNullable(
-                                                new FieldDecimal(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new ProductsTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new ProductPriceColumn()
-                                                        .Name
-                                                        .TextValue
+                                new ExactDecimalProjection(
+                                    new ArithmeticDecimalProjection(
+                                        new MultiplyDecimalProjection([
+                                            new DecimalProjection(
+                                                new ExactDecimalProjection(
+                                                    new FieldDecimal(
+                                                        new JoinedString(
+                                                            new DotString(),
+                                                            [
+                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                new ProductsTable().Name,
+                                                            ]
+                                                        ).TextValue,
+                                                        new ProductPriceColumn()
+                                                            .Name
+                                                            .TextValue
+                                                    )
                                                 )
-                                            )
-                                        ),
-                                        new DecimalNullableProjection(
-                                            new FieldAsDecimalNullable(
-                                                new FieldDecimal(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new OrderItemsTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new ItemQtyColumn().Name.TextValue
+                                            ),
+                                            new DecimalProjection(
+                                                new ExactDecimalProjection(
+                                                    new FieldDecimal(
+                                                        new JoinedString(
+                                                            new DotString(),
+                                                            [
+                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                new OrderItemsTable().Name,
+                                                            ]
+                                                        ).TextValue,
+                                                        new ItemQtyColumn().Name.TextValue
+                                                    )
                                                 )
-                                            )
-                                        ),
-                                    ])
+                                            ),
+                                        ])
+                                    )
                                 )
                             )
                         ),
@@ -211,7 +213,7 @@ public sealed record OrderByComputedExpressionQuery
                     ),
                 ],
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

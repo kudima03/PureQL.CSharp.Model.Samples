@@ -21,6 +21,9 @@ public sealed record FromSubqueryQueryTests
                         },
                         "where": {
                           "operator": "greaterThanOrEqual",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "placed_at",
@@ -38,9 +41,6 @@ public sealed record FromSubqueryQueryTests
                         "select": [
                           {
                             "alias": "id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_id",
@@ -51,9 +51,6 @@ public sealed record FromSubqueryQueryTests
                           },
                           {
                             "alias": "total",
-                            "type": {
-                              "name": "decimal"
-                            },
                             "expression": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_total",
@@ -72,9 +69,6 @@ public sealed record FromSubqueryQueryTests
                   "select": [
                     {
                       "alias": "id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "recent_orders",
                         "field": "id",
@@ -85,9 +79,6 @@ public sealed record FromSubqueryQueryTests
                     },
                     {
                       "alias": "total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "recent_orders",
                         "field": "total",

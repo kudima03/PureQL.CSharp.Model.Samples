@@ -48,11 +48,11 @@ public sealed record FullJoinQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionUuidNullable(
                                 "user_id",
-                                new UuidNullableProjection(
+                                new ExactUuidNullableProjection(
                                     new ConditionalUuidNullableProjection(
                                         new CoalesceUuidNullableProjection([
                                             new UuidNullableProjection(
-                                                new FieldAsUuidNullable(
+                                                new ExactUuidNullableProjection(
                                                     new FieldUuidNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -68,7 +68,7 @@ public sealed record FullJoinQuery
                                                 )
                                             ),
                                             new UuidNullableProjection(
-                                                new FieldAsUuidNullable(
+                                                new ExactUuidNullableProjection(
                                                     new FieldUuidNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -97,7 +97,7 @@ public sealed record FullJoinQuery
                                     new ConditionalStringProjection(
                                         new CoalesceStringProjection([
                                             new StringNullableProjection(
-                                                new FieldAsStringNullable(
+                                                new ExactStringNullableProjection(
                                                     new FieldStringNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -113,7 +113,7 @@ public sealed record FullJoinQuery
                                                 )
                                             ),
                                             new StringNullableProjection(
-                                                new LiteralAsStringNullable(
+                                                new StringProjection(
                                                     new LiteralString("none")
                                                 )
                                             ),
@@ -128,7 +128,7 @@ public sealed record FullJoinQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Full,
+                            JoinKind.Full,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -141,7 +141,7 @@ public sealed record FullJoinQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -157,7 +157,7 @@ public sealed record FullJoinQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -182,7 +182,7 @@ public sealed record FullJoinQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

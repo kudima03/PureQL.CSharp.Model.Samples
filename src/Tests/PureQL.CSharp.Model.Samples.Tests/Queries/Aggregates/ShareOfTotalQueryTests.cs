@@ -18,9 +18,6 @@ public sealed record ShareOfTotalQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -31,9 +28,6 @@ public sealed record ShareOfTotalQueryTests
                     },
                     {
                       "alias": "order_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_total",
@@ -44,11 +38,11 @@ public sealed record ShareOfTotalQueryTests
                     },
                     {
                       "alias": "share_of_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "divide",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.orders",
@@ -59,6 +53,9 @@ public sealed record ShareOfTotalQueryTests
                           },
                           {
                             "operator": "sum",
+                            "type": {
+                              "name": "decimal"
+                            },
                             "selector": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_total",

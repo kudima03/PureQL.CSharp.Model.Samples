@@ -17,13 +17,19 @@ public sealed record RightJoinQueryTests
                   },
                   "joins": [
                     {
-                      "type": "right",
+                      "kind": "right",
                       "entity": "schema_with_foreign_keys.orders",
                       "on": {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "equal",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.users",
                               "field": "user_id",
@@ -53,9 +59,6 @@ public sealed record RightJoinQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -66,10 +69,6 @@ public sealed record RightJoinQueryTests
                     },
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",

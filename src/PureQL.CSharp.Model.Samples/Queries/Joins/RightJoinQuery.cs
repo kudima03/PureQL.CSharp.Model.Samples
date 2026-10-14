@@ -67,18 +67,16 @@ public sealed record RightJoinQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionStringNullable(
                                 "user_name",
-                                new StringNullableProjection(
-                                    new FieldAsStringNullable(
-                                        new FieldStringNullable(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new UsersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new UserNameColumn().Name.TextValue
-                                        )
+                                new ExactStringNullableProjection(
+                                    new FieldStringNullable(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserNameColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -89,7 +87,7 @@ public sealed record RightJoinQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Right,
+                            JoinKind.Right,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -105,7 +103,7 @@ public sealed record RightJoinQuery
                                                 new EqualRow(
                                                     new EqualUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -121,7 +119,7 @@ public sealed record RightJoinQuery
                                                             )
                                                         ),
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -161,7 +159,7 @@ public sealed record RightJoinQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

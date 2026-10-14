@@ -18,9 +18,6 @@ public sealed record TypedNullLiteralsQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -31,14 +28,17 @@ public sealed record TypedNullLiteralsQueryTests
                     },
                     {
                       "alias": "shipped_total",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "if",
+                        "type": {
+                          "name": "decimal",
+                          "nullable": true
+                        },
                         "condition": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",
@@ -71,12 +71,12 @@ public sealed record TypedNullLiteralsQueryTests
                     },
                     {
                       "alias": "always_null",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "subtract",
+                        "type": {
+                          "name": "decimal",
+                          "nullable": true
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.orders",

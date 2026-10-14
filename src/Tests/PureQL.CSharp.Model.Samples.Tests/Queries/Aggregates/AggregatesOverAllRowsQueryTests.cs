@@ -15,23 +15,23 @@ public sealed record AggregatesOverAllRowsQueryTests
                   "from": {
                     "entity": "schema_with_foreign_keys.orders"
                   },
-                  "select": [
+                  "aggregate": [
                     {
                       "alias": "orders",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       }
                     },
                     {
                       "alias": "revenue",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",
@@ -43,12 +43,12 @@ public sealed record AggregatesOverAllRowsQueryTests
                     },
                     {
                       "alias": "smallest",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "min",
+                        "type": {
+                          "name": "decimal",
+                          "nullable": true
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",
@@ -60,12 +60,12 @@ public sealed record AggregatesOverAllRowsQueryTests
                     },
                     {
                       "alias": "latest",
-                      "type": {
-                        "name": "datetime",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "max",
+                        "type": {
+                          "name": "datetime",
+                          "nullable": true
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_at",
@@ -77,12 +77,12 @@ public sealed record AggregatesOverAllRowsQueryTests
                     },
                     {
                       "alias": "average",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "average",
+                        "type": {
+                          "name": "decimal",
+                          "nullable": true
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",
@@ -94,13 +94,16 @@ public sealed record AggregatesOverAllRowsQueryTests
                     },
                     {
                       "alias": "any_cancelled",
-                      "type": {
-                        "name": "boolean"
-                      },
                       "expression": {
                         "operator": "any",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "predicate": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",
@@ -119,13 +122,16 @@ public sealed record AggregatesOverAllRowsQueryTests
                     },
                     {
                       "alias": "all_positive",
-                      "type": {
-                        "name": "boolean"
-                      },
                       "expression": {
                         "operator": "all",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "predicate": {
                           "operator": "greaterThan",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_total",

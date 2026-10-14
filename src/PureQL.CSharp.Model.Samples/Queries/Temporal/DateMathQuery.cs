@@ -126,36 +126,28 @@ public sealed record DateMathQuery
                         new LessThanOrEqualRow(
                             new LessThanOrEqualDecimalRow(
                                 new DecimalNullableRow(
-                                    new DifferenceDecimalNullableRow(
-                                        new DateDiffDaysIntegerNullableRow(
-                                            new DateNullableRow(
-                                                new FieldAsDateNullable(
-                                                    new FieldDate(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedOnColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
+                                    new IntegerRow(
+                                        new DateDiffDaysIntegerRow(
+                                            new DateRow(
+                                                new FieldDate(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrdersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new PlacedOnColumn().Name.TextValue
                                                 )
                                             ),
-                                            new DateNullableRow(
-                                                new LiteralAsDateNullable(
-                                                    new LiteralDate(
-                                                        new DateOnly(2024, 6, 1)
-                                                    )
-                                                )
+                                            new DateRow(
+                                                new LiteralDate(new DateOnly(2024, 6, 1))
                                             )
                                         )
                                     )
                                 ),
                                 new DecimalNullableRow(
-                                    new LiteralAsDecimalNullable(new LiteralInteger(3))
+                                    new IntegerRow(new LiteralInteger(3))
                                 )
                             )
                         )
@@ -163,7 +155,7 @@ public sealed record DateMathQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

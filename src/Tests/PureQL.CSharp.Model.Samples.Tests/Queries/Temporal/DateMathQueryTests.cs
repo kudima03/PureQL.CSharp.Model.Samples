@@ -17,8 +17,14 @@ public sealed record DateMathQueryTests
                   },
                   "where": {
                     "operator": "lessThanOrEqual",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "operator": "dateDiffDays",
+                      "type": {
+                        "name": "integer"
+                      },
                       "left": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "placed_on",
@@ -43,9 +49,6 @@ public sealed record DateMathQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -56,11 +59,11 @@ public sealed record DateMathQueryTests
                     },
                     {
                       "alias": "due_date",
-                      "type": {
-                        "name": "date"
-                      },
                       "expression": {
                         "operator": "dateAddDays",
+                        "type": {
+                          "name": "date"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_on",
@@ -78,11 +81,11 @@ public sealed record DateMathQueryTests
                     },
                     {
                       "alias": "days_open",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "dateDiffDays",
+                        "type": {
+                          "name": "integer"
+                        },
                         "left": {
                           "type": {
                             "name": "date"

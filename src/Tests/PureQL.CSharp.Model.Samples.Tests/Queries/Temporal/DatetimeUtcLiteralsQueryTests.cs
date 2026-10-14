@@ -2,7 +2,7 @@ using PureQL.CSharp.Model.Samples.Queries.Temporal;
 
 namespace PureQL.CSharp.Model.Samples.Tests.Queries.Temporal;
 
-public sealed record DatetimeLiteralsWithOffsetsQueryTests
+public sealed record DatetimeUtcLiteralsQueryTests
 {
     [Fact]
     public void ValueSerializesToExpectedJson()
@@ -17,9 +17,15 @@ public sealed record DatetimeLiteralsWithOffsetsQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "greaterThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_at",
@@ -31,11 +37,14 @@ public sealed record DatetimeLiteralsWithOffsetsQueryTests
                           "type": {
                             "name": "datetime"
                           },
-                          "value": "2024-06-02T03:00:00+03:00"
+                          "value": "2024-06-02T00:00:00Z"
                         }
                       },
                       {
                         "operator": "lessThan",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_at",
@@ -47,7 +56,7 @@ public sealed record DatetimeLiteralsWithOffsetsQueryTests
                           "type": {
                             "name": "datetime"
                           },
-                          "value": "2024-06-05T14:00:00.123456+05:30"
+                          "value": "2024-06-05T08:30:00.123456Z"
                         }
                       }
                     ]
@@ -55,9 +64,6 @@ public sealed record DatetimeLiteralsWithOffsetsQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -70,7 +76,7 @@ public sealed record DatetimeLiteralsWithOffsetsQueryTests
                 }
                 """
             ).TextValue,
-            new QueryJson(new DatetimeLiteralsWithOffsetsQuery().Value).TextValue
+            new QueryJson(new DatetimeUtcLiteralsQuery().Value).TextValue
         );
     }
 
@@ -104,7 +110,7 @@ public sealed record DatetimeLiteralsWithOffsetsQueryTests
                 }
                 """
             ).TextValue,
-            new DataSetJson(new DatetimeLiteralsWithOffsetsQuery().Result).TextValue
+            new DataSetJson(new DatetimeUtcLiteralsQuery().Result).TextValue
         );
     }
 }

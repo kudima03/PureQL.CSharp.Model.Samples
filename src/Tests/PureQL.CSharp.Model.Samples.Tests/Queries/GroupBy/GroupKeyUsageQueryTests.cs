@@ -17,13 +17,19 @@ public sealed record GroupKeyUsageQueryTests
                   },
                   "joins": [
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.users",
                       "on": {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "equal",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_user_id",
@@ -53,9 +59,6 @@ public sealed record GroupKeyUsageQueryTests
                   "groupBy": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_user_id",
@@ -66,10 +69,6 @@ public sealed record GroupKeyUsageQueryTests
                     },
                     {
                       "alias": "buyer",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",
@@ -81,12 +80,12 @@ public sealed record GroupKeyUsageQueryTests
                     },
                     {
                       "alias": "days_since_signup",
-                      "type": {
-                        "name": "integer",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "dateDiffDays",
+                        "type": {
+                          "name": "integer",
+                          "nullable": true
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_on",
@@ -107,11 +106,17 @@ public sealed record GroupKeyUsageQueryTests
                   ],
                   "having": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "notEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
-                          "key": 1,
+                          "key": "buyer",
                           "type": {
                             "name": "string",
                             "nullable": true
@@ -127,8 +132,11 @@ public sealed record GroupKeyUsageQueryTests
                       },
                       {
                         "operator": "lessThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
-                          "key": 2,
+                          "key": "days_since_signup",
                           "type": {
                             "name": "integer",
                             "nullable": true
@@ -146,11 +154,8 @@ public sealed record GroupKeyUsageQueryTests
                   "select": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "order_user_id",
                         "type": {
                           "name": "uuid"
                         }
@@ -158,14 +163,14 @@ public sealed record GroupKeyUsageQueryTests
                     },
                     {
                       "alias": "buyer",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "string"
+                        },
                         "values": [
                           {
-                            "key": 1,
+                            "key": "buyer",
                             "type": {
                               "name": "string",
                               "nullable": true
@@ -182,15 +187,15 @@ public sealed record GroupKeyUsageQueryTests
                     },
                     {
                       "alias": "hours_since_signup",
-                      "type": {
-                        "name": "integer",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "integer",
+                          "nullable": true
+                        },
                         "values": [
                           {
-                            "key": 2,
+                            "key": "days_since_signup",
                             "type": {
                               "name": "integer",
                               "nullable": true
@@ -207,18 +212,18 @@ public sealed record GroupKeyUsageQueryTests
                     },
                     {
                       "alias": "orders",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       }
                     }
                   ],
                   "orderBy": [
                     {
                       "expression": {
-                        "key": 2,
+                        "key": "days_since_signup",
                         "type": {
                           "name": "integer",
                           "nullable": true
@@ -227,7 +232,10 @@ public sealed record GroupKeyUsageQueryTests
                     },
                     {
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       },
                       "direction": "desc"
                     }

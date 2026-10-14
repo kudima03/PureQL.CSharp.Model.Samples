@@ -29,9 +29,6 @@ public sealed record InSubqueryColumnQueryTests
                         "select": [
                           {
                             "alias": "id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
                               "source": "schema_with_foreign_keys.users",
                               "field": "user_id",
@@ -49,7 +46,10 @@ public sealed record InSubqueryColumnQueryTests
                   },
                   "where": {
                     "operator": "in",
-                    "value": {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "operand": {
                       "source": "schema_with_foreign_keys.orders",
                       "field": "order_user_id",
                       "type": {
@@ -67,9 +67,6 @@ public sealed record InSubqueryColumnQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -80,9 +77,6 @@ public sealed record InSubqueryColumnQueryTests
                     },
                     {
                       "alias": "order_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_total",

@@ -9,9 +9,9 @@ Named, predefined PureQL queries — one sealed record per query — written aga
 
 ## Overview
 
-`PureQL.CSharp.Model.Samples` provides a fixed, deterministic catalogue of `PureQL.CSharp.Model` `PureQLQuery` instances for PureQL specification [`0.1.0-preview.1.0.0`](https://github.com/kudima03/PureQL-Specification/tree/0.1.0-preview.1.0.0). Every query reads from the query-grade fixtures of [`Pure.RelationalSchema.Storage.Samples`](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples): six users, six orders, four products, four order items and four employees in the `schema_with_foreign_keys` schema, and four logins in the `audit` schema. Nothing is random, nothing is generated at run time, nothing reads the clock or the current culture.
+`PureQL.CSharp.Model.Samples` provides a fixed, deterministic catalogue of `PureQL.CSharp.Model` `PureQLQuery` instances for PureQL specification [`0.1.0-preview.2.0.1`](https://github.com/kudima03/PureQL-Specification/tree/0.1.0-preview.2.0.1). Every query reads from the query-grade fixtures of [`Pure.RelationalSchema.Storage.Samples`](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples): six users, six orders, four products, four order items and four employees in the `schema_with_foreign_keys` schema, and four logins in the `audit` schema. Nothing is random, nothing is generated at run time, nothing reads the clock or the current culture.
 
-The catalogue mirrors the specification's [`samples/`](https://github.com/kudima03/PureQL-Specification/tree/0.1.0-preview.1.0.0/samples): each of its 56 samples appears here once, rewritten over the fixture tables so that it can be executed. A sample keeps the feature its specification counterpart demonstrates and is named after what the query asks, not after what an engine is expected to answer. A query engine's tests can take a sample instead of rebuilding the AST inline, and a serializer, validator or pretty-printer gets a corpus of real queries for free.
+The catalogue mirrors the specification's [`samples/`](https://github.com/kudima03/PureQL-Specification/tree/0.1.0-preview.2.0.1/samples): each of its 57 samples appears here once, rewritten over the fixture tables so that it can be executed. A sample keeps the feature its specification counterpart demonstrates and is named after what the query asks, not after what an engine is expected to answer. A query engine's tests can take a sample instead of rebuilding the AST inline, and a serializer, validator or pretty-printer gets a corpus of real queries for free.
 
 Entity and field names are never spelled as literals. They are derived from the `Pure.RelationalSchema.Samples` metadata the stored data sets are built from:
 
@@ -59,7 +59,7 @@ A field is nullable where the fixture column holds a NULL (`users.user_score`, `
 
 ## Expected results
 
-51 of the 56 samples also carry a `Result`: the table the query returns, hard-coded in the same style as the query itself.
+52 of the 57 samples also carry a `Result`: the table the query returns, hard-coded in the same style as the query itself.
 
 ```csharp
 IStoredTableDataSet expected = new GroupByCountQuery().Result;
@@ -74,10 +74,11 @@ The results come from the semantics of the specification, not from any PureQL en
 - **Equality:** `equal` and `notEqual` are `IS NOT DISTINCT FROM` and `IS DISTINCT FROM`, so `null` equals `null` in every clause, `join.on` included. An ordering comparison against `null` is `false`.
 - **Numbers:** `decimal` is exact (`numeric`). Each `decimal` answer is rounded half away from zero to 28 significant digits, as the specification rounds `divide` and `average`, and then to the nearest `double`. An engine computing in `double` should compare with a tolerance. `round` rounds half away from zero, `integerDivide` truncates toward zero and `modulo` takes the sign of its left operand.
 - **Strings** compare and sort by code point (the `C` collation).
-- **Aggregates:** `count` and `sum` over no rows are `0`, `any` is `false` and `all` is `true`. `min`, `max` and `average` skip NULLs. An aggregate next to fields in a plain query is computed over all rows and repeated on every row.
+- **Aggregates:** `count` and `sum` over no rows are `0`, `any` is `false` and `all` is `true`. `min`, `max` and `average` skip NULLs. An aggregate next to fields in a plain query is computed over all rows and repeated on every row. A total query (`aggregate`) returns exactly one row.
+- **`distinctBy`:** of the rows equal on the listed columns, compared with `equal`, the first in `orderBy` order is kept (`row_number()` over a partition by those columns, ordered as `orderBy`).
 - **Sorting:** NULLs sort first ascending and last descending. Uuids sort by their bytes read as unsigned big-endian, and booleans `false` before `true`.
 - **Dates and times:** `dateDiffDays` and the `…DiffSeconds` operators are `left − right`, and `timeAddSeconds` wraps around midnight.
-- **Datetimes:** the fixture stores datetimes without an offset, and they are read as UTC. `datetime` literals with an offset are converted to UTC before they are compared, and `datetime` cells are written in UTC.
+- **Datetimes:** the fixture stores datetimes without an offset, and they are read as UTC. `datetime` literals are in UTC, as the specification requires, and `datetime` cells are written in UTC.
 
 **Row order:** when the query has an `orderBy`, rows are in that order. No result has rows tied on every sort key. Without an `orderBy`, the rows are a multiset in no particular order. Each result was also checked against a copy of the fixtures loaded in reverse row order, and no result depends on physical row order.
 
@@ -107,50 +108,51 @@ Every other parameter of the specification samples is replaced by a literal.
 | 10 | `Where` | `StringDateAndTimeRangesQuery` | Ranges on `string`, `date` and `time` |
 | 11 | `Where` | `InListParameterAndNotInListLiteralQuery` | `in` a list parameter and a list literal |
 | 12 | `OrderBy` | `OrderByMultipleKeysQuery` | Several keys and directions |
-| 13 | `Select` | `DistinctOrderStatusQuery` | `distinct` over one column |
-| 14 | `Pagination` | `FilterOrderAndPageQuery` | Filter, order and page |
-| 15 | `Expressions` | `IntegerArithmeticQuery` | `add` / `subtract` / `multiply` staying `integer` |
-| 16 | `Expressions` | `DecimalWideningAndDivideQuery` | `integer` widening to `decimal`; `divide` |
-| 17 | `Expressions` | `RoundingAndIntegerDivisionQuery` | `floor` / `ceiling` / `round`, `round` with digits, `integerDivide`, `modulo` |
-| 18 | `Expressions` | `ConcatQuery` | `concat` |
-| 19 | `Expressions` | `IfColumnQuery` | `if` as a column, with an `integer` branch widened to `decimal` |
-| 20 | `OrderBy` | `OrderByComputedExpressionQuery` | Ordering by a computed expression |
-| 21 | `Temporal` | `DateMathQuery` | `dateAddDays` / `dateDiffDays` as columns and in `where` |
-| 22 | `Temporal` | `TimeAndDatetimeMathQuery` | `timeAddSeconds` wrapping past midnight, `datetimeDiffSeconds` |
-| 23 | `Temporal` | `DatetimeLiteralsWithOffsetsQuery` | `datetime` literals with offsets and fractional seconds |
-| 24 | `Nulls` | `NullableColumnQuery` | A nullable field in a nullable column |
-| 25 | `Nulls` | `TypedNullLiteralsQuery` | Typed null literals, `integer?` widened to `decimal?` |
-| 26 | `Nulls` | `CoalesceQuery` | `coalesce`, non-null and nullable |
-| 27 | `Nulls` | `NullChecksQuery` | `equal` / `notEqual` against a typed null |
-| 28 | `Nulls` | `NullableBooleanConditionsQuery` | A nullable boolean through `equal(…, false)` and `coalesce` |
-| 29 | `Nulls` | `LiftedOperatorsQuery` | Lifted `add`, `dateAddDays` and `multiply` |
-| 30 | `Joins` | `InnerJoinQuery` | Inner join on a key |
-| 31 | `Joins` | `LeftJoinNullableFieldsQuery` | Left join: nullable fields, typed null, `coalesce` |
-| 32 | `Joins` | `SelfJoinThroughAliasQuery` | Self-join through a join alias |
-| 33 | `Joins` | `JoinOnNullableKeyQuery` | Join on a key nullable on both sides |
-| 34 | `Joins` | `RightJoinQuery` | Right join: the left side becomes nullable |
-| 35 | `Joins` | `FullJoinQuery` | Full join: both sides coalesced |
-| 36 | `Joins` | `MultipleJoinsQuery` | Several joins of different kinds |
-| 37 | `Joins` | `OuterJoinChainQuery` | Chained left joins; `null` equals `null` in the second `on` |
-| 38 | `Aggregates` | `AggregatesOverAllRowsQuery` | `count` / `sum` / `min` / `max` / `average` / `any` / `all` over all rows |
-| 39 | `Aggregates` | `AggregateWithPredicateNextToFieldsQuery` | Filtered aggregates next to row columns |
-| 40 | `Aggregates` | `ShareOfTotalQuery` | A row value divided by an aggregate |
-| 41 | `GroupBy` | `GroupByCountQuery` | One key and `count` |
-| 42 | `GroupBy` | `GroupByMultipleKeysQuery` | Two keys |
-| 43 | `GroupBy` | `ComputedGroupKeyQuery` | A computed key, selected and ordered by |
-| 44 | `GroupBy` | `HavingCountQuery` | `having` on an aggregate |
-| 45 | `GroupBy` | `HavingBooleanLogicQuery` | `having` with `and` / `or` / `not` and a parameter |
-| 46 | `GroupBy` | `ConditionalAggregatesQuery` | Aggregates with predicates, `sum` over `if`, `any` / `all` |
-| 47 | `GroupBy` | `GroupKeyUsageQuery` | Plain, nullable and computed keys in `select`, `having` and `orderBy` |
-| 48 | `GroupBy` | `NullableGroupKeyAndAggregatesQuery` | A nullable key; `average` of `datetime` |
-| 49 | `GroupBy` | `DateMathEverywhereQuery` | Date math per row and over aggregates |
-| 50 | `GroupBy` | `IntegerAndDecimalInGroupsQuery` | `integer` / `decimal` rules in a grouped query |
-| 51 | `GroupBy` | `GroupedRevenueQuery` | `count` over all rows, `having` and `orderBy` |
-| 52 | `Subqueries` | `FromSubqueryQuery` | Reading from a subquery |
-| 53 | `Subqueries` | `InSubqueryColumnQuery` | `in` over a subquery column |
-| 54 | `Subqueries` | `SubqueryChainQuery` | A subquery reading another, joined by the main query |
-| 55 | `Subqueries` | `LeftJoinSubqueryQuery` | Left join to a subquery |
-| 56 | `Subqueries` | `SubqueryPipelineQuery` | Three subqueries feeding a joined, filtered, ordered, paged query |
+| 13 | `Select` | `DistinctOrderStatusQuery` | `distinctBy` listing every column |
+| 14 | `Select` | `LatestOrderPerUserQuery` | `distinctBy` keeping the first row per key in `orderBy` order |
+| 15 | `Pagination` | `FilterOrderAndPageQuery` | Filter, order and page |
+| 16 | `Expressions` | `IntegerArithmeticQuery` | `add` / `subtract` / `multiply` staying `integer` |
+| 17 | `Expressions` | `DecimalWideningAndDivideQuery` | `integer` widening to `decimal`; `divide` |
+| 18 | `Expressions` | `RoundingAndIntegerDivisionQuery` | `floor` / `ceiling` / `round`, `round` with digits, `integerDivide`, `modulo` |
+| 19 | `Expressions` | `ConcatQuery` | `concat` |
+| 20 | `Expressions` | `IfColumnQuery` | `if` as a column, with an `integer` branch widened to `decimal` |
+| 21 | `OrderBy` | `OrderByComputedExpressionQuery` | Ordering by a computed expression |
+| 22 | `Temporal` | `DateMathQuery` | `dateAddDays` / `dateDiffDays` as columns and in `where` |
+| 23 | `Temporal` | `TimeAndDatetimeMathQuery` | `timeAddSeconds` wrapping past midnight, `datetimeDiffSeconds` |
+| 24 | `Temporal` | `DatetimeUtcLiteralsQuery` | `datetime` literals in UTC with fractional seconds |
+| 25 | `Nulls` | `NullableColumnQuery` | A nullable field in a nullable column |
+| 26 | `Nulls` | `TypedNullLiteralsQuery` | Typed null literals, `integer?` widened to `decimal?` |
+| 27 | `Nulls` | `CoalesceQuery` | `coalesce`, non-null and nullable |
+| 28 | `Nulls` | `NullChecksQuery` | `equal` / `notEqual` against a typed null |
+| 29 | `Nulls` | `NullableBooleanConditionsQuery` | A nullable boolean through `equal(…, false)` and `coalesce` |
+| 30 | `Nulls` | `LiftedOperatorsQuery` | Lifted `add`, `dateAddDays` and `multiply` |
+| 31 | `Joins` | `InnerJoinQuery` | Inner join on a key |
+| 32 | `Joins` | `LeftJoinNullableFieldsQuery` | Left join: nullable fields, typed null, `coalesce` |
+| 33 | `Joins` | `SelfJoinThroughAliasQuery` | Self-join through a join alias |
+| 34 | `Joins` | `JoinOnNullableKeyQuery` | Join on a key nullable on both sides |
+| 35 | `Joins` | `RightJoinQuery` | Right join: the left side becomes nullable |
+| 36 | `Joins` | `FullJoinQuery` | Full join: both sides coalesced |
+| 37 | `Joins` | `MultipleJoinsQuery` | Several joins of different kinds |
+| 38 | `Joins` | `OuterJoinChainQuery` | Chained left joins; `null` equals `null` in the second `on` |
+| 39 | `Aggregates` | `AggregatesOverAllRowsQuery` | A total query: `count` / `sum` / `min` / `max` / `average` / `any` / `all` over all rows |
+| 40 | `Aggregates` | `AggregateWithPredicateNextToFieldsQuery` | Filtered aggregates next to row columns |
+| 41 | `Aggregates` | `ShareOfTotalQuery` | A row value divided by an aggregate |
+| 42 | `GroupBy` | `GroupByCountQuery` | One key and `count` |
+| 43 | `GroupBy` | `GroupByMultipleKeysQuery` | Two keys |
+| 44 | `GroupBy` | `ComputedGroupKeyQuery` | A computed key, selected and ordered by |
+| 45 | `GroupBy` | `HavingCountQuery` | `having` on an aggregate |
+| 46 | `GroupBy` | `HavingBooleanLogicQuery` | `having` with `and` / `or` / `not` and a parameter |
+| 47 | `GroupBy` | `ConditionalAggregatesQuery` | Aggregates with predicates, `sum` over `if`, `any` / `all` |
+| 48 | `GroupBy` | `GroupKeyUsageQuery` | Plain, nullable and computed keys in `select`, `having` and `orderBy` |
+| 49 | `GroupBy` | `NullableGroupKeyAndAggregatesQuery` | A nullable key; `average` of `datetime` |
+| 50 | `GroupBy` | `DateMathEverywhereQuery` | Date math per row and over aggregates |
+| 51 | `GroupBy` | `IntegerAndDecimalInGroupsQuery` | `integer` / `decimal` rules in a grouped query |
+| 52 | `GroupBy` | `GroupedRevenueQuery` | `count` over all rows, `having` and `orderBy` |
+| 53 | `Subqueries` | `FromSubqueryQuery` | Reading from a subquery |
+| 54 | `Subqueries` | `InSubqueryColumnQuery` | `in` over a subquery column |
+| 55 | `Subqueries` | `SubqueryChainQuery` | A subquery reading another, joined by the main query |
+| 56 | `Subqueries` | `LeftJoinSubqueryQuery` | Left join to a subquery |
+| 57 | `Subqueries` | `SubqueryPipelineQuery` | Three subqueries feeding a joined, filtered, ordered, paged query |
 
 ### Data sets
 
@@ -165,9 +167,9 @@ Every result is computed over `[new SchemaDataSetWithForeignKeys(), new AuditSch
 
 ## Dependencies
 
-- [`PureQL.CSharp.Model` 0.1.0-preview.12.0.0](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.12.0.0): the query AST every sample builds
-- [`Pure.RelationalSchema.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Samples/tree/0.1.0-preview.1.0.0): the schema, table and column fixtures that entity, field and result column names come from
-- [`Pure.RelationalSchema.Storage.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples/tree/0.1.0-preview.1.0.0): the fixture rows the results are computed over, and `StoredTableDataSet`, `InvariantCell` and `EmptyCell`, which the results are built from
+- [`PureQL.CSharp.Model` 0.1.0-preview.13.0.0](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.13.0.0): the query AST every sample builds
+- [`Pure.RelationalSchema.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Samples/tree/0.1.0-preview.2.0.1): the schema, table and column fixtures that entity, field and result column names come from
+- [`Pure.RelationalSchema.Storage.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples/tree/0.1.0-preview.2.0.1): the fixture rows the results are computed over, and `StoredTableDataSet`, `InvariantCell` and `EmptyCell`, which the results are built from
 - [`Pure.RelationalSchema` 2.0.3](https://github.com/kudima03/Pure.RelationalSchema/tree/2.0.3): `Table`, `Column` and the column types of a result's schema
 - [`Pure.RelationalSchema.Storage` 0.1.0-preview.8.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage/tree/0.1.0-preview.8.0.0): `Row`
 - [`Pure.RelationalSchema.HashCodes` 3.3.0](https://github.com/kudima03/Pure.RelationalSchema.HashCodes/tree/3.3.0): `ColumnHash`, which keys a row's cells

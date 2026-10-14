@@ -22,7 +22,7 @@ dotnet pack --configuration Release -p:Version=<version> --output .
 
 This is a **sample-data NuGet library**: a catalogue of named, predefined PureQL `PureQLQuery` instances used as fixtures by other repositories in the ecosystem. There is no logic here — every type is a sealed record with parameterless construction and a hard-coded query.
 
-**Spec parity.** The catalogue mirrors the `samples/` of PureQL specification `0.1.0-preview.1.0.0` (`kudima03/PureQL-Specification`), the version `PureQL.CSharp.Model` 0.1.0-preview.12.0.0 models: one sample per specification sample, rewritten over the fixture tables of `Pure.RelationalSchema.Samples` so it can be executed, keeping the feature the specification sample demonstrates. The README's catalogue table maps every sample to its specification number.
+**Spec parity.** The catalogue mirrors the `samples/` of PureQL specification `0.1.0-preview.2.0.1` (`kudima03/PureQL-Specification`), the version `PureQL.CSharp.Model` 0.1.0-preview.13.0.0 models: one sample per specification sample, rewritten over the fixture tables of `Pure.RelationalSchema.Samples` so it can be executed, keeping the feature the specification sample demonstrates. The README's catalogue table maps every sample to its specification number.
 
 **One sealed record per file, under `Queries/<Folder>`.** The folders group samples by what they demonstrate (`Select`, `Parameters`, `Where`, `OrderBy`, `Pagination`, `Expressions`, `Temporal`, `Nulls`, `Joins`, `Aggregates`, `GroupBy`, `Subqueries`). A sample's namespace is `PureQL.CSharp.Model.Samples.Queries.<Folder>`.
 

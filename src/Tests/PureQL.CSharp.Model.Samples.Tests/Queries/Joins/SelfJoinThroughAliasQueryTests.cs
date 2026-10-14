@@ -18,11 +18,14 @@ public sealed record SelfJoinThroughAliasQueryTests
                   },
                   "joins": [
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.employees",
                       "alias": "manager",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "e",
                           "field": "employee_manager_id",
@@ -44,9 +47,6 @@ public sealed record SelfJoinThroughAliasQueryTests
                   "select": [
                     {
                       "alias": "name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "e",
                         "field": "employee_name",
@@ -57,10 +57,6 @@ public sealed record SelfJoinThroughAliasQueryTests
                     },
                     {
                       "alias": "manager_name",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "manager",
                         "field": "employee_name",

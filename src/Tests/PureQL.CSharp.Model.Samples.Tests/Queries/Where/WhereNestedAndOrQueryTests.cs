@@ -17,12 +17,21 @@ public sealed record WhereNestedAndOrQueryTests
                   },
                   "where": {
                     "operator": "or",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "equal",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_status",
@@ -39,6 +48,9 @@ public sealed record WhereNestedAndOrQueryTests
                           },
                           {
                             "operator": "greaterThan",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_total",
@@ -57,9 +69,15 @@ public sealed record WhereNestedAndOrQueryTests
                       },
                       {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "equal",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_status",
@@ -76,6 +94,9 @@ public sealed record WhereNestedAndOrQueryTests
                           },
                           {
                             "operator": "lessThan",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_total",
@@ -97,9 +118,6 @@ public sealed record WhereNestedAndOrQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -110,9 +128,6 @@ public sealed record WhereNestedAndOrQueryTests
                     },
                     {
                       "alias": "order_status",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_status",

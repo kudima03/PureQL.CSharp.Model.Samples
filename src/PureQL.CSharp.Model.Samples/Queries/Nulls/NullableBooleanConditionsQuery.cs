@@ -69,18 +69,16 @@ public sealed record NullableBooleanConditionsQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionBooleanNullable(
                                 "user_active",
-                                new BooleanNullableProjection(
-                                    new FieldAsBooleanNullable(
-                                        new FieldBooleanNullable(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new UsersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new UserActiveColumn().Name.TextValue
-                                        )
+                                new ExactBooleanNullableProjection(
+                                    new FieldBooleanNullable(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserActiveColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -91,7 +89,7 @@ public sealed record NullableBooleanConditionsQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Left,
+                            JoinKind.Left,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -107,7 +105,7 @@ public sealed record NullableBooleanConditionsQuery
                                                 new EqualRow(
                                                     new EqualUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -123,7 +121,7 @@ public sealed record NullableBooleanConditionsQuery
                                                             )
                                                         ),
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -147,7 +145,7 @@ public sealed record NullableBooleanConditionsQuery
                                                 new LessThanRow(
                                                     new LessThanDecimalRow(
                                                         new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
+                                                            new ExactDecimalRow(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -163,7 +161,7 @@ public sealed record NullableBooleanConditionsQuery
                                                             )
                                                         ),
                                                         new DecimalNullableRow(
-                                                            new LiteralAsDecimalNullable(
+                                                            new IntegerRow(
                                                                 new LiteralInteger(40)
                                                             )
                                                         )
@@ -185,7 +183,7 @@ public sealed record NullableBooleanConditionsQuery
                                     new EqualRow(
                                         new EqualBooleanRow(
                                             new BooleanNullableRow(
-                                                new FieldAsBooleanNullable(
+                                                new ExactBooleanNullableRow(
                                                     new FieldBooleanNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -201,9 +199,7 @@ public sealed record NullableBooleanConditionsQuery
                                                 )
                                             ),
                                             new BooleanNullableRow(
-                                                new LiteralAsBooleanNullable(
-                                                    new LiteralBoolean(false)
-                                                )
+                                                new BooleanRow(new LiteralBoolean(false))
                                             )
                                         )
                                     )
@@ -216,7 +212,7 @@ public sealed record NullableBooleanConditionsQuery
                                             new ConditionalBooleanRow(
                                                 new CoalesceBooleanRow([
                                                     new BooleanNullableRow(
-                                                        new FieldAsBooleanNullable(
+                                                        new ExactBooleanNullableRow(
                                                             new FieldBooleanNullable(
                                                                 new JoinedString(
                                                                     new DotString(),
@@ -232,7 +228,7 @@ public sealed record NullableBooleanConditionsQuery
                                                         )
                                                     ),
                                                     new BooleanNullableRow(
-                                                        new LiteralAsBooleanNullable(
+                                                        new BooleanRow(
                                                             new LiteralBoolean(false)
                                                         )
                                                     ),
@@ -247,7 +243,7 @@ public sealed record NullableBooleanConditionsQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

@@ -17,13 +17,19 @@ public sealed record NullableBooleanConditionsQueryTests
                   },
                   "joins": [
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.users",
                       "on": {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "equal",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_user_id",
@@ -41,6 +47,9 @@ public sealed record NullableBooleanConditionsQueryTests
                           },
                           {
                             "operator": "lessThan",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.users",
                               "field": "user_age",
@@ -61,9 +70,15 @@ public sealed record NullableBooleanConditionsQueryTests
                   ],
                   "where": {
                     "operator": "or",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_active",
@@ -81,8 +96,14 @@ public sealed record NullableBooleanConditionsQueryTests
                       },
                       {
                         "operator": "not",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "condition": {
                           "operator": "coalesce",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "values": [
                             {
                               "source": "schema_with_foreign_keys.users",
@@ -106,9 +127,6 @@ public sealed record NullableBooleanConditionsQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -119,10 +137,6 @@ public sealed record NullableBooleanConditionsQueryTests
                     },
                     {
                       "alias": "user_active",
-                      "type": {
-                        "name": "boolean",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_active",

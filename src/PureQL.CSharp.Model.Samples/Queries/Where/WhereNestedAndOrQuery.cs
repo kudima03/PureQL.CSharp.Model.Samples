@@ -97,7 +97,7 @@ public sealed record WhereNestedAndOrQuery
                                                 new EqualRow(
                                                     new EqualStringRow(
                                                         new StringNullableRow(
-                                                            new FieldAsStringNullable(
+                                                            new StringRow(
                                                                 new FieldString(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -113,7 +113,7 @@ public sealed record WhereNestedAndOrQuery
                                                             )
                                                         ),
                                                         new StringNullableRow(
-                                                            new LiteralAsStringNullable(
+                                                            new StringRow(
                                                                 new LiteralString(
                                                                     "shipped"
                                                                 )
@@ -128,7 +128,7 @@ public sealed record WhereNestedAndOrQuery
                                                 new GreaterThanRow(
                                                     new GreaterThanDecimalRow(
                                                         new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
+                                                            new ExactDecimalRow(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -144,7 +144,7 @@ public sealed record WhereNestedAndOrQuery
                                                             )
                                                         ),
                                                         new DecimalNullableRow(
-                                                            new LiteralAsDecimalNullable(
+                                                            new IntegerRow(
                                                                 new LiteralInteger(100)
                                                             )
                                                         )
@@ -163,7 +163,7 @@ public sealed record WhereNestedAndOrQuery
                                                 new EqualRow(
                                                     new EqualStringRow(
                                                         new StringNullableRow(
-                                                            new FieldAsStringNullable(
+                                                            new StringRow(
                                                                 new FieldString(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -179,7 +179,7 @@ public sealed record WhereNestedAndOrQuery
                                                             )
                                                         ),
                                                         new StringNullableRow(
-                                                            new LiteralAsStringNullable(
+                                                            new StringRow(
                                                                 new LiteralString(
                                                                     "pending"
                                                                 )
@@ -194,7 +194,7 @@ public sealed record WhereNestedAndOrQuery
                                                 new LessThanRow(
                                                     new LessThanDecimalRow(
                                                         new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
+                                                            new ExactDecimalRow(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -210,7 +210,7 @@ public sealed record WhereNestedAndOrQuery
                                                             )
                                                         ),
                                                         new DecimalNullableRow(
-                                                            new LiteralAsDecimalNullable(
+                                                            new IntegerRow(
                                                                 new LiteralInteger(60)
                                                             )
                                                         )
@@ -226,7 +226,7 @@ public sealed record WhereNestedAndOrQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

@@ -72,11 +72,11 @@ public sealed record LiftedOperatorsQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDecimalNullable(
                                 "next_score",
-                                new DecimalNullableProjection(
+                                new ExactDecimalNullableProjection(
                                     new ArithmeticDecimalNullableProjection(
                                         new AddDecimalNullableProjection([
                                             new DecimalNullableProjection(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalNullableProjection(
                                                     new FieldDecimalNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -92,7 +92,7 @@ public sealed record LiftedOperatorsQuery
                                                 )
                                             ),
                                             new DecimalNullableProjection(
-                                                new LiteralAsDecimalNullable(
+                                                new IntegerProjection(
                                                     new LiteralInteger(1)
                                                 )
                                             ),
@@ -106,10 +106,10 @@ public sealed record LiftedOperatorsQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDateNullable(
                                 "score_date",
-                                new DateNullableProjection(
+                                new ExactDateNullableProjection(
                                     new DateAddDaysDateNullableProjection(
                                         new DateNullableProjection(
-                                            new FieldAsDateNullable(
+                                            new DateProjection(
                                                 new FieldDate(
                                                     new JoinedString(
                                                         new DotString(),
@@ -123,44 +123,11 @@ public sealed record LiftedOperatorsQuery
                                             )
                                         ),
                                         new IntegerNullableProjection(
-                                            new RoundingIntegerNullableProjection(
-                                                new RoundIntegerNullableProjection(
-                                                    new DecimalNullableProjection(
-                                                        new FieldAsDecimalNullable(
-                                                            new FieldDecimalNullable(
-                                                                new JoinedString(
-                                                                    new DotString(),
-                                                                    [
-                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                        new UsersTable().Name,
-                                                                    ]
-                                                                ).TextValue,
-                                                                new UserScoreColumn()
-                                                                    .Name
-                                                                    .TextValue
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionIntegerNullable(
-                                "double_score",
-                                new IntegerNullableProjection(
-                                    new ArithmeticIntegerNullableProjection(
-                                        new MultiplyIntegerNullableProjection([
-                                            new IntegerNullableProjection(
+                                            new ExactIntegerNullableProjection(
                                                 new RoundingIntegerNullableProjection(
                                                     new RoundIntegerNullableProjection(
                                                         new DecimalNullableProjection(
-                                                            new FieldAsDecimalNullable(
+                                                            new ExactDecimalNullableProjection(
                                                                 new FieldDecimalNullable(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -177,9 +144,46 @@ public sealed record LiftedOperatorsQuery
                                                         )
                                                     )
                                                 )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    new SelectItemProjection(
+                        new SelectItemProjectionNullable(
+                            new SelectItemProjectionIntegerNullable(
+                                "double_score",
+                                new ExactIntegerNullableProjection(
+                                    new ArithmeticIntegerNullableProjection(
+                                        new MultiplyIntegerNullableProjection([
+                                            new IntegerNullableProjection(
+                                                new ExactIntegerNullableProjection(
+                                                    new RoundingIntegerNullableProjection(
+                                                        new RoundIntegerNullableProjection(
+                                                            new DecimalNullableProjection(
+                                                                new ExactDecimalNullableProjection(
+                                                                    new FieldDecimalNullable(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new UsersTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new UserScoreColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
                                             ),
                                             new IntegerNullableProjection(
-                                                new LiteralAsIntegerNullable(
+                                                new IntegerProjection(
                                                     new LiteralInteger(2)
                                                 )
                                             ),

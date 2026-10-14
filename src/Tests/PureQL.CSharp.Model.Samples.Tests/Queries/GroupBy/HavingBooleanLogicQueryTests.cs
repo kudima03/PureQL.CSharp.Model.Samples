@@ -17,9 +17,7 @@ public sealed record HavingBooleanLogicQueryTests
                   },
                   "groupBy": [
                     {
-                      "type": {
-                        "name": "uuid"
-                      },
+                      "alias": "order_user_id",
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_user_id",
@@ -31,14 +29,26 @@ public sealed record HavingBooleanLogicQueryTests
                   ],
                   "having": {
                     "operator": "or",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "greaterThan",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "operator": "sum",
+                              "type": {
+                                "name": "decimal"
+                              },
                               "selector": {
                                 "source": "schema_with_foreign_keys.orders",
                                 "field": "order_total",
@@ -56,10 +66,19 @@ public sealed record HavingBooleanLogicQueryTests
                           },
                           {
                             "operator": "not",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "condition": {
                               "operator": "any",
+                              "type": {
+                                "name": "boolean"
+                              },
                               "predicate": {
                                 "operator": "equal",
+                                "type": {
+                                  "name": "boolean"
+                                },
                                 "left": {
                                   "source": "schema_with_foreign_keys.orders",
                                   "field": "order_status",
@@ -80,11 +99,17 @@ public sealed record HavingBooleanLogicQueryTests
                       },
                       {
                         "operator": "greaterThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
-                          "operator": "count"
+                          "operator": "count",
+                          "type": {
+                            "name": "integer"
+                          }
                         },
                         "right": {
-                          "param_name": "min_orders",
+                          "param": "min_orders",
                           "type": {
                             "name": "integer"
                           }
@@ -95,11 +120,8 @@ public sealed record HavingBooleanLogicQueryTests
                   "select": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "order_user_id",
                         "type": {
                           "name": "uuid"
                         }
@@ -107,11 +129,11 @@ public sealed record HavingBooleanLogicQueryTests
                     },
                     {
                       "alias": "revenue",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",

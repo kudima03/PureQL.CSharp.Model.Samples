@@ -17,9 +17,15 @@ public sealed record WhereNotEqualAndNotQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "notEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_name",
@@ -36,6 +42,9 @@ public sealed record WhereNotEqualAndNotQueryTests
                       },
                       {
                         "operator": "not",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "condition": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_active",
@@ -49,9 +58,6 @@ public sealed record WhereNotEqualAndNotQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
