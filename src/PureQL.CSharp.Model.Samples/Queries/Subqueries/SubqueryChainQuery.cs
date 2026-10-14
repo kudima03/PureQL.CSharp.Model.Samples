@@ -75,10 +75,8 @@ public sealed record SubqueryChainQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "total",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal("big_spenders", "total")
-                                    )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal("big_spenders", "total")
                                 )
                             )
                         )
@@ -104,6 +102,7 @@ public sealed record SubqueryChainQuery
                                     new GroupKey(
                                         new GroupKeyNonNullable(
                                             new GroupKeyUuid(
+                                                "user_id",
                                                 new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
@@ -127,7 +126,7 @@ public sealed record SubqueryChainQuery
                                         new SelectItemGroupNonNullable(
                                             new SelectItemGroupUuid(
                                                 "user_id",
-                                                new UuidGroup(new KeyUuid(0))
+                                                new UuidGroup(new KeyUuid("user_id"))
                                             )
                                         )
                                     ),
@@ -135,11 +134,11 @@ public sealed record SubqueryChainQuery
                                         new SelectItemGroupNonNullable(
                                             new SelectItemGroupDecimal(
                                                 "total",
-                                                new DecimalGroup(
+                                                new ExactDecimalGroup(
                                                     new AggregateDecimalGroup(
                                                         new SumDecimalGroup(
                                                             new DecimalNullableRow(
-                                                                new FieldAsDecimalNullable(
+                                                                new ExactDecimalRow(
                                                                     new FieldDecimal(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -179,7 +178,7 @@ public sealed record SubqueryChainQuery
                                         new EqualRow(
                                             new EqualStringRow(
                                                 new StringNullableRow(
-                                                    new FieldAsStringNullable(
+                                                    new StringRow(
                                                         new FieldString(
                                                             new JoinedString(
                                                                 new DotString(),
@@ -195,7 +194,7 @@ public sealed record SubqueryChainQuery
                                                     )
                                                 ),
                                                 new StringNullableRow(
-                                                    new LiteralAsStringNullable(
+                                                    new StringRow(
                                                         new LiteralString("shipped")
                                                     )
                                                 )
@@ -206,7 +205,7 @@ public sealed record SubqueryChainQuery
                                 having: null,
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -233,12 +232,10 @@ public sealed record SubqueryChainQuery
                                         new SelectItemProjectionNonNullable(
                                             new SelectItemProjectionDecimal(
                                                 "total",
-                                                new DecimalProjection(
-                                                    new FieldAsDecimal(
-                                                        new FieldDecimal(
-                                                            "user_totals",
-                                                            "total"
-                                                        )
+                                                new ExactDecimalProjection(
+                                                    new FieldDecimal(
+                                                        "user_totals",
+                                                        "total"
                                                     )
                                                 )
                                             )
@@ -251,7 +248,7 @@ public sealed record SubqueryChainQuery
                                         new GreaterThanRow(
                                             new GreaterThanDecimalRow(
                                                 new DecimalNullableRow(
-                                                    new FieldAsDecimalNullable(
+                                                    new ExactDecimalRow(
                                                         new FieldDecimal(
                                                             "user_totals",
                                                             "total"
@@ -259,7 +256,7 @@ public sealed record SubqueryChainQuery
                                                     )
                                                 ),
                                                 new DecimalNullableRow(
-                                                    new LiteralAsDecimalNullable(
+                                                    new IntegerRow(
                                                         new LiteralInteger(150)
                                                     )
                                                 )
@@ -269,7 +266,7 @@ public sealed record SubqueryChainQuery
                                 ),
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -277,14 +274,14 @@ public sealed record SubqueryChainQuery
                 [
                     new Join(
                         new JoinSubquery(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             "big_spenders",
                             new BooleanRow(
                                 new ComparisonRow(
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -298,7 +295,7 @@ public sealed record SubqueryChainQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         "big_spenders",
                                                         "user_id"
@@ -315,9 +312,9 @@ public sealed record SubqueryChainQuery
                 where: null,
                 [
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new DecimalNullableProjection(
-                                new FieldAsDecimalNullable(
+                                new ExactDecimalProjection(
                                     new FieldDecimal("big_spenders", "total")
                                 )
                             )
@@ -326,7 +323,7 @@ public sealed record SubqueryChainQuery
                     ),
                 ],
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

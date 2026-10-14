@@ -17,10 +17,13 @@ public sealed record LeftJoinNullableFieldsQueryTests
                   },
                   "joins": [
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.orders",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_user_id",
@@ -40,9 +43,15 @@ public sealed record LeftJoinNullableFieldsQueryTests
                   ],
                   "where": {
                     "operator": "or",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_id",
@@ -61,6 +70,9 @@ public sealed record LeftJoinNullableFieldsQueryTests
                       },
                       {
                         "operator": "greaterThan",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",
@@ -81,9 +93,6 @@ public sealed record LeftJoinNullableFieldsQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -94,11 +103,11 @@ public sealed record LeftJoinNullableFieldsQueryTests
                     },
                     {
                       "alias": "status",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "string"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.orders",
@@ -119,12 +128,12 @@ public sealed record LeftJoinNullableFieldsQueryTests
                     },
                     {
                       "alias": "total_after_discount",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "subtract",
+                        "type": {
+                          "name": "decimal",
+                          "nullable": true
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.orders",

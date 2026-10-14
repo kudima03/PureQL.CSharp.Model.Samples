@@ -18,9 +18,6 @@ public sealed record AggregateWithPredicateNextToFieldsQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -31,9 +28,6 @@ public sealed record AggregateWithPredicateNextToFieldsQueryTests
                     },
                     {
                       "alias": "order_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_total",
@@ -44,13 +38,16 @@ public sealed record AggregateWithPredicateNextToFieldsQueryTests
                     },
                     {
                       "alias": "shipped_orders",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        },
                         "predicate": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",
@@ -69,11 +66,11 @@ public sealed record AggregateWithPredicateNextToFieldsQueryTests
                     },
                     {
                       "alias": "shipped_revenue",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",
@@ -83,6 +80,9 @@ public sealed record AggregateWithPredicateNextToFieldsQueryTests
                         },
                         "predicate": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",

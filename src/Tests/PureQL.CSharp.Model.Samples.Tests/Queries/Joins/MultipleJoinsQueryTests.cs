@@ -17,10 +17,13 @@ public sealed record MultipleJoinsQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.orders",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_order_id",
@@ -38,10 +41,13 @@ public sealed record MultipleJoinsQueryTests
                       }
                     },
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.users",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_user_id",
@@ -59,10 +65,13 @@ public sealed record MultipleJoinsQueryTests
                       }
                     },
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.products",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_product_id",
@@ -83,9 +92,6 @@ public sealed record MultipleJoinsQueryTests
                   "select": [
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",
@@ -96,9 +102,6 @@ public sealed record MultipleJoinsQueryTests
                     },
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -109,10 +112,6 @@ public sealed record MultipleJoinsQueryTests
                     },
                     {
                       "alias": "product_name",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.products",
                         "field": "product_name",
@@ -124,9 +123,6 @@ public sealed record MultipleJoinsQueryTests
                     },
                     {
                       "alias": "item_qty",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.order_items",
                         "field": "item_qty",

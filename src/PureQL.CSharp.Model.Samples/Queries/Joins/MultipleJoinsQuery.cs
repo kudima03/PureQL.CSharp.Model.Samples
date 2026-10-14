@@ -89,18 +89,16 @@ public sealed record MultipleJoinsQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionStringNullable(
                                 "product_name",
-                                new StringNullableProjection(
-                                    new FieldAsStringNullable(
-                                        new FieldStringNullable(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new ProductsTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new ProductNameColumn().Name.TextValue
-                                        )
+                                new ExactStringNullableProjection(
+                                    new FieldStringNullable(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new ProductsTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new ProductNameColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -110,18 +108,16 @@ public sealed record MultipleJoinsQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "item_qty",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new OrderItemsTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new ItemQtyColumn().Name.TextValue
-                                        )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrderItemsTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new ItemQtyColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -132,7 +128,7 @@ public sealed record MultipleJoinsQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -145,7 +141,7 @@ public sealed record MultipleJoinsQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -161,7 +157,7 @@ public sealed record MultipleJoinsQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -182,7 +178,7 @@ public sealed record MultipleJoinsQuery
                     ),
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -195,7 +191,7 @@ public sealed record MultipleJoinsQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -211,7 +207,7 @@ public sealed record MultipleJoinsQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -232,7 +228,7 @@ public sealed record MultipleJoinsQuery
                     ),
                     new Join(
                         new JoinEntity(
-                            JoinType.Left,
+                            JoinKind.Left,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -245,7 +241,7 @@ public sealed record MultipleJoinsQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -261,7 +257,7 @@ public sealed record MultipleJoinsQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -286,7 +282,7 @@ public sealed record MultipleJoinsQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

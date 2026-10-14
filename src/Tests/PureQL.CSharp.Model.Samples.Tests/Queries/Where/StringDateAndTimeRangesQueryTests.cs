@@ -17,9 +17,15 @@ public sealed record StringDateAndTimeRangesQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "greaterThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_name",
@@ -36,6 +42,9 @@ public sealed record StringDateAndTimeRangesQueryTests
                       },
                       {
                         "operator": "lessThan",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "signup_date",
@@ -52,6 +61,9 @@ public sealed record StringDateAndTimeRangesQueryTests
                       },
                       {
                         "operator": "greaterThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "shift_start",
@@ -71,9 +83,6 @@ public sealed record StringDateAndTimeRangesQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -84,9 +93,6 @@ public sealed record StringDateAndTimeRangesQueryTests
                     },
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",

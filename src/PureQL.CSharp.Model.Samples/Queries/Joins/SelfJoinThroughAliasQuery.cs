@@ -64,12 +64,10 @@ public sealed record SelfJoinThroughAliasQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionStringNullable(
                                 "manager_name",
-                                new StringNullableProjection(
-                                    new FieldAsStringNullable(
-                                        new FieldStringNullable(
-                                            "manager",
-                                            new EmployeeNameColumn().Name.TextValue
-                                        )
+                                new ExactStringNullableProjection(
+                                    new FieldStringNullable(
+                                        "manager",
+                                        new EmployeeNameColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -80,7 +78,7 @@ public sealed record SelfJoinThroughAliasQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Left,
+                            JoinKind.Left,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -93,7 +91,7 @@ public sealed record SelfJoinThroughAliasQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new ExactUuidNullableRow(
                                                     new FieldUuidNullable(
                                                         "e",
                                                         new EmployeeManagerIdColumn()
@@ -103,7 +101,7 @@ public sealed record SelfJoinThroughAliasQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         "manager",
                                                         new EmployeeIdColumn()
@@ -123,7 +121,7 @@ public sealed record SelfJoinThroughAliasQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

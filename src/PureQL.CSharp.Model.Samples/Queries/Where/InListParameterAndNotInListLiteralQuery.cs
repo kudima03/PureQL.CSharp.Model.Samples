@@ -63,7 +63,7 @@ public sealed record InListParameterAndNotInListLiteralQuery
                                     new InRow(
                                         new InStringRow(
                                             new StringNullableRow(
-                                                new FieldAsStringNullable(
+                                                new StringRow(
                                                     new FieldString(
                                                         new JoinedString(
                                                             new DotString(),
@@ -93,7 +93,7 @@ public sealed record InListParameterAndNotInListLiteralQuery
                                                 new InRow(
                                                     new InUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -136,7 +136,7 @@ public sealed record InListParameterAndNotInListLiteralQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 }

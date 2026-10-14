@@ -59,6 +59,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyUuid(
+                                "order_user_id",
                                 new UuidRow(
                                     new FieldUuid(
                                         new JoinedString(
@@ -80,7 +81,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupUuid(
                                 "order_user_id",
-                                new UuidGroup(new KeyUuid(0))
+                                new UuidGroup(new KeyUuid("order_user_id"))
                             )
                         )
                     ),
@@ -92,21 +93,23 @@ public sealed record IntegerAndDecimalInGroupsQuery
                                     new AggregateIntegerGroup(
                                         new SumIntegerGroup(
                                             new IntegerNullableRow(
-                                                new RoundingIntegerNullableRow(
-                                                    new RoundIntegerNullableRow(
-                                                        new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrderItemsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ItemQtyColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                                new IntegerRow(
+                                                    new RoundingIntegerRow(
+                                                        new RoundIntegerRow(
+                                                            new DecimalRow(
+                                                                new ExactDecimalRow(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrderItemsTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new ItemQtyColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
                                                             )
                                                         )
@@ -123,61 +126,65 @@ public sealed record IntegerAndDecimalInGroupsQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupDecimal(
                                 "revenue",
-                                new DecimalGroup(
-                                    new RoundingDecimalGroup(
-                                        new RoundDecimalDigitsGroup(
-                                            new DecimalGroup(
+                                new ExactDecimalGroup(
+                                    new RoundDecimalGroup(
+                                        new DecimalGroup(
+                                            new ExactDecimalGroup(
                                                 new AggregateDecimalGroup(
                                                     new SumDecimalGroup(
                                                         new DecimalNullableRow(
-                                                            new ArithmeticDecimalNullableRow(
-                                                                new MultiplyDecimalNullableRow([
-                                                                    new DecimalNullableRow(
-                                                                        new RoundingDecimalNullableRow(
-                                                                            new RoundIntegerNullableRow(
-                                                                                new DecimalNullableRow(
-                                                                                    new FieldAsDecimalNullable(
-                                                                                        new FieldDecimal(
-                                                                                            new JoinedString(
-                                                                                                new DotString(),
-                                                                                                [
-                                                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                                                    new OrderItemsTable().Name,
-                                                                                                ]
-                                                                                            ).TextValue,
-                                                                                            new ItemQtyColumn()
-                                                                                                .Name
-                                                                                                .TextValue
+                                                            new ExactDecimalRow(
+                                                                new ArithmeticDecimalRow(
+                                                                    new MultiplyDecimalRow([
+                                                                        new DecimalRow(
+                                                                            new IntegerRow(
+                                                                                new RoundingIntegerRow(
+                                                                                    new RoundIntegerRow(
+                                                                                        new DecimalRow(
+                                                                                            new ExactDecimalRow(
+                                                                                                new FieldDecimal(
+                                                                                                    new JoinedString(
+                                                                                                        new DotString(),
+                                                                                                        [
+                                                                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                                                                            new OrderItemsTable().Name,
+                                                                                                        ]
+                                                                                                    ).TextValue,
+                                                                                                    new ItemQtyColumn()
+                                                                                                        .Name
+                                                                                                        .TextValue
+                                                                                                )
+                                                                                            )
                                                                                         )
                                                                                     )
                                                                                 )
                                                                             )
-                                                                        )
-                                                                    ),
-                                                                    new DecimalNullableRow(
-                                                                        new FieldAsDecimalNullable(
-                                                                            new FieldDecimal(
-                                                                                new JoinedString(
-                                                                                    new DotString(),
-                                                                                    [
-                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                        new ProductsTable().Name,
-                                                                                    ]
-                                                                                ).TextValue,
-                                                                                new ProductPriceColumn()
-                                                                                    .Name
-                                                                                    .TextValue
+                                                                        ),
+                                                                        new DecimalRow(
+                                                                            new ExactDecimalRow(
+                                                                                new FieldDecimal(
+                                                                                    new JoinedString(
+                                                                                        new DotString(),
+                                                                                        [
+                                                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                                                            new ProductsTable().Name,
+                                                                                        ]
+                                                                                    ).TextValue,
+                                                                                    new ProductPriceColumn()
+                                                                                        .Name
+                                                                                        .TextValue
+                                                                                )
                                                                             )
-                                                                        )
-                                                                    ),
-                                                                ])
+                                                                        ),
+                                                                    ])
+                                                                )
                                                             )
                                                         )
                                                     )
                                                 )
-                                            ),
-                                            new IntegerGroup(new LiteralInteger(1))
-                                        )
+                                            )
+                                        ),
+                                        new IntegerGroup(new LiteralInteger(1))
                                     )
                                 )
                             )
@@ -232,21 +239,23 @@ public sealed record IntegerAndDecimalInGroupsQuery
                                             new RoundingIntegerGroup(
                                                 new FloorIntegerGroup(
                                                     new DecimalGroup(
-                                                        new AggregateDecimalGroup(
-                                                            new AverageDecimalGroup(
-                                                                new DecimalRow(
-                                                                    new FieldAsDecimal(
-                                                                        new FieldDecimal(
-                                                                            new JoinedString(
-                                                                                new DotString(),
-                                                                                [
-                                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                                    new OrderItemsTable().Name,
-                                                                                ]
-                                                                            ).TextValue,
-                                                                            new ItemQtyColumn()
-                                                                                .Name
-                                                                                .TextValue
+                                                        new ExactDecimalGroup(
+                                                            new AggregateDecimalGroup(
+                                                                new AverageDecimalGroup(
+                                                                    new DecimalRow(
+                                                                        new ExactDecimalRow(
+                                                                            new FieldDecimal(
+                                                                                new JoinedString(
+                                                                                    new DotString(),
+                                                                                    [
+                                                                                        new RelationalSchemaWithForeignKeys().Name,
+                                                                                        new OrderItemsTable().Name,
+                                                                                    ]
+                                                                                ).TextValue,
+                                                                                new ItemQtyColumn()
+                                                                                    .Name
+                                                                                    .TextValue
+                                                                            )
                                                                         )
                                                                     )
                                                                 )
@@ -266,7 +275,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -279,7 +288,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -295,7 +304,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -316,7 +325,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                     ),
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -329,7 +338,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -345,7 +354,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -372,40 +381,38 @@ public sealed record IntegerAndDecimalInGroupsQuery
                         new EqualRow(
                             new EqualDecimalRow(
                                 new DecimalNullableRow(
-                                    new ArithmeticDecimalNullableRow(
-                                        new ModuloIntegerNullableRow(
-                                            new IntegerNullableRow(
-                                                new RoundingIntegerNullableRow(
-                                                    new RoundIntegerNullableRow(
-                                                        new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrderItemsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ItemQtyColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                    new IntegerRow(
+                                        new ArithmeticIntegerRow(
+                                            new ModuloIntegerRow(
+                                                new IntegerRow(
+                                                    new RoundingIntegerRow(
+                                                        new RoundIntegerRow(
+                                                            new DecimalRow(
+                                                                new ExactDecimalRow(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrderItemsTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new ItemQtyColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
                                                             )
                                                         )
                                                     )
-                                                )
-                                            ),
-                                            new IntegerNullableRow(
-                                                new LiteralAsIntegerNullable(
-                                                    new LiteralInteger(2)
-                                                )
+                                                ),
+                                                new IntegerRow(new LiteralInteger(2))
                                             )
                                         )
                                     )
                                 ),
                                 new DecimalNullableRow(
-                                    new LiteralAsDecimalNullable(new LiteralInteger(1))
+                                    new IntegerRow(new LiteralInteger(1))
                                 )
                             )
                         )
@@ -414,7 +421,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                 having: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

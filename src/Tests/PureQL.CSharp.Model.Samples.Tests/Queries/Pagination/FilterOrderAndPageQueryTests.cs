@@ -17,9 +17,15 @@ public sealed record FilterOrderAndPageQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_status",
@@ -36,6 +42,9 @@ public sealed record FilterOrderAndPageQueryTests
                       },
                       {
                         "operator": "greaterThan",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",
@@ -44,7 +53,7 @@ public sealed record FilterOrderAndPageQueryTests
                           }
                         },
                         "right": {
-                          "param_name": "min_total",
+                          "param": "min_total",
                           "type": {
                             "name": "decimal"
                           }
@@ -55,9 +64,6 @@ public sealed record FilterOrderAndPageQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -68,9 +74,6 @@ public sealed record FilterOrderAndPageQueryTests
                     },
                     {
                       "alias": "amount",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_total",

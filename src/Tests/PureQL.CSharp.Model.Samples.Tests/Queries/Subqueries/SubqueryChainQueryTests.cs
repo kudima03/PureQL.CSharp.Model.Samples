@@ -21,6 +21,9 @@ public sealed record SubqueryChainQueryTests
                         },
                         "where": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",
@@ -37,9 +40,7 @@ public sealed record SubqueryChainQueryTests
                         },
                         "groupBy": [
                           {
-                            "type": {
-                              "name": "uuid"
-                            },
+                            "alias": "user_id",
                             "expression": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_user_id",
@@ -52,11 +53,8 @@ public sealed record SubqueryChainQueryTests
                         "select": [
                           {
                             "alias": "user_id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
-                              "key": 0,
+                              "key": "user_id",
                               "type": {
                                 "name": "uuid"
                               }
@@ -64,11 +62,11 @@ public sealed record SubqueryChainQueryTests
                           },
                           {
                             "alias": "total",
-                            "type": {
-                              "name": "decimal"
-                            },
                             "expression": {
                               "operator": "sum",
+                              "type": {
+                                "name": "decimal"
+                              },
                               "selector": {
                                 "source": "schema_with_foreign_keys.orders",
                                 "field": "order_total",
@@ -80,11 +78,11 @@ public sealed record SubqueryChainQueryTests
                           },
                           {
                             "alias": "orders",
-                            "type": {
-                              "name": "integer"
-                            },
                             "expression": {
-                              "operator": "count"
+                              "operator": "count",
+                              "type": {
+                                "name": "integer"
+                              }
                             }
                           }
                         ]
@@ -98,6 +96,9 @@ public sealed record SubqueryChainQueryTests
                         },
                         "where": {
                           "operator": "greaterThan",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "user_totals",
                             "field": "total",
@@ -115,9 +116,6 @@ public sealed record SubqueryChainQueryTests
                         "select": [
                           {
                             "alias": "user_id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
                               "source": "user_totals",
                               "field": "user_id",
@@ -128,9 +126,6 @@ public sealed record SubqueryChainQueryTests
                           },
                           {
                             "alias": "total",
-                            "type": {
-                              "name": "decimal"
-                            },
                             "expression": {
                               "source": "user_totals",
                               "field": "total",
@@ -148,10 +143,13 @@ public sealed record SubqueryChainQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "subquery": "big_spenders",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_id",
@@ -172,9 +170,6 @@ public sealed record SubqueryChainQueryTests
                   "select": [
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",
@@ -185,9 +180,6 @@ public sealed record SubqueryChainQueryTests
                     },
                     {
                       "alias": "total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "source": "big_spenders",
                         "field": "total",

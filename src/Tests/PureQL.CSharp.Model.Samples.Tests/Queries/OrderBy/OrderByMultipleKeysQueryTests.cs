@@ -18,9 +18,6 @@ public sealed record OrderByMultipleKeysQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -31,9 +28,6 @@ public sealed record OrderByMultipleKeysQueryTests
                     },
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",

@@ -55,7 +55,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                                     new RoundingIntegerProjection(
                                         new FloorIntegerProjection(
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -84,7 +84,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                                     new RoundingIntegerProjection(
                                         new CeilingIntegerProjection(
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -113,7 +113,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                                     new RoundingIntegerProjection(
                                         new RoundIntegerProjection(
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -138,27 +138,25 @@ public sealed record RoundingAndIntegerDivisionQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "price_tenths",
-                                new DecimalProjection(
-                                    new RoundingDecimalProjection(
-                                        new RoundDecimalDigitsProjection(
-                                            new DecimalProjection(
-                                                new FieldAsDecimal(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new ProductsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ProductPriceColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
+                                new ExactDecimalProjection(
+                                    new RoundDecimalProjection(
+                                        new DecimalProjection(
+                                            new ExactDecimalProjection(
+                                                new FieldDecimal(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new ProductsTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new ProductPriceColumn()
+                                                        .Name
+                                                        .TextValue
                                                 )
-                                            ),
-                                            new IntegerProjection(new LiteralInteger(1))
-                                        )
+                                            )
+                                        ),
+                                        new IntegerProjection(new LiteralInteger(1))
                                     )
                                 )
                             )
@@ -175,7 +173,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                                                 new RoundingIntegerProjection(
                                                     new RoundIntegerProjection(
                                                         new DecimalProjection(
-                                                            new FieldAsDecimal(
+                                                            new ExactDecimalProjection(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -211,7 +209,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                                                 new RoundingIntegerProjection(
                                                     new RoundIntegerProjection(
                                                         new DecimalProjection(
-                                                            new FieldAsDecimal(
+                                                            new ExactDecimalProjection(
                                                                 new FieldDecimal(
                                                                     new JoinedString(
                                                                         new DotString(),

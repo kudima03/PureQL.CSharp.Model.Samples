@@ -64,18 +64,16 @@ public sealed record NullableColumnQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDecimalNullable(
                                 "user_score",
-                                new DecimalNullableProjection(
-                                    new FieldAsDecimalNullable(
-                                        new FieldDecimalNullable(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new UsersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new UserScoreColumn().Name.TextValue
-                                        )
+                                new ExactDecimalNullableProjection(
+                                    new FieldDecimalNullable(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserScoreColumn().Name.TextValue
                                     )
                                 )
                             )

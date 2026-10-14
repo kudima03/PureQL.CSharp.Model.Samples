@@ -18,9 +18,6 @@ public sealed record DistinctOrderStatusQueryTests
                   "select": [
                     {
                       "alias": "order_status",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_status",
@@ -30,7 +27,9 @@ public sealed record DistinctOrderStatusQueryTests
                       }
                     }
                   ],
-                  "distinct": true
+                  "distinctBy": [
+                    "order_status"
+                  ]
                 }
                 """
             ).TextValue,

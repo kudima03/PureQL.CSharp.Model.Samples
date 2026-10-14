@@ -77,12 +77,10 @@ public sealed record FieldsThroughFromAliasQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "amount",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal(
-                                            "o",
-                                            new OrderTotalColumn().Name.TextValue
-                                        )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal(
+                                        "o",
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
                             )

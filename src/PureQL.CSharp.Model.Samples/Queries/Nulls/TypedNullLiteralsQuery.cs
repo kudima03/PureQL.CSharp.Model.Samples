@@ -70,7 +70,7 @@ public sealed record TypedNullLiteralsQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDecimalNullable(
                                 "shipped_total",
-                                new DecimalNullableProjection(
+                                new ExactDecimalNullableProjection(
                                     new ConditionalDecimalNullableProjection(
                                         new IfDecimalNullableProjection(
                                             new BooleanProjection(
@@ -78,7 +78,7 @@ public sealed record TypedNullLiteralsQuery
                                                     new EqualProjection(
                                                         new EqualStringProjection(
                                                             new StringNullableProjection(
-                                                                new FieldAsStringNullable(
+                                                                new StringProjection(
                                                                     new FieldString(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -94,7 +94,7 @@ public sealed record TypedNullLiteralsQuery
                                                                 )
                                                             ),
                                                             new StringNullableProjection(
-                                                                new LiteralAsStringNullable(
+                                                                new StringProjection(
                                                                     new LiteralString(
                                                                         "shipped"
                                                                     )
@@ -105,7 +105,7 @@ public sealed record TypedNullLiteralsQuery
                                                 )
                                             ),
                                             new DecimalNullableProjection(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -121,7 +121,7 @@ public sealed record TypedNullLiteralsQuery
                                                 )
                                             ),
                                             new DecimalNullableProjection(
-                                                new LiteralAsDecimalNullable(
+                                                new ExactDecimalNullableProjection(
                                                     new LiteralDecimalNullable()
                                                 )
                                             )
@@ -135,11 +135,11 @@ public sealed record TypedNullLiteralsQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDecimalNullable(
                                 "always_null",
-                                new DecimalNullableProjection(
+                                new ExactDecimalNullableProjection(
                                     new ArithmeticDecimalNullableProjection(
                                         new SubtractDecimalNullableProjection([
                                             new DecimalNullableProjection(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -155,7 +155,7 @@ public sealed record TypedNullLiteralsQuery
                                                 )
                                             ),
                                             new DecimalNullableProjection(
-                                                new LiteralAsDecimalNullable(
+                                                new ExactIntegerNullableProjection(
                                                     new LiteralIntegerNullable()
                                                 )
                                             ),

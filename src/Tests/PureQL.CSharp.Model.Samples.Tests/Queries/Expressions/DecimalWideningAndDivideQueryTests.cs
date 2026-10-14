@@ -17,10 +17,13 @@ public sealed record DecimalWideningAndDivideQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.products",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_product_id",
@@ -41,9 +44,6 @@ public sealed record DecimalWideningAndDivideQueryTests
                   "select": [
                     {
                       "alias": "item_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.order_items",
                         "field": "item_id",
@@ -54,11 +54,11 @@ public sealed record DecimalWideningAndDivideQueryTests
                     },
                     {
                       "alias": "line_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.products",
@@ -69,7 +69,10 @@ public sealed record DecimalWideningAndDivideQueryTests
                           },
                           {
                             "operator": "round",
-                            "value": {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "operand": {
                               "source": "schema_with_foreign_keys.order_items",
                               "field": "item_qty",
                               "type": {
@@ -82,15 +85,18 @@ public sealed record DecimalWideningAndDivideQueryTests
                     },
                     {
                       "alias": "half_quantity",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "divide",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "operator": "round",
-                            "value": {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "operand": {
                               "source": "schema_with_foreign_keys.order_items",
                               "field": "item_qty",
                               "type": {
@@ -109,11 +115,11 @@ public sealed record DecimalWideningAndDivideQueryTests
                     },
                     {
                       "alias": "price_with_tax",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.products",
@@ -126,7 +132,7 @@ public sealed record DecimalWideningAndDivideQueryTests
                             "type": {
                               "name": "decimal"
                             },
-                            "value": 1.2
+                            "value": "1.2"
                           }
                         ]
                       }

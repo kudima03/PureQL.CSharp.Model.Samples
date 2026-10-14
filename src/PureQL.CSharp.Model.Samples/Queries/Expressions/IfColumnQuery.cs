@@ -78,7 +78,7 @@ public sealed record IfColumnQuery
                                                     new GreaterThanProjection(
                                                         new GreaterThanDecimalProjection(
                                                             new DecimalNullableProjection(
-                                                                new FieldAsDecimalNullable(
+                                                                new ExactDecimalProjection(
                                                                     new FieldDecimal(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -94,7 +94,7 @@ public sealed record IfColumnQuery
                                                                 )
                                                             ),
                                                             new DecimalNullableProjection(
-                                                                new LiteralAsDecimalNullable(
+                                                                new IntegerProjection(
                                                                     new LiteralInteger(
                                                                         100
                                                                     )
@@ -120,7 +120,7 @@ public sealed record IfColumnQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "discount",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ConditionalDecimalProjection(
                                         new IfDecimalProjection(
                                             new BooleanProjection(
@@ -128,7 +128,7 @@ public sealed record IfColumnQuery
                                                     new EqualProjection(
                                                         new EqualStringProjection(
                                                             new StringNullableProjection(
-                                                                new FieldAsStringNullable(
+                                                                new StringProjection(
                                                                     new FieldString(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -144,7 +144,7 @@ public sealed record IfColumnQuery
                                                                 )
                                                             ),
                                                             new StringNullableProjection(
-                                                                new LiteralAsStringNullable(
+                                                                new StringProjection(
                                                                     new LiteralString(
                                                                         "shipped"
                                                                     )
@@ -155,34 +155,38 @@ public sealed record IfColumnQuery
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new ArithmeticDecimalProjection(
-                                                    new MultiplyDecimalProjection([
-                                                        new DecimalProjection(
-                                                            new FieldAsDecimal(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                                new ExactDecimalProjection(
+                                                    new ArithmeticDecimalProjection(
+                                                        new MultiplyDecimalProjection([
+                                                            new DecimalProjection(
+                                                                new ExactDecimalProjection(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrdersTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new OrderTotalColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
-                                                            )
-                                                        ),
-                                                        new DecimalProjection(
-                                                            new LiteralAsDecimal(
-                                                                new LiteralDecimal(0.1m)
-                                                            )
-                                                        ),
-                                                    ])
+                                                            ),
+                                                            new DecimalProjection(
+                                                                new ExactDecimalProjection(
+                                                                    new LiteralDecimal(
+                                                                        0.1m
+                                                                    )
+                                                                )
+                                                            ),
+                                                        ])
+                                                    )
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new LiteralAsDecimal(
+                                                new IntegerProjection(
                                                     new LiteralInteger(0)
                                                 )
                                             )

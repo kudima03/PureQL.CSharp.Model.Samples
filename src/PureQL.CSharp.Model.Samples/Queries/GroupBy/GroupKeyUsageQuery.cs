@@ -56,6 +56,7 @@ public sealed record GroupKeyUsageQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyUuid(
+                                "order_user_id",
                                 new UuidRow(
                                     new FieldUuid(
                                         new JoinedString(
@@ -67,39 +68,37 @@ public sealed record GroupKeyUsageQuery
                                         ).TextValue,
                                         new OrderUserIdColumn().Name.TextValue
                                     )
-                                ),
-                                "order_user_id"
+                                )
                             )
                         )
                     ),
                     new GroupKey(
                         new GroupKeyNullable(
                             new GroupKeyStringNullable(
-                                new StringNullableRow(
-                                    new FieldAsStringNullable(
-                                        new FieldStringNullable(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new UsersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new UserNameColumn().Name.TextValue
-                                        )
+                                "buyer",
+                                new ExactStringNullableRow(
+                                    new FieldStringNullable(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserNameColumn().Name.TextValue
                                     )
-                                ),
-                                "buyer"
+                                )
                             )
                         )
                     ),
                     new GroupKey(
                         new GroupKeyNullable(
                             new GroupKeyIntegerNullable(
-                                new IntegerNullableRow(
+                                "days_since_signup",
+                                new ExactIntegerNullableRow(
                                     new DateDiffDaysIntegerNullableRow(
                                         new DateNullableRow(
-                                            new FieldAsDateNullable(
+                                            new DateRow(
                                                 new FieldDate(
                                                     new JoinedString(
                                                         new DotString(),
@@ -113,7 +112,7 @@ public sealed record GroupKeyUsageQuery
                                             )
                                         ),
                                         new DateNullableRow(
-                                            new FieldAsDateNullable(
+                                            new ExactDateNullableRow(
                                                 new FieldDateNullable(
                                                     new JoinedString(
                                                         new DotString(),
@@ -127,8 +126,7 @@ public sealed record GroupKeyUsageQuery
                                             )
                                         )
                                     )
-                                ),
-                                "days_since_signup"
+                                )
                             )
                         )
                     ),
@@ -138,7 +136,7 @@ public sealed record GroupKeyUsageQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupUuid(
                                 "order_user_id",
-                                new UuidGroup(new KeyUuid(0))
+                                new UuidGroup(new KeyUuid("order_user_id"))
                             )
                         )
                     ),
@@ -150,12 +148,12 @@ public sealed record GroupKeyUsageQuery
                                     new ConditionalStringGroup(
                                         new CoalesceStringGroup([
                                             new StringNullableGroup(
-                                                new KeyAsStringNullable(
-                                                    new KeyStringNullable(1)
+                                                new ExactStringNullableGroup(
+                                                    new KeyStringNullable("buyer")
                                                 )
                                             ),
                                             new StringNullableGroup(
-                                                new LiteralAsStringNullable(
+                                                new StringGroup(
                                                     new LiteralString("unknown")
                                                 )
                                             ),
@@ -169,18 +167,18 @@ public sealed record GroupKeyUsageQuery
                         new SelectItemGroupNullable(
                             new SelectItemGroupIntegerNullable(
                                 "hours_since_signup",
-                                new IntegerNullableGroup(
+                                new ExactIntegerNullableGroup(
                                     new ArithmeticIntegerNullableGroup(
                                         new MultiplyIntegerNullableGroup([
                                             new IntegerNullableGroup(
-                                                new KeyAsIntegerNullable(
-                                                    new KeyIntegerNullable(2)
+                                                new ExactIntegerNullableGroup(
+                                                    new KeyIntegerNullable(
+                                                        "days_since_signup"
+                                                    )
                                                 )
                                             ),
                                             new IntegerNullableGroup(
-                                                new LiteralAsIntegerNullable(
-                                                    new LiteralInteger(24)
-                                                )
+                                                new IntegerGroup(new LiteralInteger(24))
                                             ),
                                         ])
                                     )
@@ -203,7 +201,7 @@ public sealed record GroupKeyUsageQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Left,
+                            JoinKind.Left,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -219,7 +217,7 @@ public sealed record GroupKeyUsageQuery
                                                 new EqualRow(
                                                     new EqualUuidRow(
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -235,7 +233,7 @@ public sealed record GroupKeyUsageQuery
                                                             )
                                                         ),
                                                         new UuidNullableRow(
-                                                            new FieldAsUuidNullable(
+                                                            new UuidRow(
                                                                 new FieldUuid(
                                                                     new JoinedString(
                                                                         new DotString(),
@@ -281,12 +279,12 @@ public sealed record GroupKeyUsageQuery
                                     new NotEqualGroup(
                                         new NotEqualStringGroup(
                                             new StringNullableGroup(
-                                                new KeyAsStringNullable(
-                                                    new KeyStringNullable(1)
+                                                new ExactStringNullableGroup(
+                                                    new KeyStringNullable("buyer")
                                                 )
                                             ),
                                             new StringNullableGroup(
-                                                new LiteralAsStringNullable(
+                                                new ExactStringNullableGroup(
                                                     new LiteralStringNullable()
                                                 )
                                             )
@@ -299,14 +297,14 @@ public sealed record GroupKeyUsageQuery
                                     new LessThanOrEqualGroup(
                                         new LessThanOrEqualDecimalGroup(
                                             new DecimalNullableGroup(
-                                                new KeyAsDecimalNullable(
-                                                    new KeyIntegerNullable(2)
+                                                new ExactIntegerNullableGroup(
+                                                    new KeyIntegerNullable(
+                                                        "days_since_signup"
+                                                    )
                                                 )
                                             ),
                                             new DecimalNullableGroup(
-                                                new LiteralAsDecimalNullable(
-                                                    new LiteralInteger(1600)
-                                                )
+                                                new IntegerGroup(new LiteralInteger(1600))
                                             )
                                         )
                                     )
@@ -317,23 +315,27 @@ public sealed record GroupKeyUsageQuery
                 ),
                 [
                     new OrderItemGroup(
-                        new ValueGroup(
+                        new ExprGroup(
                             new DecimalNullableGroup(
-                                new KeyAsDecimalNullable(new KeyIntegerNullable(2))
+                                new ExactIntegerNullableGroup(
+                                    new KeyIntegerNullable("days_since_signup")
+                                )
                             )
                         )
                     ),
                     new OrderItemGroup(
-                        new ValueGroup(
+                        new ExprGroup(
                             new DecimalNullableGroup(
-                                new AggregateDecimalNullableGroup(new CountGroup())
+                                new IntegerGroup(
+                                    new AggregateIntegerGroup(new CountGroup())
+                                )
                             )
                         ),
                         SortDirection.Desc
                     ),
                 ],
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

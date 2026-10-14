@@ -17,9 +17,15 @@ public sealed record TimeAndDatetimeMathQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "greaterThanOrEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "last_login",
@@ -36,6 +42,9 @@ public sealed record TimeAndDatetimeMathQueryTests
                       },
                       {
                         "operator": "lessThan",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "shift_start",
@@ -55,9 +64,6 @@ public sealed record TimeAndDatetimeMathQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -68,11 +74,11 @@ public sealed record TimeAndDatetimeMathQueryTests
                     },
                     {
                       "alias": "shift_end",
-                      "type": {
-                        "name": "time"
-                      },
                       "expression": {
                         "operator": "timeAddSeconds",
+                        "type": {
+                          "name": "time"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "shift_start",
@@ -82,6 +88,9 @@ public sealed record TimeAndDatetimeMathQueryTests
                         },
                         "right": {
                           "operator": "multiply",
+                          "type": {
+                            "name": "integer"
+                          },
                           "values": [
                             {
                               "type": {
@@ -101,11 +110,11 @@ public sealed record TimeAndDatetimeMathQueryTests
                     },
                     {
                       "alias": "seconds_since_june",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "datetimeDiffSeconds",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "last_login",

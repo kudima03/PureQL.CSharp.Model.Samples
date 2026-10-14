@@ -25,9 +25,6 @@ public sealed record WhereBooleanFieldQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",

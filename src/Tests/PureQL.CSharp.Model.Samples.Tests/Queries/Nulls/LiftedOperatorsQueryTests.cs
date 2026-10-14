@@ -18,9 +18,6 @@ public sealed record LiftedOperatorsQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -31,12 +28,12 @@ public sealed record LiftedOperatorsQueryTests
                     },
                     {
                       "alias": "next_score",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "add",
+                        "type": {
+                          "name": "decimal",
+                          "nullable": true
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.users",
@@ -57,12 +54,12 @@ public sealed record LiftedOperatorsQueryTests
                     },
                     {
                       "alias": "score_date",
-                      "type": {
-                        "name": "date",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "dateAddDays",
+                        "type": {
+                          "name": "date",
+                          "nullable": true
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "signup_date",
@@ -72,7 +69,11 @@ public sealed record LiftedOperatorsQueryTests
                         },
                         "right": {
                           "operator": "round",
-                          "value": {
+                          "type": {
+                            "name": "integer",
+                            "nullable": true
+                          },
+                          "operand": {
                             "source": "schema_with_foreign_keys.users",
                             "field": "user_score",
                             "type": {
@@ -85,16 +86,20 @@ public sealed record LiftedOperatorsQueryTests
                     },
                     {
                       "alias": "double_score",
-                      "type": {
-                        "name": "integer",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "integer",
+                          "nullable": true
+                        },
                         "values": [
                           {
                             "operator": "round",
-                            "value": {
+                            "type": {
+                              "name": "integer",
+                              "nullable": true
+                            },
+                            "operand": {
                               "source": "schema_with_foreign_keys.users",
                               "field": "user_score",
                               "type": {

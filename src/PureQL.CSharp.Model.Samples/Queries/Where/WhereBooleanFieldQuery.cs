@@ -78,7 +78,7 @@ public sealed record WhereBooleanFieldQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

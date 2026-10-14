@@ -72,11 +72,11 @@ public sealed record DecimalWideningAndDivideQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "line_total",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ArithmeticDecimalProjection(
                                         new MultiplyDecimalProjection([
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -92,21 +92,23 @@ public sealed record DecimalWideningAndDivideQuery
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new RoundingDecimalProjection(
-                                                    new RoundIntegerProjection(
-                                                        new DecimalProjection(
-                                                            new FieldAsDecimal(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrderItemsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ItemQtyColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                                new IntegerProjection(
+                                                    new RoundingIntegerProjection(
+                                                        new RoundIntegerProjection(
+                                                            new DecimalProjection(
+                                                                new ExactDecimalProjection(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrderItemsTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new ItemQtyColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
                                                             )
                                                         )
@@ -123,25 +125,27 @@ public sealed record DecimalWideningAndDivideQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "half_quantity",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ArithmeticDecimalProjection(
                                         new DivideDecimalProjection([
                                             new DecimalProjection(
-                                                new RoundingDecimalProjection(
-                                                    new RoundIntegerProjection(
-                                                        new DecimalProjection(
-                                                            new FieldAsDecimal(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrderItemsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ItemQtyColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                                new IntegerProjection(
+                                                    new RoundingIntegerProjection(
+                                                        new RoundIntegerProjection(
+                                                            new DecimalProjection(
+                                                                new ExactDecimalProjection(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrderItemsTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new ItemQtyColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
                                                             )
                                                         )
@@ -149,7 +153,7 @@ public sealed record DecimalWideningAndDivideQuery
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new LiteralAsDecimal(
+                                                new IntegerProjection(
                                                     new LiteralInteger(2)
                                                 )
                                             ),
@@ -163,11 +167,11 @@ public sealed record DecimalWideningAndDivideQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "price_with_tax",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ArithmeticDecimalProjection(
                                         new MultiplyDecimalProjection([
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -183,7 +187,7 @@ public sealed record DecimalWideningAndDivideQuery
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new LiteralAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new LiteralDecimal(1.2m)
                                                 )
                                             ),
@@ -198,7 +202,7 @@ public sealed record DecimalWideningAndDivideQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -211,7 +215,7 @@ public sealed record DecimalWideningAndDivideQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -227,7 +231,7 @@ public sealed record DecimalWideningAndDivideQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -252,7 +256,7 @@ public sealed record DecimalWideningAndDivideQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

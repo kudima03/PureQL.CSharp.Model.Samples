@@ -93,7 +93,7 @@ public sealed record NullChecksQuery
                                     new EqualRow(
                                         new EqualDecimalRow(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalNullableRow(
                                                     new FieldDecimalNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -109,7 +109,7 @@ public sealed record NullChecksQuery
                                                 )
                                             ),
                                             new DecimalNullableRow(
-                                                new LiteralAsDecimalNullable(
+                                                new ExactDecimalNullableRow(
                                                     new LiteralDecimalNullable()
                                                 )
                                             )
@@ -122,7 +122,7 @@ public sealed record NullChecksQuery
                                     new NotEqualRow(
                                         new NotEqualStringRow(
                                             new StringNullableRow(
-                                                new FieldAsStringNullable(
+                                                new StringRow(
                                                     new FieldString(
                                                         new JoinedString(
                                                             new DotString(),
@@ -138,7 +138,7 @@ public sealed record NullChecksQuery
                                                 )
                                             ),
                                             new StringNullableRow(
-                                                new LiteralAsStringNullable(
+                                                new ExactStringNullableRow(
                                                     new LiteralStringNullable()
                                                 )
                                             )
@@ -151,7 +151,7 @@ public sealed record NullChecksQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

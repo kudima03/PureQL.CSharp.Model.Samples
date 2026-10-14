@@ -69,7 +69,7 @@ public sealed record ParametersInWhereAndSelectQuery
                         new GreaterThanOrEqualRow(
                             new GreaterThanOrEqualDatetimeRow(
                                 new DatetimeNullableRow(
-                                    new FieldAsDatetimeNullable(
+                                    new DatetimeRow(
                                         new FieldDatetime(
                                             new JoinedString(
                                                 new DotString(),
@@ -83,9 +83,7 @@ public sealed record ParametersInWhereAndSelectQuery
                                     )
                                 ),
                                 new DatetimeNullableRow(
-                                    new ParamAsDatetimeNullable(
-                                        new ParamDatetime("since")
-                                    )
+                                    new DatetimeRow(new ParamDatetime("since"))
                                 )
                             )
                         )
@@ -93,7 +91,7 @@ public sealed record ParametersInWhereAndSelectQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 }

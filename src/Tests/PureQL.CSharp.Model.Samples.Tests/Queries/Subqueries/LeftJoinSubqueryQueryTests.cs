@@ -21,6 +21,9 @@ public sealed record LeftJoinSubqueryQueryTests
                         },
                         "where": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",
@@ -37,9 +40,7 @@ public sealed record LeftJoinSubqueryQueryTests
                         },
                         "groupBy": [
                           {
-                            "type": {
-                              "name": "uuid"
-                            },
+                            "alias": "user_id",
                             "expression": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_user_id",
@@ -52,11 +53,8 @@ public sealed record LeftJoinSubqueryQueryTests
                         "select": [
                           {
                             "alias": "user_id",
-                            "type": {
-                              "name": "uuid"
-                            },
                             "expression": {
-                              "key": 0,
+                              "key": "user_id",
                               "type": {
                                 "name": "uuid"
                               }
@@ -64,11 +62,11 @@ public sealed record LeftJoinSubqueryQueryTests
                           },
                           {
                             "alias": "total",
-                            "type": {
-                              "name": "decimal"
-                            },
                             "expression": {
                               "operator": "sum",
+                              "type": {
+                                "name": "decimal"
+                              },
                               "selector": {
                                 "source": "schema_with_foreign_keys.orders",
                                 "field": "order_total",
@@ -80,11 +78,11 @@ public sealed record LeftJoinSubqueryQueryTests
                           },
                           {
                             "alias": "orders",
-                            "type": {
-                              "name": "integer"
-                            },
                             "expression": {
-                              "operator": "count"
+                              "operator": "count",
+                              "type": {
+                                "name": "integer"
+                              }
                             }
                           }
                         ]
@@ -96,10 +94,13 @@ public sealed record LeftJoinSubqueryQueryTests
                   },
                   "joins": [
                     {
-                      "type": "left",
+                      "kind": "left",
                       "subquery": "user_totals",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_id",
@@ -120,9 +121,6 @@ public sealed record LeftJoinSubqueryQueryTests
                   "select": [
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",
@@ -133,11 +131,11 @@ public sealed record LeftJoinSubqueryQueryTests
                     },
                     {
                       "alias": "orders",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "integer"
+                        },
                         "values": [
                           {
                             "source": "user_totals",
@@ -158,10 +156,6 @@ public sealed record LeftJoinSubqueryQueryTests
                     },
                     {
                       "alias": "total",
-                      "type": {
-                        "name": "decimal",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "user_totals",
                         "field": "total",

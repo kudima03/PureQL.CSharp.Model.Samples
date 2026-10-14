@@ -86,9 +86,9 @@ public sealed record OrderByMultipleKeysQuery
                 where: null,
                 [
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new DecimalNullableProjection(
-                                new FieldAsDecimalNullable(
+                                new ExactDecimalProjection(
                                     new FieldDecimal(
                                         new JoinedString(
                                             new DotString(),
@@ -104,9 +104,9 @@ public sealed record OrderByMultipleKeysQuery
                         )
                     ),
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new DatetimeNullableProjection(
-                                new FieldAsDatetimeNullable(
+                                new DatetimeProjection(
                                     new FieldDatetime(
                                         new JoinedString(
                                             new DotString(),
@@ -123,9 +123,9 @@ public sealed record OrderByMultipleKeysQuery
                         SortDirection.Desc
                     ),
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new UuidNullableProjection(
-                                new FieldAsUuidNullable(
+                                new UuidProjection(
                                     new FieldUuid(
                                         new JoinedString(
                                             new DotString(),
@@ -142,7 +142,7 @@ public sealed record OrderByMultipleKeysQuery
                     ),
                 ],
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

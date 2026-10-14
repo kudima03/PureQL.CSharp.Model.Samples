@@ -74,10 +74,8 @@ public sealed record SubqueryPipelineQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "revenue",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal("user_revenue", "revenue")
-                                    )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal("user_revenue", "revenue")
                                 )
                             )
                         )
@@ -86,11 +84,11 @@ public sealed record SubqueryPipelineQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "average_line",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ArithmeticDecimalProjection(
                                         new DivideDecimalProjection([
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         "user_revenue",
                                                         "revenue"
@@ -98,7 +96,7 @@ public sealed record SubqueryPipelineQuery
                                                 )
                                             ),
                                             new DecimalProjection(
-                                                new FieldAsDecimal(
+                                                new IntegerProjection(
                                                     new FieldInteger(
                                                         "user_revenue",
                                                         "lines"
@@ -154,11 +152,11 @@ public sealed record SubqueryPipelineQuery
                                         new SelectItemProjectionNonNullable(
                                             new SelectItemProjectionDecimal(
                                                 "line_total",
-                                                new DecimalProjection(
+                                                new ExactDecimalProjection(
                                                     new ArithmeticDecimalProjection(
                                                         new MultiplyDecimalProjection([
                                                             new DecimalProjection(
-                                                                new FieldAsDecimal(
+                                                                new ExactDecimalProjection(
                                                                     new FieldDecimal(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -174,7 +172,7 @@ public sealed record SubqueryPipelineQuery
                                                                 )
                                                             ),
                                                             new DecimalProjection(
-                                                                new FieldAsDecimal(
+                                                                new ExactDecimalProjection(
                                                                     new FieldDecimal(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -199,7 +197,7 @@ public sealed record SubqueryPipelineQuery
                                 [
                                     new Join(
                                         new JoinEntity(
-                                            JoinType.Inner,
+                                            JoinKind.Inner,
                                             new JoinedString(
                                                 new DotString(),
                                                 [
@@ -212,7 +210,7 @@ public sealed record SubqueryPipelineQuery
                                                     new EqualRow(
                                                         new EqualUuidRow(
                                                             new UuidNullableRow(
-                                                                new FieldAsUuidNullable(
+                                                                new UuidRow(
                                                                     new FieldUuid(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -228,7 +226,7 @@ public sealed record SubqueryPipelineQuery
                                                                 )
                                                             ),
                                                             new UuidNullableRow(
-                                                                new FieldAsUuidNullable(
+                                                                new UuidRow(
                                                                     new FieldUuid(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -251,7 +249,7 @@ public sealed record SubqueryPipelineQuery
                                     ),
                                     new Join(
                                         new JoinEntity(
-                                            JoinType.Inner,
+                                            JoinKind.Inner,
                                             new JoinedString(
                                                 new DotString(),
                                                 [
@@ -264,7 +262,7 @@ public sealed record SubqueryPipelineQuery
                                                     new EqualRow(
                                                         new EqualUuidRow(
                                                             new UuidNullableRow(
-                                                                new FieldAsUuidNullable(
+                                                                new UuidRow(
                                                                     new FieldUuid(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -280,7 +278,7 @@ public sealed record SubqueryPipelineQuery
                                                                 )
                                                             ),
                                                             new UuidNullableRow(
-                                                                new FieldAsUuidNullable(
+                                                                new UuidRow(
                                                                     new FieldUuid(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -307,7 +305,7 @@ public sealed record SubqueryPipelineQuery
                                         new EqualRow(
                                             new EqualStringRow(
                                                 new StringNullableRow(
-                                                    new FieldAsStringNullable(
+                                                    new StringRow(
                                                         new FieldString(
                                                             new JoinedString(
                                                                 new DotString(),
@@ -323,7 +321,7 @@ public sealed record SubqueryPipelineQuery
                                                     )
                                                 ),
                                                 new StringNullableRow(
-                                                    new LiteralAsStringNullable(
+                                                    new StringRow(
                                                         new LiteralString("shipped")
                                                     )
                                                 )
@@ -333,7 +331,7 @@ public sealed record SubqueryPipelineQuery
                                 ),
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -346,6 +344,7 @@ public sealed record SubqueryPipelineQuery
                                     new GroupKey(
                                         new GroupKeyNonNullable(
                                             new GroupKeyUuid(
+                                                "user_id",
                                                 new UuidRow(
                                                     new FieldUuid(
                                                         "shipped_lines",
@@ -361,7 +360,7 @@ public sealed record SubqueryPipelineQuery
                                         new SelectItemGroupNonNullable(
                                             new SelectItemGroupUuid(
                                                 "user_id",
-                                                new UuidGroup(new KeyUuid(0))
+                                                new UuidGroup(new KeyUuid("user_id"))
                                             )
                                         )
                                     ),
@@ -369,11 +368,11 @@ public sealed record SubqueryPipelineQuery
                                         new SelectItemGroupNonNullable(
                                             new SelectItemGroupDecimal(
                                                 "revenue",
-                                                new DecimalGroup(
+                                                new ExactDecimalGroup(
                                                     new AggregateDecimalGroup(
                                                         new SumDecimalGroup(
                                                             new DecimalNullableRow(
-                                                                new FieldAsDecimalNullable(
+                                                                new ExactDecimalRow(
                                                                     new FieldDecimal(
                                                                         "shipped_lines",
                                                                         "line_total"
@@ -406,13 +405,15 @@ public sealed record SubqueryPipelineQuery
                                         new GreaterThanGroup(
                                             new GreaterThanDecimalGroup(
                                                 new DecimalNullableGroup(
-                                                    new AggregateDecimalNullableGroup(
-                                                        new SumDecimalGroup(
-                                                            new DecimalNullableRow(
-                                                                new FieldAsDecimalNullable(
-                                                                    new FieldDecimal(
-                                                                        "shipped_lines",
-                                                                        "line_total"
+                                                    new ExactDecimalGroup(
+                                                        new AggregateDecimalGroup(
+                                                            new SumDecimalGroup(
+                                                                new DecimalNullableRow(
+                                                                    new ExactDecimalRow(
+                                                                        new FieldDecimal(
+                                                                            "shipped_lines",
+                                                                            "line_total"
+                                                                        )
                                                                     )
                                                                 )
                                                             )
@@ -420,7 +421,7 @@ public sealed record SubqueryPipelineQuery
                                                     )
                                                 ),
                                                 new DecimalNullableGroup(
-                                                    new LiteralAsDecimalNullable(
+                                                    new IntegerGroup(
                                                         new LiteralInteger(20)
                                                     )
                                                 )
@@ -430,7 +431,7 @@ public sealed record SubqueryPipelineQuery
                                 ),
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -476,7 +477,7 @@ public sealed record SubqueryPipelineQuery
                                         new LessThanRow(
                                             new LessThanDatetimeRow(
                                                 new DatetimeNullableRow(
-                                                    new FieldAsDatetimeNullable(
+                                                    new DatetimeRow(
                                                         new FieldDatetime(
                                                             new JoinedString(
                                                                 new DotString(),
@@ -492,7 +493,7 @@ public sealed record SubqueryPipelineQuery
                                                     )
                                                 ),
                                                 new DatetimeNullableRow(
-                                                    new LiteralAsDatetimeNullable(
+                                                    new DatetimeRow(
                                                         new LiteralDatetime(
                                                             new DateTimeOffset(
                                                                 2024,
@@ -512,7 +513,7 @@ public sealed record SubqueryPipelineQuery
                                 ),
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -520,14 +521,14 @@ public sealed record SubqueryPipelineQuery
                 [
                     new Join(
                         new JoinSubquery(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             "user_revenue",
                             new BooleanRow(
                                 new ComparisonRow(
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         "u",
                                                         new UserIdColumn().Name.TextValue
@@ -535,7 +536,7 @@ public sealed record SubqueryPipelineQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         "user_revenue",
                                                         "user_id"
@@ -557,7 +558,7 @@ public sealed record SubqueryPipelineQuery
                                     new InRow(
                                         new InUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         "u",
                                                         new UserIdColumn().Name.TextValue
@@ -579,9 +580,9 @@ public sealed record SubqueryPipelineQuery
                 ),
                 [
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new DecimalNullableProjection(
-                                new FieldAsDecimalNullable(
+                                new ExactDecimalProjection(
                                     new FieldDecimal("user_revenue", "revenue")
                                 )
                             )
@@ -589,9 +590,9 @@ public sealed record SubqueryPipelineQuery
                         SortDirection.Desc
                     ),
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new StringNullableProjection(
-                                new FieldAsStringNullable(
+                                new StringProjection(
                                     new FieldString(
                                         "u",
                                         new UserNameColumn().Name.TextValue
@@ -602,7 +603,7 @@ public sealed record SubqueryPipelineQuery
                     ),
                 ],
                 new ModelPagination(0, 50),
-                distinct: false
+                distinctBy: null
             )
         );
 

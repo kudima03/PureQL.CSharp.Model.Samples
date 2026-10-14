@@ -86,7 +86,7 @@ public sealed record InnerJoinQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Inner,
+                            JoinKind.Inner,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -99,7 +99,7 @@ public sealed record InnerJoinQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -115,7 +115,7 @@ public sealed record InnerJoinQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -138,7 +138,7 @@ public sealed record InnerJoinQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

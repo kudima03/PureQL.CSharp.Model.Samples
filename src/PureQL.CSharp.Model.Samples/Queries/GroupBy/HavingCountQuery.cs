@@ -53,6 +53,7 @@ public sealed record HavingCountQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyUuid(
+                                "order_user_id",
                                 new UuidRow(
                                     new FieldUuid(
                                         new JoinedString(
@@ -74,7 +75,7 @@ public sealed record HavingCountQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupUuid(
                                 "order_user_id",
-                                new UuidGroup(new KeyUuid(0))
+                                new UuidGroup(new KeyUuid("order_user_id"))
                             )
                         )
                     ),
@@ -97,10 +98,12 @@ public sealed record HavingCountQuery
                         new GreaterThanOrEqualGroup(
                             new GreaterThanOrEqualDecimalGroup(
                                 new DecimalNullableGroup(
-                                    new AggregateDecimalNullableGroup(new CountGroup())
+                                    new IntegerGroup(
+                                        new AggregateIntegerGroup(new CountGroup())
+                                    )
                                 ),
                                 new DecimalNullableGroup(
-                                    new LiteralAsDecimalNullable(new LiteralInteger(2))
+                                    new IntegerGroup(new LiteralInteger(2))
                                 )
                             )
                         )
@@ -108,7 +111,7 @@ public sealed record HavingCountQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

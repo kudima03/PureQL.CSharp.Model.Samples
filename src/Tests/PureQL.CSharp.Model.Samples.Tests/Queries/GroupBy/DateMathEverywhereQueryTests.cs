@@ -17,8 +17,14 @@ public sealed record DateMathEverywhereQueryTests
                   },
                   "where": {
                     "operator": "lessThanOrEqual",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "operator": "dateDiffDays",
+                      "type": {
+                        "name": "integer"
+                      },
                       "left": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "placed_on",
@@ -42,9 +48,7 @@ public sealed record DateMathEverywhereQueryTests
                   },
                   "groupBy": [
                     {
-                      "type": {
-                        "name": "uuid"
-                      },
+                      "alias": "order_user_id",
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_user_id",
@@ -56,8 +60,14 @@ public sealed record DateMathEverywhereQueryTests
                   ],
                   "having": {
                     "operator": "greaterThanOrEqual",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "operator": "max",
+                      "type": {
+                        "name": "date"
+                      },
                       "selector": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "placed_on",
@@ -68,6 +78,9 @@ public sealed record DateMathEverywhereQueryTests
                     },
                     "right": {
                       "operator": "dateAddDays",
+                      "type": {
+                        "name": "date"
+                      },
                       "left": {
                         "type": {
                           "name": "date"
@@ -85,11 +98,8 @@ public sealed record DateMathEverywhereQueryTests
                   "select": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "order_user_id",
                         "type": {
                           "name": "uuid"
                         }
@@ -97,13 +107,16 @@ public sealed record DateMathEverywhereQueryTests
                     },
                     {
                       "alias": "active_span_days",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "dateDiffDays",
+                        "type": {
+                          "name": "integer"
+                        },
                         "left": {
                           "operator": "max",
+                          "type": {
+                            "name": "date"
+                          },
                           "selector": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "placed_on",
@@ -114,6 +127,9 @@ public sealed record DateMathEverywhereQueryTests
                         },
                         "right": {
                           "operator": "min",
+                          "type": {
+                            "name": "date"
+                          },
                           "selector": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "placed_on",

@@ -17,13 +17,19 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                   },
                   "joins": [
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.users",
                       "on": {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "equal",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_user_id",
@@ -53,10 +59,6 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                   "groupBy": [
                     {
                       "alias": "buyer",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",
@@ -69,8 +71,14 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                   ],
                   "having": {
                     "operator": "greaterThan",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "operator": "max",
+                      "type": {
+                        "name": "datetime"
+                      },
                       "selector": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "placed_at",
@@ -89,12 +97,8 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                   "select": [
                     {
                       "alias": "buyer",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "buyer",
                         "type": {
                           "name": "string",
                           "nullable": true
@@ -103,11 +107,11 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                     },
                     {
                       "alias": "last_order_at",
-                      "type": {
-                        "name": "datetime"
-                      },
                       "expression": {
                         "operator": "max",
+                        "type": {
+                          "name": "datetime"
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_at",
@@ -119,11 +123,11 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                     },
                     {
                       "alias": "average_order_at",
-                      "type": {
-                        "name": "datetime"
-                      },
                       "expression": {
                         "operator": "average",
+                        "type": {
+                          "name": "datetime"
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_at",
@@ -135,14 +139,18 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                     },
                     {
                       "alias": "min_large_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "operator": "min",
+                            "type": {
+                              "name": "decimal",
+                              "nullable": true
+                            },
                             "selector": {
                               "source": "schema_with_foreign_keys.orders",
                               "field": "order_total",
@@ -152,6 +160,9 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                             },
                             "predicate": {
                               "operator": "greaterThan",
+                              "type": {
+                                "name": "boolean"
+                              },
                               "left": {
                                 "source": "schema_with_foreign_keys.orders",
                                 "field": "order_total",
@@ -180,7 +191,7 @@ public sealed record NullableGroupKeyAndAggregatesQueryTests
                   "orderBy": [
                     {
                       "expression": {
-                        "key": 0,
+                        "key": "buyer",
                         "type": {
                           "name": "string",
                           "nullable": true

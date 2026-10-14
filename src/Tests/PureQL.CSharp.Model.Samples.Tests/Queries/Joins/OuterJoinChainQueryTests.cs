@@ -17,10 +17,13 @@ public sealed record OuterJoinChainQueryTests
                   },
                   "joins": [
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.employees",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.employees",
                           "field": "employee_user_id",
@@ -38,11 +41,14 @@ public sealed record OuterJoinChainQueryTests
                       }
                     },
                     {
-                      "type": "left",
+                      "kind": "left",
                       "entity": "schema_with_foreign_keys.employees",
                       "alias": "report",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "report",
                           "field": "employee_manager_id",
@@ -65,9 +71,6 @@ public sealed record OuterJoinChainQueryTests
                   "select": [
                     {
                       "alias": "login_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "audit.logins",
                         "field": "login_id",
@@ -78,10 +81,6 @@ public sealed record OuterJoinChainQueryTests
                     },
                     {
                       "alias": "employee",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.employees",
                         "field": "employee_name",
@@ -93,10 +92,6 @@ public sealed record OuterJoinChainQueryTests
                     },
                     {
                       "alias": "report",
-                      "type": {
-                        "name": "string",
-                        "nullable": true
-                      },
                       "expression": {
                         "source": "report",
                         "field": "employee_name",

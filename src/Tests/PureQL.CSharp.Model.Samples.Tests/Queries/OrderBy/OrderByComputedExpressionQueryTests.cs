@@ -17,10 +17,13 @@ public sealed record OrderByComputedExpressionQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.products",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_product_id",
@@ -41,9 +44,6 @@ public sealed record OrderByComputedExpressionQueryTests
                   "select": [
                     {
                       "alias": "item_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.order_items",
                         "field": "item_id",
@@ -54,11 +54,11 @@ public sealed record OrderByComputedExpressionQueryTests
                     },
                     {
                       "alias": "subtotal",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.products",
@@ -82,6 +82,9 @@ public sealed record OrderByComputedExpressionQueryTests
                     {
                       "expression": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.products",

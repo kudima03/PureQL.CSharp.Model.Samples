@@ -68,18 +68,16 @@ public sealed record InSubqueryColumnQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "order_total",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new OrdersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new OrderTotalColumn().Name.TextValue
-                                        )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -138,7 +136,7 @@ public sealed record InSubqueryColumnQuery
                                 ),
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -149,7 +147,7 @@ public sealed record InSubqueryColumnQuery
                         new InRow(
                             new InUuidRow(
                                 new UuidNullableRow(
-                                    new FieldAsUuidNullable(
+                                    new UuidRow(
                                         new FieldUuid(
                                             new JoinedString(
                                                 new DotString(),
@@ -171,7 +169,7 @@ public sealed record InSubqueryColumnQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

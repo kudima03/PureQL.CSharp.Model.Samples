@@ -73,7 +73,7 @@ public sealed record WhereNotEqualAndNotQuery
                                     new NotEqualRow(
                                         new NotEqualStringRow(
                                             new StringNullableRow(
-                                                new FieldAsStringNullable(
+                                                new StringRow(
                                                     new FieldString(
                                                         new JoinedString(
                                                             new DotString(),
@@ -89,9 +89,7 @@ public sealed record WhereNotEqualAndNotQuery
                                                 )
                                             ),
                                             new StringNullableRow(
-                                                new LiteralAsStringNullable(
-                                                    new LiteralString("Bob")
-                                                )
+                                                new StringRow(new LiteralString("Bob"))
                                             )
                                         )
                                     )
@@ -120,7 +118,7 @@ public sealed record WhereNotEqualAndNotQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

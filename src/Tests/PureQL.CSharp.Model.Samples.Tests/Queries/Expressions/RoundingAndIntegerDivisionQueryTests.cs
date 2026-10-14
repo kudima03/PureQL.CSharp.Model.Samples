@@ -18,12 +18,12 @@ public sealed record RoundingAndIntegerDivisionQueryTests
                   "select": [
                     {
                       "alias": "price_floor",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "floor",
-                        "value": {
+                        "type": {
+                          "name": "integer"
+                        },
+                        "operand": {
                           "source": "schema_with_foreign_keys.products",
                           "field": "product_price",
                           "type": {
@@ -34,12 +34,12 @@ public sealed record RoundingAndIntegerDivisionQueryTests
                     },
                     {
                       "alias": "price_ceiling",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "ceiling",
-                        "value": {
+                        "type": {
+                          "name": "integer"
+                        },
+                        "operand": {
                           "source": "schema_with_foreign_keys.products",
                           "field": "product_price",
                           "type": {
@@ -50,12 +50,12 @@ public sealed record RoundingAndIntegerDivisionQueryTests
                     },
                     {
                       "alias": "price_rounded",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "round",
-                        "value": {
+                        "type": {
+                          "name": "integer"
+                        },
+                        "operand": {
                           "source": "schema_with_foreign_keys.products",
                           "field": "product_price",
                           "type": {
@@ -66,12 +66,12 @@ public sealed record RoundingAndIntegerDivisionQueryTests
                     },
                     {
                       "alias": "price_tenths",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "round",
-                        "value": {
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
                           "source": "schema_with_foreign_keys.products",
                           "field": "product_price",
                           "type": {
@@ -88,14 +88,17 @@ public sealed record RoundingAndIntegerDivisionQueryTests
                     },
                     {
                       "alias": "packs",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "integerDivide",
+                        "type": {
+                          "name": "integer"
+                        },
                         "left": {
                           "operator": "round",
-                          "value": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "operand": {
                             "source": "schema_with_foreign_keys.products",
                             "field": "product_price",
                             "type": {
@@ -113,14 +116,17 @@ public sealed record RoundingAndIntegerDivisionQueryTests
                     },
                     {
                       "alias": "loose",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "modulo",
+                        "type": {
+                          "name": "integer"
+                        },
                         "left": {
                           "operator": "round",
-                          "value": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "operand": {
                             "source": "schema_with_foreign_keys.products",
                             "field": "product_price",
                             "type": {

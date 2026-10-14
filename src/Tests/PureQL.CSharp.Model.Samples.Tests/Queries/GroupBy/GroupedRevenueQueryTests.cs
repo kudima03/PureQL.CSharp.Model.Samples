@@ -17,10 +17,13 @@ public sealed record GroupedRevenueQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.orders",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_order_id",
@@ -38,10 +41,13 @@ public sealed record GroupedRevenueQueryTests
                       }
                     },
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.products",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
                           "field": "item_product_id",
@@ -61,6 +67,9 @@ public sealed record GroupedRevenueQueryTests
                   ],
                   "where": {
                     "operator": "equal",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "source": "schema_with_foreign_keys.orders",
                       "field": "order_status",
@@ -78,9 +87,6 @@ public sealed record GroupedRevenueQueryTests
                   "groupBy": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_user_id",
@@ -92,10 +98,19 @@ public sealed record GroupedRevenueQueryTests
                   ],
                   "having": {
                     "operator": "greaterThan",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "left": {
                       "operator": "sum",
+                      "type": {
+                        "name": "decimal"
+                      },
                       "selector": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.products",
@@ -118,17 +133,14 @@ public sealed record GroupedRevenueQueryTests
                       "type": {
                         "name": "decimal"
                       },
-                      "value": 25
+                      "value": "25"
                     }
                   },
                   "select": [
                     {
                       "alias": "order_user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "order_user_id",
                         "type": {
                           "name": "uuid"
                         }
@@ -136,13 +148,16 @@ public sealed record GroupedRevenueQueryTests
                     },
                     {
                       "alias": "revenue",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "selector": {
                           "operator": "multiply",
+                          "type": {
+                            "name": "decimal"
+                          },
                           "values": [
                             {
                               "source": "schema_with_foreign_keys.products",
@@ -164,26 +179,32 @@ public sealed record GroupedRevenueQueryTests
                     },
                     {
                       "alias": "line_items",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       }
                     },
                     {
                       "alias": "share_of_all_lines",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "divide",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "values": [
                           {
-                            "operator": "count"
+                            "operator": "count",
+                            "type": {
+                              "name": "integer"
+                            }
                           },
                           {
                             "operator": "count",
+                            "type": {
+                              "name": "integer"
+                            },
                             "over": "all"
                           }
                         ]
@@ -193,13 +214,16 @@ public sealed record GroupedRevenueQueryTests
                   "orderBy": [
                     {
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       },
                       "direction": "desc"
                     },
                     {
                       "expression": {
-                        "key": 0,
+                        "key": "order_user_id",
                         "type": {
                           "name": "uuid"
                         }

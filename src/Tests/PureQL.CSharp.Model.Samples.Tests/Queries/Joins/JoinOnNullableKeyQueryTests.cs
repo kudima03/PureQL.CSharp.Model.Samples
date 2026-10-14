@@ -18,14 +18,20 @@ public sealed record JoinOnNullableKeyQueryTests
                   },
                   "joins": [
                     {
-                      "type": "inner",
+                      "kind": "inner",
                       "entity": "schema_with_foreign_keys.employees",
                       "alias": "b",
                       "on": {
                         "operator": "and",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "conditions": [
                           {
                             "operator": "equal",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "a",
                               "field": "employee_manager_id",
@@ -45,6 +51,9 @@ public sealed record JoinOnNullableKeyQueryTests
                           },
                           {
                             "operator": "notEqual",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "a",
                               "field": "employee_manager_id",
@@ -63,6 +72,9 @@ public sealed record JoinOnNullableKeyQueryTests
                           },
                           {
                             "operator": "notEqual",
+                            "type": {
+                              "name": "boolean"
+                            },
                             "left": {
                               "source": "a",
                               "field": "employee_id",
@@ -85,9 +97,6 @@ public sealed record JoinOnNullableKeyQueryTests
                   "select": [
                     {
                       "alias": "employee",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "a",
                         "field": "employee_name",
@@ -98,9 +107,6 @@ public sealed record JoinOnNullableKeyQueryTests
                     },
                     {
                       "alias": "colleague",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "b",
                         "field": "employee_name",

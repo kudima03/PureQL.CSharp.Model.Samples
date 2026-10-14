@@ -65,7 +65,7 @@ public sealed record DistinctOrderStatusQuery
                 where: null,
                 orderBy: null,
                 pagination: null,
-                true
+                distinctBy: ["order_status"]
             )
         );
 

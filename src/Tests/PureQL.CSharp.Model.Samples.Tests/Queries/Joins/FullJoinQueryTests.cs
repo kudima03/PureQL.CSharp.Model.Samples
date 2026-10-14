@@ -17,10 +17,13 @@ public sealed record FullJoinQueryTests
                   },
                   "joins": [
                     {
-                      "type": "full",
+                      "kind": "full",
                       "entity": "schema_with_foreign_keys.employees",
                       "on": {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "audit.logins",
                           "field": "login_user_id",
@@ -41,12 +44,12 @@ public sealed record FullJoinQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid",
-                        "nullable": true
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "uuid",
+                          "nullable": true
+                        },
                         "values": [
                           {
                             "source": "audit.logins",
@@ -69,11 +72,11 @@ public sealed record FullJoinQueryTests
                     },
                     {
                       "alias": "employee",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "operator": "coalesce",
+                        "type": {
+                          "name": "string"
+                        },
                         "values": [
                           {
                             "source": "schema_with_foreign_keys.employees",

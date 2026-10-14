@@ -76,7 +76,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                     new ConditionalStringProjection(
                                         new CoalesceStringProjection([
                                             new StringNullableProjection(
-                                                new FieldAsStringNullable(
+                                                new ExactStringNullableProjection(
                                                     new FieldStringNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -92,7 +92,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                                 )
                                             ),
                                             new StringNullableProjection(
-                                                new LiteralAsStringNullable(
+                                                new StringProjection(
                                                     new LiteralString("none")
                                                 )
                                             ),
@@ -106,11 +106,11 @@ public sealed record LeftJoinNullableFieldsQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDecimalNullable(
                                 "total_after_discount",
-                                new DecimalNullableProjection(
+                                new ExactDecimalNullableProjection(
                                     new ArithmeticDecimalNullableProjection(
                                         new SubtractDecimalNullableProjection([
                                             new DecimalNullableProjection(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalNullableProjection(
                                                     new FieldDecimalNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -126,7 +126,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                                 )
                                             ),
                                             new DecimalNullableProjection(
-                                                new LiteralAsDecimalNullable(
+                                                new IntegerProjection(
                                                     new LiteralInteger(10)
                                                 )
                                             ),
@@ -141,7 +141,7 @@ public sealed record LeftJoinNullableFieldsQuery
                 [
                     new Join(
                         new JoinEntity(
-                            JoinType.Left,
+                            JoinKind.Left,
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -154,7 +154,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -170,7 +170,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new UuidRow(
                                                     new FieldUuid(
                                                         new JoinedString(
                                                             new DotString(),
@@ -198,7 +198,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                     new EqualRow(
                                         new EqualUuidRow(
                                             new UuidNullableRow(
-                                                new FieldAsUuidNullable(
+                                                new ExactUuidNullableRow(
                                                     new FieldUuidNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -212,7 +212,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                                 )
                                             ),
                                             new UuidNullableRow(
-                                                new LiteralAsUuidNullable(
+                                                new ExactUuidNullableRow(
                                                     new LiteralUuidNullable()
                                                 )
                                             )
@@ -225,7 +225,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                     new GreaterThanRow(
                                         new GreaterThanDecimalRow(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalNullableRow(
                                                     new FieldDecimalNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -241,9 +241,7 @@ public sealed record LeftJoinNullableFieldsQuery
                                                 )
                                             ),
                                             new DecimalNullableRow(
-                                                new LiteralAsDecimalNullable(
-                                                    new LiteralInteger(100)
-                                                )
+                                                new IntegerRow(new LiteralInteger(100))
                                             )
                                         )
                                     )
@@ -254,7 +252,7 @@ public sealed record LeftJoinNullableFieldsQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

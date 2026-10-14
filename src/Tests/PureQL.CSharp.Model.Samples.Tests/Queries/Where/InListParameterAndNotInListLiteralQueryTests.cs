@@ -17,10 +17,16 @@ public sealed record InListParameterAndNotInListLiteralQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "in",
-                        "value": {
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "operand": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_status",
                           "type": {
@@ -28,7 +34,7 @@ public sealed record InListParameterAndNotInListLiteralQueryTests
                           }
                         },
                         "list": {
-                          "param_name": "statuses",
+                          "param": "statuses",
                           "type": {
                             "name": "stringList"
                           }
@@ -36,9 +42,15 @@ public sealed record InListParameterAndNotInListLiteralQueryTests
                       },
                       {
                         "operator": "not",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "condition": {
                           "operator": "in",
-                          "value": {
+                          "type": {
+                            "name": "boolean"
+                          },
+                          "operand": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_user_id",
                             "type": {
@@ -61,9 +73,6 @@ public sealed record InListParameterAndNotInListLiteralQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",

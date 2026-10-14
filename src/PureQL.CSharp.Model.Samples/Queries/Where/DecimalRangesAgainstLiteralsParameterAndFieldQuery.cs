@@ -58,18 +58,16 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "user_age",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new UsersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new UserAgeColumn().Name.TextValue
-                                        )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserAgeColumn().Name.TextValue
                                     )
                                 )
                             )
@@ -86,7 +84,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                     new GreaterThanOrEqualRow(
                                         new GreaterThanOrEqualDecimalRow(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -100,7 +98,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                                 )
                                             ),
                                             new DecimalNullableRow(
-                                                new LiteralAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new LiteralDecimal(10.5m)
                                                 )
                                             )
@@ -113,7 +111,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                     new LessThanRow(
                                         new LessThanDecimalRow(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -127,9 +125,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                                 )
                                             ),
                                             new DecimalNullableRow(
-                                                new LiteralAsDecimalNullable(
-                                                    new LiteralInteger(1000)
-                                                )
+                                                new IntegerRow(new LiteralInteger(1000))
                                             )
                                         )
                                     )
@@ -140,7 +136,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                     new GreaterThanRow(
                                         new GreaterThanDecimalRow(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -154,7 +150,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                                 )
                                             ),
                                             new DecimalNullableRow(
-                                                new ParamAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new ParamDecimal("min_age")
                                                 )
                                             )
@@ -167,7 +163,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                     new LessThanOrEqualRow(
                                         new LessThanOrEqualDecimalRow(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -181,7 +177,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                                                 )
                                             ),
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalNullableRow(
                                                     new FieldDecimalNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -205,7 +201,7 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 }

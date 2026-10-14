@@ -83,9 +83,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "a_decimal",
-                                new DecimalProjection(
-                                    new LiteralAsDecimal(new LiteralDecimal(19.99m))
-                                )
+                                new ExactDecimalProjection(new LiteralDecimal(19.99m))
                             )
                         )
                     ),

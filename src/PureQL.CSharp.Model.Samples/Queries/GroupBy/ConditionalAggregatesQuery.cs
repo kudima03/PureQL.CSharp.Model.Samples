@@ -57,6 +57,7 @@ public sealed record ConditionalAggregatesQuery
                     new GroupKey(
                         new GroupKeyNonNullable(
                             new GroupKeyUuid(
+                                "order_user_id",
                                 new UuidRow(
                                     new FieldUuid(
                                         new JoinedString(
@@ -78,7 +79,7 @@ public sealed record ConditionalAggregatesQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupUuid(
                                 "order_user_id",
-                                new UuidGroup(new KeyUuid(0))
+                                new UuidGroup(new KeyUuid("order_user_id"))
                             )
                         )
                     ),
@@ -94,7 +95,7 @@ public sealed record ConditionalAggregatesQuery
                                                     new EqualRow(
                                                         new EqualStringRow(
                                                             new StringNullableRow(
-                                                                new FieldAsStringNullable(
+                                                                new StringRow(
                                                                     new FieldString(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -110,7 +111,7 @@ public sealed record ConditionalAggregatesQuery
                                                                 )
                                                             ),
                                                             new StringNullableRow(
-                                                                new LiteralAsStringNullable(
+                                                                new StringRow(
                                                                     new LiteralString(
                                                                         "cancelled"
                                                                     )
@@ -130,11 +131,11 @@ public sealed record ConditionalAggregatesQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupDecimal(
                                 "shipped_total",
-                                new DecimalGroup(
+                                new ExactDecimalGroup(
                                     new AggregateDecimalGroup(
                                         new SumDecimalGroup(
                                             new DecimalNullableRow(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalRow(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -154,7 +155,7 @@ public sealed record ConditionalAggregatesQuery
                                                     new EqualRow(
                                                         new EqualStringRow(
                                                             new StringNullableRow(
-                                                                new FieldAsStringNullable(
+                                                                new StringRow(
                                                                     new FieldString(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -170,7 +171,7 @@ public sealed record ConditionalAggregatesQuery
                                                                 )
                                                             ),
                                                             new StringNullableRow(
-                                                                new LiteralAsStringNullable(
+                                                                new StringRow(
                                                                     new LiteralString(
                                                                         "shipped"
                                                                     )
@@ -190,62 +191,64 @@ public sealed record ConditionalAggregatesQuery
                         new SelectItemGroupNonNullable(
                             new SelectItemGroupDecimal(
                                 "shipped_total_via_if",
-                                new DecimalGroup(
+                                new ExactDecimalGroup(
                                     new AggregateDecimalGroup(
                                         new SumDecimalGroup(
                                             new DecimalNullableRow(
-                                                new ConditionalDecimalNullableRow(
-                                                    new IfDecimalNullableRow(
-                                                        new BooleanRow(
-                                                            new ComparisonRow(
-                                                                new EqualRow(
-                                                                    new EqualStringRow(
-                                                                        new StringNullableRow(
-                                                                            new FieldAsStringNullable(
-                                                                                new FieldString(
-                                                                                    new JoinedString(
-                                                                                        new DotString(),
-                                                                                        [
-                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                            new OrdersTable().Name,
-                                                                                        ]
-                                                                                    ).TextValue,
-                                                                                    new OrderStatusColumn()
-                                                                                        .Name
-                                                                                        .TextValue
+                                                new ExactDecimalRow(
+                                                    new ConditionalDecimalRow(
+                                                        new IfDecimalRow(
+                                                            new BooleanRow(
+                                                                new ComparisonRow(
+                                                                    new EqualRow(
+                                                                        new EqualStringRow(
+                                                                            new StringNullableRow(
+                                                                                new StringRow(
+                                                                                    new FieldString(
+                                                                                        new JoinedString(
+                                                                                            new DotString(),
+                                                                                            [
+                                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                                new OrdersTable().Name,
+                                                                                            ]
+                                                                                        ).TextValue,
+                                                                                        new OrderStatusColumn()
+                                                                                            .Name
+                                                                                            .TextValue
+                                                                                    )
                                                                                 )
-                                                                            )
-                                                                        ),
-                                                                        new StringNullableRow(
-                                                                            new LiteralAsStringNullable(
-                                                                                new LiteralString(
-                                                                                    "shipped"
+                                                                            ),
+                                                                            new StringNullableRow(
+                                                                                new StringRow(
+                                                                                    new LiteralString(
+                                                                                        "shipped"
+                                                                                    )
                                                                                 )
                                                                             )
                                                                         )
                                                                     )
                                                                 )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableRow(
-                                                            new FieldAsDecimalNullable(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
+                                                            ),
+                                                            new DecimalRow(
+                                                                new ExactDecimalRow(
+                                                                    new FieldDecimal(
+                                                                        new JoinedString(
+                                                                            new DotString(),
+                                                                            [
+                                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                                new OrdersTable().Name,
+                                                                            ]
+                                                                        ).TextValue,
+                                                                        new OrderTotalColumn()
+                                                                            .Name
+                                                                            .TextValue
+                                                                    )
                                                                 )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableRow(
-                                                            new LiteralAsDecimalNullable(
-                                                                new LiteralInteger(0)
+                                                            ),
+                                                            new DecimalRow(
+                                                                new IntegerRow(
+                                                                    new LiteralInteger(0)
+                                                                )
                                                             )
                                                         )
                                                     )
@@ -269,7 +272,7 @@ public sealed record ConditionalAggregatesQuery
                                                     new EqualRow(
                                                         new EqualStringRow(
                                                             new StringNullableRow(
-                                                                new FieldAsStringNullable(
+                                                                new StringRow(
                                                                     new FieldString(
                                                                         new JoinedString(
                                                                             new DotString(),
@@ -285,7 +288,7 @@ public sealed record ConditionalAggregatesQuery
                                                                 )
                                                             ),
                                                             new StringNullableRow(
-                                                                new LiteralAsStringNullable(
+                                                                new StringRow(
                                                                     new LiteralString(
                                                                         "pending"
                                                                     )
@@ -313,7 +316,7 @@ public sealed record ConditionalAggregatesQuery
                                     new NotEqualRow(
                                         new NotEqualStringRow(
                                             new StringNullableRow(
-                                                new FieldAsStringNullable(
+                                                new StringRow(
                                                     new FieldString(
                                                         new JoinedString(
                                                             new DotString(),
@@ -329,7 +332,7 @@ public sealed record ConditionalAggregatesQuery
                                                 )
                                             ),
                                             new StringNullableRow(
-                                                new LiteralAsStringNullable(
+                                                new StringRow(
                                                     new LiteralString("cancelled")
                                                 )
                                             )
@@ -342,7 +345,7 @@ public sealed record ConditionalAggregatesQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

@@ -18,13 +18,16 @@ public sealed record ComputedGroupKeyQueryTests
                   "groupBy": [
                     {
                       "alias": "size_bucket",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "operator": "if",
+                        "type": {
+                          "name": "string"
+                        },
                         "condition": {
                           "operator": "greaterThan",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_total",
@@ -36,7 +39,7 @@ public sealed record ComputedGroupKeyQueryTests
                             "type": {
                               "name": "decimal"
                             },
-                            "value": 100
+                            "value": "100"
                           }
                         },
                         "then": {
@@ -57,11 +60,8 @@ public sealed record ComputedGroupKeyQueryTests
                   "select": [
                     {
                       "alias": "size_bucket",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "size_bucket",
                         "type": {
                           "name": "string"
                         }
@@ -69,20 +69,20 @@ public sealed record ComputedGroupKeyQueryTests
                     },
                     {
                       "alias": "orders",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       }
                     },
                     {
                       "alias": "average_total",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "average",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "selector": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_total",
@@ -96,7 +96,7 @@ public sealed record ComputedGroupKeyQueryTests
                   "orderBy": [
                     {
                       "expression": {
-                        "key": 0,
+                        "key": "size_bucket",
                         "type": {
                           "name": "string"
                         }

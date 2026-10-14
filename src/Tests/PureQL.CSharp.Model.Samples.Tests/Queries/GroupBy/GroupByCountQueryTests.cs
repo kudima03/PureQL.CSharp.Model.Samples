@@ -17,9 +17,7 @@ public sealed record GroupByCountQueryTests
                   },
                   "groupBy": [
                     {
-                      "type": {
-                        "name": "string"
-                      },
+                      "alias": "order_status",
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_status",
@@ -32,11 +30,8 @@ public sealed record GroupByCountQueryTests
                   "select": [
                     {
                       "alias": "order_status",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
-                        "key": 0,
+                        "key": "order_status",
                         "type": {
                           "name": "string"
                         }
@@ -44,11 +39,11 @@ public sealed record GroupByCountQueryTests
                     },
                     {
                       "alias": "orders",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
-                        "operator": "count"
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
                       }
                     }
                   ]

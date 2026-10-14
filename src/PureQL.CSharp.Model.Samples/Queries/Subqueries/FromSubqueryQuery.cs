@@ -51,10 +51,8 @@ public sealed record FromSubqueryQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "total",
-                                new DecimalProjection(
-                                    new FieldAsDecimal(
-                                        new FieldDecimal("recent_orders", "total")
-                                    )
+                                new ExactDecimalProjection(
+                                    new FieldDecimal("recent_orders", "total")
                                 )
                             )
                         )
@@ -100,20 +98,18 @@ public sealed record FromSubqueryQuery
                                         new SelectItemProjectionNonNullable(
                                             new SelectItemProjectionDecimal(
                                                 "total",
-                                                new DecimalProjection(
-                                                    new FieldAsDecimal(
-                                                        new FieldDecimal(
-                                                            new JoinedString(
-                                                                new DotString(),
-                                                                [
-                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                    new OrdersTable().Name,
-                                                                ]
-                                                            ).TextValue,
-                                                            new OrderTotalColumn()
-                                                                .Name
-                                                                .TextValue
-                                                        )
+                                                new ExactDecimalProjection(
+                                                    new FieldDecimal(
+                                                        new JoinedString(
+                                                            new DotString(),
+                                                            [
+                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                new OrdersTable().Name,
+                                                            ]
+                                                        ).TextValue,
+                                                        new OrderTotalColumn()
+                                                            .Name
+                                                            .TextValue
                                                     )
                                                 )
                                             )
@@ -126,7 +122,7 @@ public sealed record FromSubqueryQuery
                                         new GreaterThanOrEqualRow(
                                             new GreaterThanOrEqualDatetimeRow(
                                                 new DatetimeNullableRow(
-                                                    new FieldAsDatetimeNullable(
+                                                    new DatetimeRow(
                                                         new FieldDatetime(
                                                             new JoinedString(
                                                                 new DotString(),
@@ -142,7 +138,7 @@ public sealed record FromSubqueryQuery
                                                     )
                                                 ),
                                                 new DatetimeNullableRow(
-                                                    new LiteralAsDatetimeNullable(
+                                                    new DatetimeRow(
                                                         new LiteralDatetime(
                                                             new DateTimeOffset(
                                                                 2024,
@@ -162,7 +158,7 @@ public sealed record FromSubqueryQuery
                                 ),
                                 orderBy: null,
                                 pagination: null,
-                                distinct: false
+                                distinctBy: null
                             )
                         )
                     ),
@@ -171,9 +167,9 @@ public sealed record FromSubqueryQuery
                 where: null,
                 [
                     new OrderItemProjection(
-                        new ValueProjection(
+                        new ExprProjection(
                             new DecimalNullableProjection(
-                                new FieldAsDecimalNullable(
+                                new ExactDecimalProjection(
                                     new FieldDecimal("recent_orders", "total")
                                 )
                             )
@@ -182,7 +178,7 @@ public sealed record FromSubqueryQuery
                     ),
                 ],
                 new ModelPagination(0, 2),
-                distinct: false
+                distinctBy: null
             )
         );
 

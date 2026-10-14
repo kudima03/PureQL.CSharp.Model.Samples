@@ -18,9 +18,6 @@ public sealed record IfColumnQueryTests
                   "select": [
                     {
                       "alias": "order_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.orders",
                         "field": "order_id",
@@ -31,13 +28,16 @@ public sealed record IfColumnQueryTests
                     },
                     {
                       "alias": "size",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "operator": "if",
+                        "type": {
+                          "name": "string"
+                        },
                         "condition": {
                           "operator": "greaterThan",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_total",
@@ -68,13 +68,16 @@ public sealed record IfColumnQueryTests
                     },
                     {
                       "alias": "discount",
-                      "type": {
-                        "name": "decimal"
-                      },
                       "expression": {
                         "operator": "if",
+                        "type": {
+                          "name": "decimal"
+                        },
                         "condition": {
                           "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
                           "left": {
                             "source": "schema_with_foreign_keys.orders",
                             "field": "order_status",
@@ -91,6 +94,9 @@ public sealed record IfColumnQueryTests
                         },
                         "then": {
                           "operator": "multiply",
+                          "type": {
+                            "name": "decimal"
+                          },
                           "values": [
                             {
                               "source": "schema_with_foreign_keys.orders",
@@ -103,7 +109,7 @@ public sealed record IfColumnQueryTests
                               "type": {
                                 "name": "decimal"
                               },
-                              "value": 0.1
+                              "value": "0.1"
                             }
                           ]
                         },

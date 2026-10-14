@@ -49,11 +49,11 @@ public sealed record CoalesceQuery
                         new SelectItemProjectionNonNullable(
                             new SelectItemProjectionDecimal(
                                 "score_or_age",
-                                new DecimalProjection(
+                                new ExactDecimalProjection(
                                     new ConditionalDecimalProjection(
                                         new CoalesceDecimalProjection([
                                             new DecimalNullableProjection(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalNullableProjection(
                                                     new FieldDecimalNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -69,7 +69,7 @@ public sealed record CoalesceQuery
                                                 )
                                             ),
                                             new DecimalNullableProjection(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalProjection(
                                                     new FieldDecimal(
                                                         new JoinedString(
                                                             new DotString(),
@@ -92,11 +92,11 @@ public sealed record CoalesceQuery
                         new SelectItemProjectionNullable(
                             new SelectItemProjectionDecimalNullable(
                                 "score_or_null",
-                                new DecimalNullableProjection(
+                                new ExactDecimalNullableProjection(
                                     new ConditionalDecimalNullableProjection(
                                         new CoalesceDecimalNullableProjection([
                                             new DecimalNullableProjection(
-                                                new FieldAsDecimalNullable(
+                                                new ExactDecimalNullableProjection(
                                                     new FieldDecimalNullable(
                                                         new JoinedString(
                                                             new DotString(),
@@ -112,7 +112,7 @@ public sealed record CoalesceQuery
                                                 )
                                             ),
                                             new DecimalNullableProjection(
-                                                new LiteralAsDecimalNullable(
+                                                new ExactDecimalNullableProjection(
                                                     new LiteralDecimalNullable()
                                                 )
                                             ),

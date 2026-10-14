@@ -18,9 +18,6 @@ public sealed record UserNameColumnQueryTests
                   "select": [
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",

@@ -23,9 +23,9 @@ namespace PureQL.CSharp.Model.Samples.Queries.Temporal;
 
 /// <summary>
 /// Selects order_id from schema_with_foreign_keys.orders, where placed_at is at or after
-/// 2024-06-02T03:00:00+03:00 and before 2024-06-05T14:00:00.123456+05:30.
+/// 2024-06-02T00:00:00Z and before 2024-06-05T08:30:00.123456Z.
 /// </summary>
-public sealed record DatetimeLiteralsWithOffsetsQuery
+public sealed record DatetimeUtcLiteralsQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
@@ -73,7 +73,7 @@ public sealed record DatetimeLiteralsWithOffsetsQuery
                                     new GreaterThanOrEqualRow(
                                         new GreaterThanOrEqualDatetimeRow(
                                             new DatetimeNullableRow(
-                                                new FieldAsDatetimeNullable(
+                                                new DatetimeRow(
                                                     new FieldDatetime(
                                                         new JoinedString(
                                                             new DotString(),
@@ -89,16 +89,16 @@ public sealed record DatetimeLiteralsWithOffsetsQuery
                                                 )
                                             ),
                                             new DatetimeNullableRow(
-                                                new LiteralAsDatetimeNullable(
+                                                new DatetimeRow(
                                                     new LiteralDatetime(
                                                         new DateTimeOffset(
                                                             2024,
                                                             6,
                                                             2,
-                                                            3,
                                                             0,
                                                             0,
-                                                            new TimeSpan(3, 0, 0)
+                                                            0,
+                                                            TimeSpan.Zero
                                                         )
                                                     )
                                                 )
@@ -112,7 +112,7 @@ public sealed record DatetimeLiteralsWithOffsetsQuery
                                     new LessThanRow(
                                         new LessThanDatetimeRow(
                                             new DatetimeNullableRow(
-                                                new FieldAsDatetimeNullable(
+                                                new DatetimeRow(
                                                     new FieldDatetime(
                                                         new JoinedString(
                                                             new DotString(),
@@ -128,18 +128,18 @@ public sealed record DatetimeLiteralsWithOffsetsQuery
                                                 )
                                             ),
                                             new DatetimeNullableRow(
-                                                new LiteralAsDatetimeNullable(
+                                                new DatetimeRow(
                                                     new LiteralDatetime(
                                                         new DateTimeOffset(
                                                             2024,
                                                             6,
                                                             5,
-                                                            14,
-                                                            0,
+                                                            8,
+                                                            30,
                                                             0,
                                                             123,
                                                             456,
-                                                            new TimeSpan(5, 30, 0)
+                                                            TimeSpan.Zero
                                                         )
                                                     )
                                                 )
@@ -153,7 +153,7 @@ public sealed record DatetimeLiteralsWithOffsetsQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

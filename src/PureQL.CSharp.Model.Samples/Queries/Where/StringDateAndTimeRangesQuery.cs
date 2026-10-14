@@ -93,7 +93,7 @@ public sealed record StringDateAndTimeRangesQuery
                                     new GreaterThanOrEqualRow(
                                         new GreaterThanOrEqualStringRow(
                                             new StringNullableRow(
-                                                new FieldAsStringNullable(
+                                                new StringRow(
                                                     new FieldString(
                                                         new JoinedString(
                                                             new DotString(),
@@ -109,9 +109,7 @@ public sealed record StringDateAndTimeRangesQuery
                                                 )
                                             ),
                                             new StringNullableRow(
-                                                new LiteralAsStringNullable(
-                                                    new LiteralString("C")
-                                                )
+                                                new StringRow(new LiteralString("C"))
                                             )
                                         )
                                     )
@@ -122,7 +120,7 @@ public sealed record StringDateAndTimeRangesQuery
                                     new LessThanRow(
                                         new LessThanDateRow(
                                             new DateNullableRow(
-                                                new FieldAsDateNullable(
+                                                new DateRow(
                                                     new FieldDate(
                                                         new JoinedString(
                                                             new DotString(),
@@ -138,7 +136,7 @@ public sealed record StringDateAndTimeRangesQuery
                                                 )
                                             ),
                                             new DateNullableRow(
-                                                new LiteralAsDateNullable(
+                                                new DateRow(
                                                     new LiteralDate(
                                                         new DateOnly(2022, 1, 1)
                                                     )
@@ -153,7 +151,7 @@ public sealed record StringDateAndTimeRangesQuery
                                     new GreaterThanOrEqualRow(
                                         new GreaterThanOrEqualTimeRow(
                                             new TimeNullableRow(
-                                                new FieldAsTimeNullable(
+                                                new TimeRow(
                                                     new FieldTime(
                                                         new JoinedString(
                                                             new DotString(),
@@ -169,7 +167,7 @@ public sealed record StringDateAndTimeRangesQuery
                                                 )
                                             ),
                                             new TimeNullableRow(
-                                                new LiteralAsTimeNullable(
+                                                new TimeRow(
                                                     new LiteralTime(new TimeOnly(9, 0, 0))
                                                 )
                                             )
@@ -182,7 +180,7 @@ public sealed record StringDateAndTimeRangesQuery
                 ),
                 orderBy: null,
                 pagination: null,
-                distinct: false
+                distinctBy: null
             )
         );
 

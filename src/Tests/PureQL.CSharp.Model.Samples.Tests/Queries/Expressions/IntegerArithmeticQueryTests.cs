@@ -18,9 +18,6 @@ public sealed record IntegerArithmeticQueryTests
                   "select": [
                     {
                       "alias": "item_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.order_items",
                         "field": "item_id",
@@ -31,15 +28,18 @@ public sealed record IntegerArithmeticQueryTests
                     },
                     {
                       "alias": "double_quantity",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "multiply",
+                        "type": {
+                          "name": "integer"
+                        },
                         "values": [
                           {
                             "operator": "round",
-                            "value": {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "operand": {
                               "source": "schema_with_foreign_keys.order_items",
                               "field": "item_qty",
                               "type": {
@@ -58,15 +58,18 @@ public sealed record IntegerArithmeticQueryTests
                     },
                     {
                       "alias": "one_less",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "subtract",
+                        "type": {
+                          "name": "integer"
+                        },
                         "values": [
                           {
                             "operator": "round",
-                            "value": {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "operand": {
                               "source": "schema_with_foreign_keys.order_items",
                               "field": "item_qty",
                               "type": {
@@ -85,15 +88,18 @@ public sealed record IntegerArithmeticQueryTests
                     },
                     {
                       "alias": "with_bonus",
-                      "type": {
-                        "name": "integer"
-                      },
                       "expression": {
                         "operator": "add",
+                        "type": {
+                          "name": "integer"
+                        },
                         "values": [
                           {
                             "operator": "round",
-                            "value": {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "operand": {
                               "source": "schema_with_foreign_keys.order_items",
                               "field": "item_qty",
                               "type": {

@@ -17,9 +17,15 @@ public sealed record NullChecksQueryTests
                   },
                   "where": {
                     "operator": "and",
+                    "type": {
+                      "name": "boolean"
+                    },
                     "conditions": [
                       {
                         "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_score",
@@ -38,6 +44,9 @@ public sealed record NullChecksQueryTests
                       },
                       {
                         "operator": "notEqual",
+                        "type": {
+                          "name": "boolean"
+                        },
                         "left": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "user_name",
@@ -58,9 +67,6 @@ public sealed record NullChecksQueryTests
                   "select": [
                     {
                       "alias": "user_id",
-                      "type": {
-                        "name": "uuid"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_id",
@@ -71,9 +77,6 @@ public sealed record NullChecksQueryTests
                     },
                     {
                       "alias": "user_name",
-                      "type": {
-                        "name": "string"
-                      },
                       "expression": {
                         "source": "schema_with_foreign_keys.users",
                         "field": "user_name",
