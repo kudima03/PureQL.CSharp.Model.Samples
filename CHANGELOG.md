@@ -5,6 +5,19 @@ All notable changes to `PureQL.CSharp.Model.Samples` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0-preview.2.0.0] - 2026-10-14
+
+### Added
+
+- `Select.LatestOrderPerUserQuery`, mirroring specification sample 14: `distinctBy` keeps the first order per user. Its result is computed on PostgreSQL 17.
+
+### Changed
+
+- **Breaking:** migrated the catalogue to PureQL specification 0.1.0-preview.2.0.1, which `PureQL.CSharp.Model` 0.1.0-preview.13.0.0 models and `PureQL.CSharp.Model.Serialization` 0.1.0-preview.5.0.0 writes (#33). Every operator declares its exact type, so the samples use the exact unions in place of the leaf unions, `distinctBy` in place of `distinct`, aliased group keys, `JoinKind` in place of `JoinType`, and `Expr*` in place of `ValueProjection`/`ValueGroup`.
+- **Breaking:** `Temporal.DatetimeLiteralsWithOffsetsQuery` is renamed `Temporal.DatetimeUtcLiteralsQuery` and writes its literals in UTC, as offsets are no longer accepted.
+- **Breaking:** `Aggregates.AggregatesOverAllRowsQuery` is now a total query (`aggregate`).
+- Expected results are unchanged: the migration keeps every query's meaning.
+
 ## [0.1.0-preview.1.0.1] - 2026-10-10
 
 ### Fixed
