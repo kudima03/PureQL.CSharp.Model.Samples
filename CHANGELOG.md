@@ -5,6 +5,13 @@ All notable changes to `PureQL.CSharp.Model.Samples` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0-preview.2.2.0] - 2026-10-23
+
+### Changed
+
+- Updated `Pure.Primitives.String.Operations` from 1.5.1 to 1.7.0 (#43), `Pure.RelationalSchema` from 2.0.3 to 2.1.0 (#44), `Pure.RelationalSchema.Samples` from 0.1.0-preview.1.0.0 to 0.1.0-preview.1.1.0 and `Pure.RelationalSchema.Storage.Samples` from 0.1.0-preview.1.0.0 to 0.1.0-preview.1.2.0 (#46). No change to the public API, and expected results are unchanged.
+- Tests serialize through `PureQL.CSharp.Model.Serialization` 0.1.0-preview.5.0.1 (#48).
+
 ## [0.1.0-preview.2.1.0] - 2026-10-22
 
 ### Changed
