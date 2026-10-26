@@ -1,0 +1,282 @@
+using PureQL.CSharp.Model.Samples.Queries.Dashboards;
+
+namespace PureQL.CSharp.Model.Samples.Tests.Queries.Dashboards;
+
+public sealed record RevenuePerUserNameQueryTests
+{
+    [Fact]
+    public void ValueSerializesToExpectedJson()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "from": {
+                    "entity": "schema_with_foreign_keys.order_items"
+                  },
+                  "joins": [
+                    {
+                      "kind": "inner",
+                      "entity": "schema_with_foreign_keys.orders",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.order_items",
+                          "field": "item_order_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.orders",
+                          "field": "order_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "kind": "inner",
+                      "entity": "schema_with_foreign_keys.users",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.orders",
+                          "field": "order_user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "kind": "inner",
+                      "entity": "schema_with_foreign_keys.products",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.order_items",
+                          "field": "item_product_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.products",
+                          "field": "product_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "where": {
+                    "operator": "not",
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "condition": {
+                      "operator": "in",
+                      "type": {
+                        "name": "boolean"
+                      },
+                      "operand": {
+                        "source": "schema_with_foreign_keys.orders",
+                        "field": "order_status",
+                        "type": {
+                          "name": "string"
+                        }
+                      },
+                      "list": {
+                        "type": {
+                          "name": "stringList"
+                        },
+                        "value": [
+                          "cancelled",
+                          "refunded"
+                        ]
+                      }
+                    }
+                  },
+                  "groupBy": [
+                    {
+                      "alias": "user_name",
+                      "expression": {
+                        "source": "schema_with_foreign_keys.users",
+                        "field": "user_name",
+                        "type": {
+                          "name": "string"
+                        }
+                      }
+                    }
+                  ],
+                  "select": [
+                    {
+                      "alias": "user_name",
+                      "expression": {
+                        "key": "user_name",
+                        "type": {
+                          "name": "string"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "revenue",
+                      "expression": {
+                        "operator": "round",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
+                          "operator": "sum",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "selector": {
+                            "operator": "multiply",
+                            "type": {
+                              "name": "decimal"
+                            },
+                            "values": [
+                              {
+                                "source": "schema_with_foreign_keys.order_items",
+                                "field": "item_qty",
+                                "type": {
+                                  "name": "decimal"
+                                }
+                              },
+                              {
+                                "source": "schema_with_foreign_keys.products",
+                                "field": "product_price",
+                                "type": {
+                                  "name": "decimal"
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "digits": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 2
+                        }
+                      }
+                    },
+                    {
+                      "alias": "item_lines",
+                      "expression": {
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
+                      }
+                    }
+                  ],
+                  "orderBy": [
+                    {
+                      "expression": {
+                        "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "selector": {
+                          "operator": "multiply",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "values": [
+                            {
+                              "source": "schema_with_foreign_keys.order_items",
+                              "field": "item_qty",
+                              "type": {
+                                "name": "decimal"
+                              }
+                            },
+                            {
+                              "source": "schema_with_foreign_keys.products",
+                              "field": "product_price",
+                              "type": {
+                                "name": "decimal"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      "direction": "desc"
+                    }
+                  ]
+                }
+                """
+            ).TextValue,
+            new QueryJson(new RevenuePerUserNameQuery().Value).TextValue
+        );
+    }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "revenue",
+                      "type": "double"
+                    },
+                    {
+                      "name": "item_lines",
+                      "type": "long"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann",
+                      "39.97",
+                      "2"
+                    ],
+                    [
+                      "Cara",
+                      "29.97",
+                      "1"
+                    ],
+                    [
+                      "Bob",
+                      "22.5",
+                      "1"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new RevenuePerUserNameQuery().Result).TextValue
+        );
+    }
+}

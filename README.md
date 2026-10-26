@@ -11,7 +11,9 @@ Named, predefined PureQL queries — one sealed record per query — written aga
 
 `PureQL.CSharp.Model.Samples` provides a fixed, deterministic catalogue of `PureQL.CSharp.Model` `PureQLQuery` instances for PureQL specification [`0.1.0-preview.2.0.1`](https://github.com/kudima03/PureQL-Specification/tree/0.1.0-preview.2.0.1). Every query reads from the query-grade fixtures of [`Pure.RelationalSchema.Storage.Samples`](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples): six users, six orders, four products, four order items and four employees in the `schema_with_foreign_keys` schema, and four logins in the `audit` schema. Nothing is random, nothing is generated at run time, nothing reads the clock or the current culture.
 
-The catalogue mirrors the specification's [`samples/`](https://github.com/kudima03/PureQL-Specification/tree/0.1.0-preview.2.0.1/samples): each of its 57 samples appears here once, rewritten over the fixture tables so that it can be executed. A sample keeps the feature its specification counterpart demonstrates and is named after what the query asks, not after what an engine is expected to answer. A query engine's tests can take a sample instead of rebuilding the AST inline, and a serializer, validator or pretty-printer gets a corpus of real queries for free.
+The catalogue mirrors the specification's [`samples/`](https://github.com/kudima03/PureQL-Specification/tree/0.1.0-preview.2.0.1/samples): each of its 57 samples appears here once, rewritten over the fixture tables so that it can be executed. A sample keeps the feature its specification counterpart demonstrates and is named after what the query asks, not after what an engine is expected to answer.
+
+Next to them, the `Dashboards` folder holds 29 samples rewritten from the PureQL queries [Projector](https://github.com/Elegant-soft/Projector) stores for its dashboards (`GET api/v1/queries`): one per stored query, in the same way. They combine many features in one query, as a real dashboard does: filtered aggregates side by side, `if`-guarded ratios, computed date buckets, self-joins through aliases, and chains of grouped subqueries joined back to an entity. Each keeps the shape its Projector query demonstrates over the fixture tables. Order items stand in for order lines, users for customers, employees (through `employee_user_id`) for sales reps and managers, tenants for channels, and `user_score` for satisfaction. A query engine's tests can take a sample instead of rebuilding the AST inline, and a serializer, validator or pretty-printer gets a corpus of real queries for free.
 
 Entity and field names are never spelled as literals. They are derived from the `Pure.RelationalSchema.Samples` metadata the stored data sets are built from:
 
@@ -59,7 +61,7 @@ A field is nullable where the fixture column holds a NULL (`users.user_score`, `
 
 ## Expected results
 
-52 of the 57 samples also carry a `Result`: the table the query returns, hard-coded in the same style as the query itself.
+81 of the 86 samples also carry a `Result`: the table the query returns, hard-coded in the same style as the query itself.
 
 ```csharp
 IStoredTableDataSet expected = new GroupByCountQuery().Result;
@@ -88,7 +90,7 @@ The results come from the semantics of the specification, not from any PureQL en
 
 `Parameters.ParametersInWhereAndSelectQuery`, `Where.DecimalRangesAgainstLiteralsParameterAndFieldQuery`, `Where.InListParameterAndNotInListLiteralQuery`, `Pagination.FilterOrderAndPageQuery`, `GroupBy.HavingBooleanLogicQuery`
 
-Every other parameter of the specification samples is replaced by a literal.
+Every other parameter of the specification samples is replaced by a literal, and so is every parameter of the Projector queries, which filter by a date or a name rather than demonstrate parameters.
 
 ## Catalogue
 
@@ -153,6 +155,42 @@ Every other parameter of the specification samples is replaced by a literal.
 | 55 | `Subqueries` | `SubqueryChainQuery` | A subquery reading another, joined by the main query |
 | 56 | `Subqueries` | `LeftJoinSubqueryQuery` | Left join to a subquery |
 | 57 | `Subqueries` | `SubqueryPipelineQuery` | Three subqueries feeding a joined, filtered, ordered, paged query |
+
+### Dashboards
+
+`namespace PureQL.CSharp.Model.Samples.Queries.Dashboards`, one sample per query Projector stores, by its id:
+
+| Projector query | Sample | Exercises |
+|---|---|---|
+| `fc47ae13-4219-44c4-aed3-90cc9b6d6445` | `DailyRevenuePerTenantQuery` | A `sum` with a predicate per tenant next to the total |
+| `dfddb067-ef61-48a8-9945-f22b8583c4d8` | `DailyInStockRevenueShareQuery` | `subtract`, `divide` and `multiply` over aggregates |
+| `bb020cef-6f52-4db0-a66c-4059f01f8690` | `ShippedSharePerUserAndTenantQuery` | `if`-guarded ratios of filtered `count`s |
+| `dfc68e29-087b-44f3-b744-b96527b93910` | `WeeklyUnitsPerProductQuery` | A computed week key, `dateAddDays` over the key, filtered `sum`s |
+| `6a03aeba-fa02-4b56-91c9-5a4a5daab537` | `LoginStatsPerTenantQuery` | `average` of `datetimeDiffSeconds`, a coalesced nullable `average`, a guarded share |
+| `cc714d72-0023-4ca6-a7bb-8f336d347671` | `RepeatBuyerOrderAndItemProfileQuery` | Two grouped subqueries inner joined, filtered on a subquery column |
+| `d363779f-fa97-4f23-bcbe-57ed8752a372` | `ScoreByProductPerOrderDayQuery` | An `integer` computed key; `average`s with `equal` / `notEqual` predicates |
+| `be439994-1e21-4ce5-a46b-416302754f08` | `ItemRevenueToOrderTotalPerEmployeeQuery` | An entity joined to two grouped subqueries, an `in`-list filter |
+| `c87841bc-4433-4e7c-bcb8-91d62949bc44` | `RevenuePerEmployeeAndAgeQuery` | Four group keys; an aggregate divided by a `decimal` key |
+| `8b1efefc-0a15-4b46-a451-21dc561c5da8` | `PlacedVersusShippedPerDayQuery` | Reading from a subquery left joined to another; `coalesce` and `subtract` |
+| `89fcdced-5d53-43b0-b2ee-eb8197a9d091` | `OrderTotalsPerStatusAndTenantQuery` | Filtered `sum`s, the total, `average` of `dateDiffDays`, `count` |
+| `5579e839-e1dd-44c9-bbd7-2a536b82db0f` | `InStockItemValueVersusOrderedPerUserQuery` | A joined subquery filtered by `and(equal, in)`; a variance percentage |
+| `528d489c-032a-488a-96a0-fab37bd097df` | `RevenuePerTeamLeadPerPeriodQuery` | The same entity joined twice through aliases; a computed period key |
+| `2fb00633-3184-4faf-acae-699795e9b3f6` | `RevenuePerUserNameQuery` | A key from a joined entity, ordered by an aggregate descending |
+| `bd6f078a-0a03-4561-a6d7-83c06345a6f5` | `RecentOrdersPerActiveUserQuery` | `and` of a boolean field and a `datetime` range; ordered by `count`, then the key |
+| `0b617d43-461a-408c-a432-15aef9fcbb60` | `UserFunnelStageQuery` | A left joined subquery; a nested `if` key over `not`, `coalesce` and `lessThan` |
+| `b51b0f7f-907d-4058-b1ba-d6a403e990bf` | `OrderStageExcludingUserQuery` | `and` of `in` and `notEqual`; a nested `if` key over `equal` |
+| `47412e00-e311-49ea-b053-ac6195acb437` | `ItemValuePerUserAndProductQuery` | A `concat` group key, a `greaterThan` filter |
+| `e40e9165-3e2d-4686-b410-ec3c8cebd34c` | `OrdersPerWeekdayQuery` | A six-level `if` key over `modulo` of `dateDiffDays`; a guarded share |
+| `934b5726-9aa7-48de-81da-d2430d2f9403` | `ItemValueShareOfOrderTotalPerProductQuery` | A ratio of two `sum`s |
+| `2fac3de8-6ed5-406d-bf90-055674de7d4e` | `BilledWithFeePerEmployeeQuery` | A join chain, a date range, `sum` of `add`, ordered by it |
+| `ba64a130-7551-4c81-89fe-20e6c9267303` | `UserAccountOverviewQuery` | Five subqueries, one reading another; inner and left joins; `max`; paged |
+| `e2d37261-7318-4abc-809b-41d66a47a20f` | `LineRestockSuggestionQuery` | A left join on two keys; arithmetic in `if` branches; paged |
+| `61b93c09-1e41-4d0b-9d4f-756d507cfbd5` | `EmployeeScorecardQuery` | A `from` alias self-joined through a join alias; three subqueries with nested `and` ranges |
+| `e14b189d-90cc-4acb-b1e4-dc61998cbb03` | `UnbilledOrderAgingQuery` | `dateDiffDays` from a literal, `if` buckets over it, ordered by two expressions; paged |
+| `59f44177-b983-46a8-901f-b9136f5c50c9` | `UserSalesSummaryQuery` | One inner and two left joined subqueries; a guard comparing `coalesce` with `integer` 0 |
+| `b21432b3-e413-40e6-98ea-117cc50f5bce` | `DirectReportsPerManagerQuery` | `notEqual` on a nullable field; `min` of `time` and `date` |
+| `6e0f2c5a-21ca-4eca-bf38-542e1e6a3d93` | `ProductSalesPerformanceQuery` | A guarded percentage, `average` of `datetimeDiffSeconds` and `max` of `dateDiffDays` in a subquery; ratios of its columns |
+| `409f5283-7423-4d18-99a2-e1e8ff0be846` | `LineFlagsPerUserAndStatusQuery` | Two `string` keys; `count`s with `and` / `not` / `lessThan` / boolean predicates |
 
 ### Data sets
 

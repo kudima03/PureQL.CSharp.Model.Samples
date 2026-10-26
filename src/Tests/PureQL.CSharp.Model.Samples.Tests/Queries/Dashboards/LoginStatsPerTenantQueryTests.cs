@@ -1,0 +1,346 @@
+using PureQL.CSharp.Model.Samples.Queries.Dashboards;
+
+namespace PureQL.CSharp.Model.Samples.Tests.Queries.Dashboards;
+
+public sealed record LoginStatsPerTenantQueryTests
+{
+    [Fact]
+    public void ValueSerializesToExpectedJson()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "from": {
+                    "entity": "audit.logins"
+                  },
+                  "joins": [
+                    {
+                      "kind": "inner",
+                      "entity": "schema_with_foreign_keys.users",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "audit.logins",
+                          "field": "login_user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "groupBy": [
+                    {
+                      "alias": "user_tenant_id",
+                      "expression": {
+                        "source": "schema_with_foreign_keys.users",
+                        "field": "user_tenant_id",
+                        "type": {
+                          "name": "uuid"
+                        }
+                      }
+                    }
+                  ],
+                  "select": [
+                    {
+                      "alias": "user_tenant_id",
+                      "expression": {
+                        "key": "user_tenant_id",
+                        "type": {
+                          "name": "uuid"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "logins",
+                      "expression": {
+                        "operator": "count",
+                        "type": {
+                          "name": "integer"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "avg_hours_after_last_login",
+                      "expression": {
+                        "operator": "round",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
+                          "operator": "average",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "selector": {
+                            "operator": "divide",
+                            "type": {
+                              "name": "decimal"
+                            },
+                            "values": [
+                              {
+                                "operator": "datetimeDiffSeconds",
+                                "type": {
+                                  "name": "decimal"
+                                },
+                                "left": {
+                                  "source": "audit.logins",
+                                  "field": "login_at",
+                                  "type": {
+                                    "name": "datetime"
+                                  }
+                                },
+                                "right": {
+                                  "source": "schema_with_foreign_keys.users",
+                                  "field": "last_login",
+                                  "type": {
+                                    "name": "datetime"
+                                  }
+                                }
+                              },
+                              {
+                                "type": {
+                                  "name": "decimal"
+                                },
+                                "value": "3600"
+                              }
+                            ]
+                          }
+                        },
+                        "digits": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 1
+                        }
+                      }
+                    },
+                    {
+                      "alias": "avg_user_score_x10",
+                      "expression": {
+                        "operator": "round",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
+                          "operator": "multiply",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "values": [
+                            {
+                              "operator": "coalesce",
+                              "type": {
+                                "name": "decimal"
+                              },
+                              "values": [
+                                {
+                                  "operator": "average",
+                                  "type": {
+                                    "name": "decimal",
+                                    "nullable": true
+                                  },
+                                  "selector": {
+                                    "source": "schema_with_foreign_keys.users",
+                                    "field": "user_score",
+                                    "type": {
+                                      "name": "decimal",
+                                      "nullable": true
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": {
+                                    "name": "decimal"
+                                  },
+                                  "value": "0"
+                                }
+                              ]
+                            },
+                            {
+                              "type": {
+                                "name": "decimal"
+                              },
+                              "value": "10"
+                            }
+                          ]
+                        },
+                        "digits": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 1
+                        }
+                      }
+                    },
+                    {
+                      "alias": "active_share_pct",
+                      "expression": {
+                        "operator": "if",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "condition": {
+                          "operator": "equal",
+                          "type": {
+                            "name": "boolean"
+                          },
+                          "left": {
+                            "operator": "count",
+                            "type": {
+                              "name": "integer"
+                            }
+                          },
+                          "right": {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "value": 0
+                          }
+                        },
+                        "then": {
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "value": "0"
+                        },
+                        "else": {
+                          "operator": "round",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "operand": {
+                            "operator": "multiply",
+                            "type": {
+                              "name": "decimal"
+                            },
+                            "values": [
+                              {
+                                "type": {
+                                  "name": "decimal"
+                                },
+                                "value": "100"
+                              },
+                              {
+                                "operator": "divide",
+                                "type": {
+                                  "name": "decimal"
+                                },
+                                "values": [
+                                  {
+                                    "operator": "count",
+                                    "type": {
+                                      "name": "integer"
+                                    },
+                                    "predicate": {
+                                      "source": "schema_with_foreign_keys.users",
+                                      "field": "user_active",
+                                      "type": {
+                                        "name": "boolean"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "operator": "count",
+                                    "type": {
+                                      "name": "integer"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "digits": {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "value": 1
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "orderBy": [
+                    {
+                      "expression": {
+                        "key": "user_tenant_id",
+                        "type": {
+                          "name": "uuid"
+                        }
+                      }
+                    }
+                  ]
+                }
+                """
+            ).TextValue,
+            new QueryJson(new LoginStatsPerTenantQuery().Value).TextValue
+        );
+    }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_tenant_id",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "logins",
+                      "type": "long"
+                    },
+                    {
+                      "name": "avg_hours_after_last_login",
+                      "type": "double"
+                    },
+                    {
+                      "name": "avg_user_score_x10",
+                      "type": "double"
+                    },
+                    {
+                      "name": "active_share_pct",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "00000385-0000-0000-0000-000000000000",
+                      "3",
+                      "14.8",
+                      "300",
+                      "66.7"
+                    ],
+                    [
+                      "00000386-0000-0000-0000-000000000000",
+                      "1",
+                      "-0.3",
+                      "100",
+                      "0"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LoginStatsPerTenantQuery().Result).TextValue
+        );
+    }
+}
