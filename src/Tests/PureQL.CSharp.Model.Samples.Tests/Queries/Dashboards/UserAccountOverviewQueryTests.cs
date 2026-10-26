@@ -1,0 +1,848 @@
+using PureQL.CSharp.Model.Samples.Queries.Dashboards;
+
+namespace PureQL.CSharp.Model.Samples.Tests.Queries.Dashboards;
+
+public sealed record UserAccountOverviewQueryTests
+{
+    [Fact]
+    public void ValueSerializesToExpectedJson()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "subqueries": [
+                    {
+                      "name": "revenue_by_user",
+                      "query": {
+                        "from": {
+                          "entity": "schema_with_foreign_keys.order_items"
+                        },
+                        "joins": [
+                          {
+                            "kind": "inner",
+                            "entity": "schema_with_foreign_keys.orders",
+                            "on": {
+                              "operator": "equal",
+                              "type": {
+                                "name": "boolean"
+                              },
+                              "left": {
+                                "source": "schema_with_foreign_keys.order_items",
+                                "field": "item_order_id",
+                                "type": {
+                                  "name": "uuid"
+                                }
+                              },
+                              "right": {
+                                "source": "schema_with_foreign_keys.orders",
+                                "field": "order_id",
+                                "type": {
+                                  "name": "uuid"
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "kind": "inner",
+                            "entity": "schema_with_foreign_keys.products",
+                            "on": {
+                              "operator": "equal",
+                              "type": {
+                                "name": "boolean"
+                              },
+                              "left": {
+                                "source": "schema_with_foreign_keys.order_items",
+                                "field": "item_product_id",
+                                "type": {
+                                  "name": "uuid"
+                                }
+                              },
+                              "right": {
+                                "source": "schema_with_foreign_keys.products",
+                                "field": "product_id",
+                                "type": {
+                                  "name": "uuid"
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "where": {
+                          "operator": "not",
+                          "type": {
+                            "name": "boolean"
+                          },
+                          "condition": {
+                            "operator": "in",
+                            "type": {
+                              "name": "boolean"
+                            },
+                            "operand": {
+                              "source": "schema_with_foreign_keys.orders",
+                              "field": "order_status",
+                              "type": {
+                                "name": "string"
+                              }
+                            },
+                            "list": {
+                              "type": {
+                                "name": "stringList"
+                              },
+                              "value": [
+                                "cancelled",
+                                "refunded"
+                              ]
+                            }
+                          }
+                        },
+                        "groupBy": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "source": "schema_with_foreign_keys.orders",
+                              "field": "order_user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          }
+                        ],
+                        "select": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "key": "user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          },
+                          {
+                            "alias": "revenue",
+                            "expression": {
+                              "operator": "sum",
+                              "type": {
+                                "name": "decimal"
+                              },
+                              "selector": {
+                                "operator": "multiply",
+                                "type": {
+                                  "name": "decimal"
+                                },
+                                "values": [
+                                  {
+                                    "source": "schema_with_foreign_keys.order_items",
+                                    "field": "item_qty",
+                                    "type": {
+                                      "name": "decimal"
+                                    }
+                                  },
+                                  {
+                                    "source": "schema_with_foreign_keys.products",
+                                    "field": "product_price",
+                                    "type": {
+                                      "name": "decimal"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "orders_by_user",
+                      "query": {
+                        "from": {
+                          "entity": "schema_with_foreign_keys.orders"
+                        },
+                        "where": {
+                          "operator": "not",
+                          "type": {
+                            "name": "boolean"
+                          },
+                          "condition": {
+                            "operator": "in",
+                            "type": {
+                              "name": "boolean"
+                            },
+                            "operand": {
+                              "source": "schema_with_foreign_keys.orders",
+                              "field": "order_status",
+                              "type": {
+                                "name": "string"
+                              }
+                            },
+                            "list": {
+                              "type": {
+                                "name": "stringList"
+                              },
+                              "value": [
+                                "cancelled",
+                                "refunded"
+                              ]
+                            }
+                          }
+                        },
+                        "groupBy": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "source": "schema_with_foreign_keys.orders",
+                              "field": "order_user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          }
+                        ],
+                        "select": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "key": "user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          },
+                          {
+                            "alias": "orders",
+                            "expression": {
+                              "operator": "count",
+                              "type": {
+                                "name": "integer"
+                              }
+                            }
+                          },
+                          {
+                            "alias": "last_order_on",
+                            "expression": {
+                              "operator": "max",
+                              "type": {
+                                "name": "date"
+                              },
+                              "selector": {
+                                "source": "schema_with_foreign_keys.orders",
+                                "field": "placed_on",
+                                "type": {
+                                  "name": "date"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "logins_by_user",
+                      "query": {
+                        "from": {
+                          "entity": "audit.logins"
+                        },
+                        "groupBy": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "source": "audit.logins",
+                              "field": "login_user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          }
+                        ],
+                        "select": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "key": "user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          },
+                          {
+                            "alias": "logins",
+                            "expression": {
+                              "operator": "count",
+                              "type": {
+                                "name": "integer"
+                              }
+                            }
+                          },
+                          {
+                            "alias": "last_login_at",
+                            "expression": {
+                              "operator": "max",
+                              "type": {
+                                "name": "datetime"
+                              },
+                              "selector": {
+                                "source": "audit.logins",
+                                "field": "login_at",
+                                "type": {
+                                  "name": "datetime"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "units_by_order",
+                      "query": {
+                        "from": {
+                          "entity": "schema_with_foreign_keys.order_items"
+                        },
+                        "groupBy": [
+                          {
+                            "alias": "order_id",
+                            "expression": {
+                              "source": "schema_with_foreign_keys.order_items",
+                              "field": "item_order_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          }
+                        ],
+                        "select": [
+                          {
+                            "alias": "order_id",
+                            "expression": {
+                              "key": "order_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          },
+                          {
+                            "alias": "units",
+                            "expression": {
+                              "operator": "sum",
+                              "type": {
+                                "name": "decimal"
+                              },
+                              "selector": {
+                                "source": "schema_with_foreign_keys.order_items",
+                                "field": "item_qty",
+                                "type": {
+                                  "name": "decimal"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "units_by_user",
+                      "query": {
+                        "from": {
+                          "entity": "schema_with_foreign_keys.orders"
+                        },
+                        "joins": [
+                          {
+                            "kind": "left",
+                            "subquery": "units_by_order",
+                            "on": {
+                              "operator": "equal",
+                              "type": {
+                                "name": "boolean"
+                              },
+                              "left": {
+                                "source": "schema_with_foreign_keys.orders",
+                                "field": "order_id",
+                                "type": {
+                                  "name": "uuid"
+                                }
+                              },
+                              "right": {
+                                "source": "units_by_order",
+                                "field": "order_id",
+                                "type": {
+                                  "name": "uuid"
+                                }
+                              }
+                            }
+                          }
+                        ],
+                        "groupBy": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "source": "schema_with_foreign_keys.orders",
+                              "field": "order_user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          }
+                        ],
+                        "select": [
+                          {
+                            "alias": "user_id",
+                            "expression": {
+                              "key": "user_id",
+                              "type": {
+                                "name": "uuid"
+                              }
+                            }
+                          },
+                          {
+                            "alias": "units",
+                            "expression": {
+                              "operator": "sum",
+                              "type": {
+                                "name": "decimal"
+                              },
+                              "selector": {
+                                "operator": "coalesce",
+                                "type": {
+                                  "name": "decimal"
+                                },
+                                "values": [
+                                  {
+                                    "source": "units_by_order",
+                                    "field": "units",
+                                    "type": {
+                                      "name": "decimal",
+                                      "nullable": true
+                                    }
+                                  },
+                                  {
+                                    "type": {
+                                      "name": "decimal"
+                                    },
+                                    "value": "0"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "from": {
+                    "entity": "schema_with_foreign_keys.users"
+                  },
+                  "joins": [
+                    {
+                      "kind": "inner",
+                      "entity": "schema_with_foreign_keys.employees",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.employees",
+                          "field": "employee_user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "kind": "inner",
+                      "subquery": "revenue_by_user",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "revenue_by_user",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "kind": "inner",
+                      "subquery": "orders_by_user",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "orders_by_user",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "kind": "left",
+                      "subquery": "logins_by_user",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "logins_by_user",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "kind": "left",
+                      "subquery": "units_by_user",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "units_by_user",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "select": [
+                    {
+                      "alias": "user_name",
+                      "expression": {
+                        "source": "schema_with_foreign_keys.users",
+                        "field": "user_name",
+                        "type": {
+                          "name": "string"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "user_active",
+                      "expression": {
+                        "source": "schema_with_foreign_keys.users",
+                        "field": "user_active",
+                        "type": {
+                          "name": "boolean"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "employee_name",
+                      "expression": {
+                        "source": "schema_with_foreign_keys.employees",
+                        "field": "employee_name",
+                        "type": {
+                          "name": "string"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "orders",
+                      "expression": {
+                        "source": "orders_by_user",
+                        "field": "orders",
+                        "type": {
+                          "name": "integer"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "revenue",
+                      "expression": {
+                        "operator": "round",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
+                          "source": "revenue_by_user",
+                          "field": "revenue",
+                          "type": {
+                            "name": "decimal"
+                          }
+                        },
+                        "digits": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 2
+                        }
+                      }
+                    },
+                    {
+                      "alias": "avg_order_revenue",
+                      "expression": {
+                        "operator": "round",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
+                          "operator": "divide",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "values": [
+                            {
+                              "source": "revenue_by_user",
+                              "field": "revenue",
+                              "type": {
+                                "name": "decimal"
+                              }
+                            },
+                            {
+                              "source": "orders_by_user",
+                              "field": "orders",
+                              "type": {
+                                "name": "integer"
+                              }
+                            }
+                          ]
+                        },
+                        "digits": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 2
+                        }
+                      }
+                    },
+                    {
+                      "alias": "last_order_on",
+                      "expression": {
+                        "source": "orders_by_user",
+                        "field": "last_order_on",
+                        "type": {
+                          "name": "date"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "logins",
+                      "expression": {
+                        "operator": "coalesce",
+                        "type": {
+                          "name": "integer"
+                        },
+                        "values": [
+                          {
+                            "source": "logins_by_user",
+                            "field": "logins",
+                            "type": {
+                              "name": "integer",
+                              "nullable": true
+                            }
+                          },
+                          {
+                            "type": {
+                              "name": "integer"
+                            },
+                            "value": 0
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "alias": "last_login_at",
+                      "expression": {
+                        "source": "logins_by_user",
+                        "field": "last_login_at",
+                        "type": {
+                          "name": "datetime",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    {
+                      "alias": "units",
+                      "expression": {
+                        "operator": "round",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
+                          "operator": "coalesce",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "values": [
+                            {
+                              "source": "units_by_user",
+                              "field": "units",
+                              "type": {
+                                "name": "decimal",
+                                "nullable": true
+                              }
+                            },
+                            {
+                              "type": {
+                                "name": "decimal"
+                              },
+                              "value": "0"
+                            }
+                          ]
+                        },
+                        "digits": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 2
+                        }
+                      }
+                    }
+                  ],
+                  "orderBy": [
+                    {
+                      "expression": {
+                        "source": "revenue_by_user",
+                        "field": "revenue",
+                        "type": {
+                          "name": "decimal"
+                        }
+                      },
+                      "direction": "desc"
+                    }
+                  ],
+                  "pagination": {
+                    "skip": 0,
+                    "take": 2
+                  }
+                }
+                """
+            ).TextValue,
+            new QueryJson(new UserAccountOverviewQuery().Value).TextValue
+        );
+    }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "user_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "user_active",
+                      "type": "bool"
+                    },
+                    {
+                      "name": "employee_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "orders",
+                      "type": "long"
+                    },
+                    {
+                      "name": "revenue",
+                      "type": "double"
+                    },
+                    {
+                      "name": "avg_order_revenue",
+                      "type": "double"
+                    },
+                    {
+                      "name": "last_order_on",
+                      "type": "date"
+                    },
+                    {
+                      "name": "logins",
+                      "type": "long"
+                    },
+                    {
+                      "name": "last_login_at",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "units",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Ann",
+                      "True",
+                      "Grace",
+                      "2",
+                      "39.97",
+                      "19.99",
+                      "2024-06-02",
+                      "2",
+                      "2024-06-02T07:30:00",
+                      "3"
+                    ],
+                    [
+                      "Cara",
+                      "True",
+                      "Iris",
+                      "1",
+                      "29.97",
+                      "29.97",
+                      "2024-06-05",
+                      "0",
+                      "",
+                      "3"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new UserAccountOverviewQuery().Result).TextValue
+        );
+    }
+}

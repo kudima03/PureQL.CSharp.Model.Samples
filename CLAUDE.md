@@ -24,7 +24,9 @@ This is a **sample-data NuGet library**: a catalogue of named, predefined PureQL
 
 **Spec parity.** The catalogue mirrors the `samples/` of PureQL specification `0.1.0-preview.2.0.1` (`kudima03/PureQL-Specification`), the version `PureQL.CSharp.Model` 0.1.0-preview.13.0.0 models: one sample per specification sample, rewritten over the fixture tables of `Pure.RelationalSchema.Samples` so it can be executed, keeping the feature the specification sample demonstrates. The README's catalogue table maps every sample to its specification number.
 
-**One sealed record per file, under `Queries/<Folder>`.** The folders group samples by what they demonstrate (`Select`, `Parameters`, `Where`, `OrderBy`, `Pagination`, `Expressions`, `Temporal`, `Nulls`, `Joins`, `Aggregates`, `GroupBy`, `Subqueries`). A sample's namespace is `PureQL.CSharp.Model.Samples.Queries.<Folder>`.
+**Projector parity.** The `Dashboards` folder holds one sample per PureQL query Projector stores (`GET https://projector.elegant-soft.com/api/v1/queries`), rewritten over the same fixtures the same way, every parameter replaced by a literal. The README's Dashboards table maps every one to its Projector query id. Some stored queries fail the specification's schema (e.g. a grouped `average` declared `decimal?`); an analog is always written valid, and those problems belong to the DecisionSupportSystem repository, not here.
+
+**One sealed record per file, under `Queries/<Folder>`.** The folders group samples by what they demonstrate (`Select`, `Parameters`, `Where`, `OrderBy`, `Pagination`, `Expressions`, `Temporal`, `Nulls`, `Joins`, `Aggregates`, `GroupBy`, `Subqueries`, and `Dashboards` for the Projector analogs). A sample's namespace is `PureQL.CSharp.Model.Samples.Queries.<Folder>`.
 
 **Sample shape.** `PureQL.CSharp.Model.PureQLQuery` is a sealed class with no interface, so a sample cannot implement it. Each sample instead exposes `public PureQLQuery Value => new PureQLQuery(...);` and is used as `new FooQuery().Value`. CA1822 is switched off for `Queries/**` in `src/.editorconfig` because of this — keep `Value` an instance member.
 

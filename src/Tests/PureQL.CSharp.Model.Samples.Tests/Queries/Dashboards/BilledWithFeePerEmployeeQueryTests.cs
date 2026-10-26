@@ -1,0 +1,259 @@
+using PureQL.CSharp.Model.Samples.Queries.Dashboards;
+
+namespace PureQL.CSharp.Model.Samples.Tests.Queries.Dashboards;
+
+public sealed record BilledWithFeePerEmployeeQueryTests
+{
+    [Fact]
+    public void ValueSerializesToExpectedJson()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "from": {
+                    "entity": "schema_with_foreign_keys.orders"
+                  },
+                  "joins": [
+                    {
+                      "kind": "inner",
+                      "entity": "schema_with_foreign_keys.users",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.orders",
+                          "field": "order_user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "kind": "inner",
+                      "entity": "schema_with_foreign_keys.employees",
+                      "on": {
+                        "operator": "equal",
+                        "type": {
+                          "name": "boolean"
+                        },
+                        "left": {
+                          "source": "schema_with_foreign_keys.users",
+                          "field": "user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        },
+                        "right": {
+                          "source": "schema_with_foreign_keys.employees",
+                          "field": "employee_user_id",
+                          "type": {
+                            "name": "uuid"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "where": {
+                    "operator": "greaterThanOrEqual",
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "left": {
+                      "source": "schema_with_foreign_keys.orders",
+                      "field": "placed_on",
+                      "type": {
+                        "name": "date"
+                      }
+                    },
+                    "right": {
+                      "type": {
+                        "name": "date"
+                      },
+                      "value": "2024-06-02"
+                    }
+                  },
+                  "groupBy": [
+                    {
+                      "alias": "employee_name",
+                      "expression": {
+                        "source": "schema_with_foreign_keys.employees",
+                        "field": "employee_name",
+                        "type": {
+                          "name": "string"
+                        }
+                      }
+                    }
+                  ],
+                  "select": [
+                    {
+                      "alias": "employee_name",
+                      "expression": {
+                        "key": "employee_name",
+                        "type": {
+                          "name": "string"
+                        }
+                      }
+                    },
+                    {
+                      "alias": "billed_with_fee",
+                      "expression": {
+                        "operator": "round",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "operand": {
+                          "operator": "sum",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "selector": {
+                            "operator": "add",
+                            "type": {
+                              "name": "decimal"
+                            },
+                            "values": [
+                              {
+                                "source": "schema_with_foreign_keys.orders",
+                                "field": "order_total",
+                                "type": {
+                                  "name": "decimal"
+                                }
+                              },
+                              {
+                                "type": {
+                                  "name": "decimal"
+                                },
+                                "value": "4.99"
+                              }
+                            ]
+                          }
+                        },
+                        "digits": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 0
+                        }
+                      }
+                    },
+                    {
+                      "alias": "order_total",
+                      "expression": {
+                        "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "selector": {
+                          "source": "schema_with_foreign_keys.orders",
+                          "field": "order_total",
+                          "type": {
+                            "name": "decimal"
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "orderBy": [
+                    {
+                      "expression": {
+                        "operator": "sum",
+                        "type": {
+                          "name": "decimal"
+                        },
+                        "selector": {
+                          "operator": "add",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "values": [
+                            {
+                              "source": "schema_with_foreign_keys.orders",
+                              "field": "order_total",
+                              "type": {
+                                "name": "decimal"
+                              }
+                            },
+                            {
+                              "type": {
+                                "name": "decimal"
+                              },
+                              "value": "4.99"
+                            }
+                          ]
+                        }
+                      },
+                      "direction": "desc"
+                    }
+                  ]
+                }
+                """
+            ).TextValue,
+            new QueryJson(new BilledWithFeePerEmployeeQuery().Value).TextValue
+        );
+    }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "employee_name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "billed_with_fee",
+                      "type": "double"
+                    },
+                    {
+                      "name": "order_total",
+                      "type": "double"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "Iris",
+                      "385",
+                      "375.25"
+                    ],
+                    [
+                      "Hank",
+                      "205",
+                      "200"
+                    ],
+                    [
+                      "Jack",
+                      "105",
+                      "100.5"
+                    ],
+                    [
+                      "Grace",
+                      "55",
+                      "50"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new BilledWithFeePerEmployeeQuery().Result).TextValue
+        );
+    }
+}
