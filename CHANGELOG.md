@@ -5,6 +5,12 @@ All notable changes to `PureQL.CSharp.Model.Samples` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0-preview.2.3.0] - 2026-10-26
+
+### Added
+
+- A `Dashboards` folder of 29 samples, one per PureQL query stored by Projector, rewritten over the `schema_with_foreign_keys` fixtures with every parameter replaced by a literal (#51). Every one carries an expected result computed on PostgreSQL 17, and the README maps each to its Projector query id.
+
 ## [0.1.0-preview.2.2.0] - 2026-10-23
 
 ### Changed
