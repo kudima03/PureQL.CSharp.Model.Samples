@@ -17,6 +17,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.ProjectionExpressions;
+using PureQL.CSharp.Model.Samples.Cells;
 using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
@@ -122,7 +123,7 @@ public sealed record FieldsThroughFromAliasQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new PlacedAtColumn(),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(1),
@@ -162,7 +163,7 @@ public sealed record FieldsThroughFromAliasQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new PlacedAtColumn(),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(2),
@@ -202,7 +203,7 @@ public sealed record FieldsThroughFromAliasQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new PlacedAtColumn(),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(3),
@@ -242,7 +243,7 @@ public sealed record FieldsThroughFromAliasQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new PlacedAtColumn(),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(4),
@@ -282,7 +283,7 @@ public sealed record FieldsThroughFromAliasQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new PlacedAtColumn(),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(5),
@@ -322,7 +323,7 @@ public sealed record FieldsThroughFromAliasQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new PlacedAtColumn(),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(6),

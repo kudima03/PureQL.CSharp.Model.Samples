@@ -201,7 +201,7 @@ public sealed record AggregatesOverAllRowsQueryTests
                       "6",
                       "826.25",
                       "50",
-                      "2024-06-06T15:00:00",
+                      "2024-06-06T15:00:00Z",
                       "137.70833333333334",
                       "True",
                       "True"

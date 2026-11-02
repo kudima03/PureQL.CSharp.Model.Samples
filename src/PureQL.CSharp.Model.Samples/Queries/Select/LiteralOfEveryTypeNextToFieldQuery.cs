@@ -19,6 +19,7 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
+using PureQL.CSharp.Model.Samples.Cells;
 using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
@@ -245,7 +246,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
                                     new String("a_datetime"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(31),
@@ -339,7 +340,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
                                     new String("a_datetime"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(31),
@@ -433,7 +434,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
                                     new String("a_datetime"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(31),
@@ -527,7 +528,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
                                     new String("a_datetime"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(31),
@@ -621,7 +622,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
                                     new String("a_datetime"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(31),
@@ -715,7 +716,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
                                     new String("a_datetime"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(31),

@@ -67,7 +67,7 @@ A field is nullable where the fixture column holds a NULL (`users.user_score`, `
 IStoredTableDataSet expected = new GroupByCountQuery().Result;
 ```
 
-The result is an `IStoredTableDataSet` (`StoredTableDataSet` from `Pure.RelationalSchema.Storage.Samples`). Its table schema has an empty name, no indexes and one column per `select` item, named by the item's alias and typed by its PureQL type: `integer` → `LongColumnType`, `decimal` → `DoubleColumnType`, `string` → `StringColumnType`, `boolean` → `BoolColumnType`, `date` → `DateColumnType`, `time` → `TimeColumnType`, `datetime` → `DateTimeColumnType`, `uuid` → `UuidColumnType`. When a column's name and type match a `Pure.RelationalSchema.Samples` column, that column is used as is (`new OrderTotalColumn()`). Rows are `Row`s of `InvariantCell`s over the typed `Pure.Primitives` values, NULL being `EmptyCell`. The property's summary names the stored data sets the result is computed over.
+The result is an `IStoredTableDataSet` (`StoredTableDataSet` from `Pure.RelationalSchema.Storage.Samples`). Its table schema has an empty name, no indexes and one column per `select` item, named by the item's alias and typed by its PureQL type: `integer` → `LongColumnType`, `decimal` → `DoubleColumnType`, `string` → `StringColumnType`, `boolean` → `BoolColumnType`, `date` → `DateColumnType`, `time` → `TimeColumnType`, `datetime` → `DateTimeColumnType`, `uuid` → `UuidColumnType`. When a column's name and type match a `Pure.RelationalSchema.Samples` column, that column is used as is (`new OrderTotalColumn()`). Rows are `Row`s of `InvariantCell`s over the typed `Pure.Primitives` values, NULL being `EmptyCell`; a `datetime` cell is a `UtcDateTimeCell`, the same text ending in `Z`. The property's summary names the stored data sets the result is computed over.
 
 ### How the results were computed
 
@@ -80,7 +80,7 @@ The results come from the semantics of the specification, not from any PureQL en
 - **`distinctBy`:** of the rows equal on the listed columns, compared with `equal`, the first in `orderBy` order is kept (`row_number()` over a partition by those columns, ordered as `orderBy`).
 - **Sorting:** NULLs sort first ascending and last descending. Uuids sort by their bytes read as unsigned big-endian, and booleans `false` before `true`.
 - **Dates and times:** `dateDiffDays` and the `…DiffSeconds` operators are `left − right`, and `timeAddSeconds` wraps around midnight.
-- **Datetimes:** the fixture stores datetimes without an offset, and they are read as UTC. `datetime` literals are in UTC, as the specification requires, and `datetime` cells are written in UTC.
+- **Datetimes:** the fixture stores datetimes without an offset, and they are read as UTC. `datetime` literals are in UTC, as the specification requires, and `datetime` cells are written in UTC with `Z`, the one spelling the specification gives a `datetime` result (`2024-06-06T15:00:00Z`).
 
 **Row order:** when the query has an `orderBy`, rows are in that order. No result has rows tied on every sort key. Without an `orderBy`, the rows are a multiset in no particular order. Each result was also checked against a copy of the fixtures loaded in reverse row order, and no result depends on physical row order.
 

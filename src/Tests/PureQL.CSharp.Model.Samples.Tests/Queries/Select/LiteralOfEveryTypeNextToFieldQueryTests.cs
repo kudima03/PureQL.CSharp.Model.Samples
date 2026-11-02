@@ -163,7 +163,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                       "True",
                       "2024-01-31",
                       "18:30:00",
-                      "2024-01-31T18:30:00",
+                      "2024-01-31T18:30:00Z",
                       "000003e7-0000-0000-0000-000000000000"
                     ],
                     [
@@ -174,7 +174,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                       "True",
                       "2024-01-31",
                       "18:30:00",
-                      "2024-01-31T18:30:00",
+                      "2024-01-31T18:30:00Z",
                       "000003e7-0000-0000-0000-000000000000"
                     ],
                     [
@@ -185,7 +185,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                       "True",
                       "2024-01-31",
                       "18:30:00",
-                      "2024-01-31T18:30:00",
+                      "2024-01-31T18:30:00Z",
                       "000003e7-0000-0000-0000-000000000000"
                     ],
                     [
@@ -196,7 +196,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                       "True",
                       "2024-01-31",
                       "18:30:00",
-                      "2024-01-31T18:30:00",
+                      "2024-01-31T18:30:00Z",
                       "000003e7-0000-0000-0000-000000000000"
                     ],
                     [
@@ -207,7 +207,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                       "True",
                       "2024-01-31",
                       "18:30:00",
-                      "2024-01-31T18:30:00",
+                      "2024-01-31T18:30:00Z",
                       "000003e7-0000-0000-0000-000000000000"
                     ],
                     [
@@ -218,7 +218,7 @@ public sealed record LiteralOfEveryTypeNextToFieldQueryTests
                       "True",
                       "2024-01-31",
                       "18:30:00",
-                      "2024-01-31T18:30:00",
+                      "2024-01-31T18:30:00Z",
                       "000003e7-0000-0000-0000-000000000000"
                     ]
                   ]

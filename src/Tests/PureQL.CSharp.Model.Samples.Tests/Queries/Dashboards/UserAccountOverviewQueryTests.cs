@@ -823,7 +823,7 @@ public sealed record UserAccountOverviewQueryTests
                       "19.99",
                       "2024-06-02",
                       "2",
-                      "2024-06-02T07:30:00",
+                      "2024-06-02T07:30:00Z",
                       "3"
                     ],
                     [
