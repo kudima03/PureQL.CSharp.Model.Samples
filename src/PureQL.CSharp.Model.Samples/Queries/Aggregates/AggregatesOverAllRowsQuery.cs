@@ -19,6 +19,7 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
+using PureQL.CSharp.Model.Samples.Cells;
 using PureQL.CSharp.Model.SelectItems;
 using PureQL.CSharp.Model.TotalExpressions;
 using Column = Pure.RelationalSchema.Column.Column;
@@ -310,7 +311,7 @@ public sealed record AggregatesOverAllRowsQuery
                                     new String("latest"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(6),

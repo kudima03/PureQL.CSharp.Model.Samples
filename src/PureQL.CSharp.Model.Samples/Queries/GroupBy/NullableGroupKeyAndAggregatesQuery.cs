@@ -21,6 +21,7 @@ using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
+using PureQL.CSharp.Model.Samples.Cells;
 using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
@@ -374,7 +375,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                     new String("last_order_at"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(3),
@@ -394,7 +395,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                     new String("average_order_at"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(3),
@@ -434,7 +435,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                     new String("last_order_at"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(5),
@@ -454,7 +455,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                     new String("average_order_at"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(5),
@@ -494,7 +495,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                     new String("last_order_at"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(6),
@@ -514,7 +515,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                                     new String("average_order_at"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(6),

@@ -24,6 +24,7 @@ using PureQL.CSharp.Model.Lists;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
+using PureQL.CSharp.Model.Samples.Cells;
 using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
@@ -1262,7 +1263,7 @@ public sealed record UserAccountOverviewQuery
                                     new String("last_login_at"),
                                     new DateTimeColumnType()
                                 ),
-                                new InvariantCell(
+                                new UtcDateTimeCell(
                                     new DateTime(
                                         new Date(
                                             new UShort(2),
