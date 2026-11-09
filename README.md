@@ -32,16 +32,34 @@ so a rename in the schema fixtures carries through to every query that reference
 
 ## Sample shape
 
-`PureQL.CSharp.Model.PureQLQuery` is a sealed class with no interface over it, so a sample cannot *be* a query the way `UsersTable` is an `ITable`. Instead each sample is a sealed record with a parameterless constructor that exposes its query through `Value`:
+`PureQL.CSharp.Model.PureQLQuery` is a C# 15 `union` of the main query variants (`MainPlainQueryWithoutPagination`, `MainPlainQueryWithPagination`, `MainGroupedQueryWithoutPagination`, `MainGroupedQueryWithPagination`, `MainTotalQuery`), so a sample cannot *be* a query the way `UsersTable` is an `ITable`. Instead each sample is a sealed record with a parameterless constructor that exposes its query through `Value`:
 
 ```csharp
 public sealed record FilterOrderAndPageQuery
 {
-    public PureQLQuery Value => new PureQLQuery(new MainPlainQuery(...));
+    public PureQLQuery Value =>
+        new MainPlainQueryWithPagination(
+            from: new FromEntity(...),
+            where: new AndRow([...]),
+            select: [new SelectItemProjection("order_id", new FieldUuid(...)), ...],
+            orderBy: [...],
+            pagination: new Pagination(0, 20)
+        );
 }
 ```
 
-`Value` builds a fresh `PureQLQuery` on every read. Two instances of the same sample always produce the same PureQL document.
+`Value` builds a fresh `PureQLQuery` on every read. Two instances of the same sample always produce the same PureQL document. Every sample's `Value` is a `PureQLQuery`, whatever its variant, as engines and the serializer take one; `Value.Value` is the variant record:
+
+```csharp
+PureQLQuery query = new FilterOrderAndPageQuery().Value;
+
+if (query.Value is MainPlainQueryWithPagination page)
+{
+    // page.Pagination, page.OrderBy, ...
+}
+```
+
+The query is built from the model's records, each of which converts implicitly to every union that lists it. Every operator is the record of its exact declared type in its context (`AddIntegerNullableRow` in `where`, `SumDecimalGroup` in a grouped `select`), and every leaf the record of its type (`FieldDecimal`, `LiteralInteger`, `KeyUuid`, `LiteralStringNullable()` for a typed null).
 
 ## Field types
 
@@ -57,7 +75,7 @@ The fixtures declare storage column types, not PureQL types, so every field is d
 | `DateTimeColumnType` | `datetime` |
 | `UuidColumnType` | `uuid` |
 
-A field is nullable where the fixture column holds a NULL (`users.user_score`, `employees.employee_manager_id`) and where the specification makes it nullable after an outer join. No fixture column is an `integer`, so the samples get their integers from `round`, `floor` and `ceiling`, `count`, `dateDiffDays`, `integerDivide`, `modulo` and integer literals.
+A `decimal` column is read through a `FieldDecimal`, a nullable one through a `FieldDecimalNullable`, and so on for every type. A field is nullable where the fixture column holds a NULL (`users.user_score`, `employees.employee_manager_id`) and where the specification makes it nullable after an outer join. No fixture column is an `integer`, so the samples get their integers from `round`, `floor` and `ceiling`, `count`, `dateDiffDays`, `integerDivide`, `modulo` and integer literals.
 
 ## Expected results
 
@@ -205,7 +223,7 @@ Every result is computed over `[new SchemaDataSetWithForeignKeys(), new AuditSch
 
 ## Dependencies
 
-- [`PureQL.CSharp.Model` 0.1.0-preview.13.0.0](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.13.0.0): the query AST every sample builds
+- [`PureQL.CSharp.Model` 0.1.0-preview.14.0.0](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.14.0.0): the query AST every sample builds
 - [`Pure.RelationalSchema.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Samples/tree/0.1.0-preview.2.0.1): the schema, table and column fixtures that entity, field and result column names come from
 - [`Pure.RelationalSchema.Storage.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples/tree/0.1.0-preview.2.0.1): the fixture rows the results are computed over, and `StoredTableDataSet`, `InvariantCell` and `EmptyCell`, which the results are built from
 - [`Pure.RelationalSchema` 2.0.3](https://github.com/kudima03/Pure.RelationalSchema/tree/2.0.3): `Table`, `Column` and the column types of a result's schema
@@ -219,9 +237,7 @@ No PureQL engine is referenced. Engines are what these samples test.
 
 ## Target Frameworks
 
-- .NET 8
-- .NET 9
-- .NET 10
+- .NET 11
 
 ## Installation
 
