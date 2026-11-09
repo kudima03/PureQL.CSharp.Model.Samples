@@ -4,7 +4,7 @@ using Pure.RelationalSchema.Storage.Abstractions;
 
 namespace PureQL.CSharp.Model.Samples.Tests;
 
-// The compact JSON document of a stored table data set: its table name, its
+// The canonical JSON document of a stored table data set: its table name, its
 // columns (name and type, in schema order), how many indexes it declares, and its
 // rows (cell text per column, in row order). Comparing it against the expected
 // document asserts everything a sample's Result holds.
@@ -17,7 +17,7 @@ internal sealed record DataSetJson
         _dataSet = dataSet;
     }
 
-    public string TextValue => Document().ToJsonString();
+    public string TextValue => new CanonicalJson(Document()).TextValue;
 
     private JsonObject Document()
     {

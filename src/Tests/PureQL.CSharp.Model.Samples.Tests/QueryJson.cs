@@ -1,13 +1,15 @@
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using PureQL.CSharp.Model.Serialization;
 
 namespace PureQL.CSharp.Model.Samples.Tests;
 
-// The compact PureQL JSON document a query serializes to through the
+// The canonical PureQL JSON document a query serializes to through the
 // converters of PureQL.CSharp.Model.Serialization. Every string, collection
 // and flag of a sample shows up in it, so comparing it against the expected
-// document asserts the whole query tree at once.
+// document asserts the whole query tree at once. The serializer writes
+// properties in the specification's order; the comparison does not depend on it.
 internal sealed record QueryJson
 {
     private readonly PureQLQuery _query;
@@ -17,7 +19,10 @@ internal sealed record QueryJson
         _query = query;
     }
 
-    public string TextValue => JsonSerializer.Serialize(_query, Options());
+    public string TextValue =>
+        new CanonicalJson(
+            JsonNode.Parse(JsonSerializer.Serialize(_query, Options()))
+        ).TextValue;
 
     private static JsonSerializerOptions Options()
     {
