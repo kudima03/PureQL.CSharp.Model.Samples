@@ -15,11 +15,9 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
@@ -42,296 +40,33 @@ public sealed record LoginStatsPerTenantQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [new AuditRelationalSchema().Name, new LoginsTable().Name]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyUuid(
-                                "user_tenant_id",
-                                new UuidRow(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserTenantIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupUuid(
-                                "user_tenant_id",
-                                new UuidGroup(new KeyUuid("user_tenant_id"))
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupInteger(
-                                "logins",
-                                new IntegerGroup(
-                                    new AggregateIntegerGroup(new CountGroup())
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "avg_hours_after_last_login",
-                                new ExactDecimalGroup(
-                                    new RoundDecimalGroup(
-                                        new DecimalGroup(
-                                            new ExactDecimalGroup(
-                                                new AggregateDecimalGroup(
-                                                    new AverageDecimalGroup(
-                                                        new DecimalRow(
-                                                            new ExactDecimalRow(
-                                                                new ArithmeticDecimalRow(
-                                                                    new DivideDecimalRow([
-                                                                        new DecimalRow(
-                                                                            new ExactDecimalRow(
-                                                                                new DifferenceDecimalRow(
-                                                                                    new DatetimeDiffSecondsDecimalRow(
-                                                                                        new DatetimeRow(
-                                                                                            new FieldDatetime(
-                                                                                                new JoinedString(
-                                                                                                    new DotString(),
-                                                                                                    [
-                                                                                                        new AuditRelationalSchema().Name,
-                                                                                                        new LoginsTable().Name,
-                                                                                                    ]
-                                                                                                ).TextValue,
-                                                                                                new LoginAtColumn()
-                                                                                                    .Name
-                                                                                                    .TextValue
-                                                                                            )
-                                                                                        ),
-                                                                                        new DatetimeRow(
-                                                                                            new FieldDatetime(
-                                                                                                new JoinedString(
-                                                                                                    new DotString(),
-                                                                                                    [
-                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                        new UsersTable().Name,
-                                                                                                    ]
-                                                                                                ).TextValue,
-                                                                                                new LastLoginColumn()
-                                                                                                    .Name
-                                                                                                    .TextValue
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalRow(
-                                                                            new ExactDecimalRow(
-                                                                                new LiteralDecimal(
-                                                                                    3600m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new IntegerGroup(new LiteralInteger(1))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "avg_user_score_x10",
-                                new ExactDecimalGroup(
-                                    new RoundDecimalGroup(
-                                        new DecimalGroup(
-                                            new ExactDecimalGroup(
-                                                new ArithmeticDecimalGroup(
-                                                    new MultiplyDecimalGroup([
-                                                        new DecimalGroup(
-                                                            new ExactDecimalGroup(
-                                                                new ConditionalDecimalGroup(
-                                                                    new CoalesceDecimalGroup([
-                                                                        new DecimalNullableGroup(
-                                                                            new ExactDecimalNullableGroup(
-                                                                                new AggregateDecimalNullableGroup(
-                                                                                    new AverageDecimalNullableGroup(
-                                                                                        new DecimalNullableRow(
-                                                                                            new ExactDecimalNullableRow(
-                                                                                                new FieldDecimalNullable(
-                                                                                                    new JoinedString(
-                                                                                                        new DotString(),
-                                                                                                        [
-                                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                                            new UsersTable().Name,
-                                                                                                        ]
-                                                                                                    ).TextValue,
-                                                                                                    new UserScoreColumn()
-                                                                                                        .Name
-                                                                                                        .TextValue
-                                                                                                )
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalNullableGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new LiteralDecimal(
-                                                                                    0m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalGroup(
-                                                            new ExactDecimalGroup(
-                                                                new LiteralDecimal(10m)
-                                                            )
-                                                        ),
-                                                    ])
-                                                )
-                                            )
-                                        ),
-                                        new IntegerGroup(new LiteralInteger(1))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "active_share_pct",
-                                new ExactDecimalGroup(
-                                    new ConditionalDecimalGroup(
-                                        new IfDecimalGroup(
-                                            new BooleanGroup(
-                                                new ComparisonGroup(
-                                                    new EqualGroup(
-                                                        new EqualDecimalGroup(
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new AggregateIntegerGroup(
-                                                                        new CountGroup()
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new LiteralInteger(0)
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new LiteralDecimal(0m)
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new RoundDecimalGroup(
-                                                        new DecimalGroup(
-                                                            new ExactDecimalGroup(
-                                                                new ArithmeticDecimalGroup(
-                                                                    new MultiplyDecimalGroup([
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new LiteralDecimal(
-                                                                                    100m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new ArithmeticDecimalGroup(
-                                                                                    new DivideDecimalGroup([
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new FieldBoolean(
-                                                                                                                new JoinedString(
-                                                                                                                    new DotString(),
-                                                                                                                    [
-                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                        new UsersTable().Name,
-                                                                                                                    ]
-                                                                                                                ).TextValue,
-                                                                                                                new UserActiveColumn()
-                                                                                                                    .Name
-                                                                                                                    .TextValue
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup()
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                    ])
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        ),
-                                                        new IntegerGroup(
-                                                            new LiteralInteger(1)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Inner,
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new AuditRelationalSchema().Name, new LoginsTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Inner,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new UsersTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [new AuditRelationalSchema().Name, new LoginsTable().Name]
+                            ).TextValue,
+                            new LoginUserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid(
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -339,61 +74,118 @@ public sealed record LoginStatsPerTenantQuery
                                     new UsersTable().Name,
                                 ]
                             ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new AuditRelationalSchema().Name,
-                                                                new LoginsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new LoginUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserIdColumn().Name.TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
+                            new UserIdColumn().Name.TextValue
+                        )
+                    )
+                ),
+            ],
+            groupBy:
+            [
+                new GroupKey(
+                    "user_tenant_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserTenantIdColumn().Name.TextValue
+                    )
+                ),
+            ],
+            select:
+            [
+                new SelectItemGroup("user_tenant_id", new KeyUuid("user_tenant_id")),
+                new SelectItemGroup("logins", new CountGroup()),
+                new SelectItemGroup(
+                    "avg_hours_after_last_login",
+                    new RoundDecimalGroup(
+                        new AverageDecimalGroup(
+                            new DivideDecimalRow([
+                                new DatetimeDiffSecondsDecimalRow(
+                                    new FieldDatetime(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new AuditRelationalSchema().Name,
+                                                new LoginsTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new LoginAtColumn().Name.TextValue
+                                    ),
+                                    new FieldDatetime(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new LastLoginColumn().Name.TextValue
                                     )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                where: null,
-                having: null,
-                [
-                    new OrderItemGroup(
-                        new ExprGroup(
-                            new UuidNullableGroup(
-                                new UuidGroup(new KeyUuid("user_tenant_id"))
-                            )
-                        )
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                                ),
+                                new LiteralDecimal(3600m),
+                            ])
+                        ),
+                        new LiteralInteger(1)
+                    )
+                ),
+                new SelectItemGroup(
+                    "avg_user_score_x10",
+                    new RoundDecimalGroup(
+                        new MultiplyDecimalGroup([
+                            new CoalesceDecimalGroup([
+                                new AverageDecimalNullableGroup(
+                                    new FieldDecimalNullable(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserScoreColumn().Name.TextValue
+                                    )
+                                ),
+                                new LiteralDecimal(0m),
+                            ]),
+                            new LiteralDecimal(10m),
+                        ]),
+                        new LiteralInteger(1)
+                    )
+                ),
+                new SelectItemGroup(
+                    "active_share_pct",
+                    new IfDecimalGroup(
+                        new LiteralDecimal(0m),
+                        new RoundDecimalGroup(
+                            new MultiplyDecimalGroup([
+                                new LiteralDecimal(100m),
+                                new DivideDecimalGroup([
+                                    new CountGroup(
+                                        new FieldBoolean(
+                                            new JoinedString(
+                                                new DotString(),
+                                                [
+                                                    new RelationalSchemaWithForeignKeys().Name,
+                                                    new UsersTable().Name,
+                                                ]
+                                            ).TextValue,
+                                            new UserActiveColumn().Name.TextValue
+                                        )
+                                    ),
+                                    new CountGroup(),
+                                ]),
+                            ]),
+                            new LiteralInteger(1)
+                        ),
+                        new EqualDecimalGroup(new CountGroup(), new LiteralInteger(0))
+                    )
+                ),
+            ],
+            orderBy: [new OrderItemGroup(new KeyUuid("user_tenant_id"))]
         );
 
     /// <summary>

@@ -17,7 +17,6 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
@@ -35,166 +34,90 @@ public sealed record LiftedOperatorsQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "user_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new UsersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new UserIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "user_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserIdColumn().Name.TextValue
-                                    )
-                                )
+                new SelectItemProjection(
+                    "next_score",
+                    new AddDecimalNullableProjection([
+                        new FieldDecimalNullable(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new UserScoreColumn().Name.TextValue
+                        ),
+                        new LiteralInteger(1),
+                    ])
+                ),
+                new SelectItemProjection(
+                    "score_date",
+                    new DateAddDaysDateNullableProjection(
+                        new FieldDate(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new SignupDateColumn().Name.TextValue
+                        ),
+                        new RoundIntegerNullableProjection(
+                            new FieldDecimalNullable(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new UsersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new UserScoreColumn().Name.TextValue
                             )
                         )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionDecimalNullable(
-                                "next_score",
-                                new ExactDecimalNullableProjection(
-                                    new ArithmeticDecimalNullableProjection(
-                                        new AddDecimalNullableProjection([
-                                            new DecimalNullableProjection(
-                                                new ExactDecimalNullableProjection(
-                                                    new FieldDecimalNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserScoreColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableProjection(
-                                                new IntegerProjection(
-                                                    new LiteralInteger(1)
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
+                    )
+                ),
+                new SelectItemProjection(
+                    "double_score",
+                    new MultiplyIntegerNullableProjection([
+                        new RoundIntegerNullableProjection(
+                            new FieldDecimalNullable(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new UsersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new UserScoreColumn().Name.TextValue
                             )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionDateNullable(
-                                "score_date",
-                                new ExactDateNullableProjection(
-                                    new DateAddDaysDateNullableProjection(
-                                        new DateNullableProjection(
-                                            new DateProjection(
-                                                new FieldDate(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new UsersTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new SignupDateColumn().Name.TextValue
-                                                )
-                                            )
-                                        ),
-                                        new IntegerNullableProjection(
-                                            new ExactIntegerNullableProjection(
-                                                new RoundingIntegerNullableProjection(
-                                                    new RoundIntegerNullableProjection(
-                                                        new DecimalNullableProjection(
-                                                            new ExactDecimalNullableProjection(
-                                                                new FieldDecimalNullable(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new UsersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new UserScoreColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionIntegerNullable(
-                                "double_score",
-                                new ExactIntegerNullableProjection(
-                                    new ArithmeticIntegerNullableProjection(
-                                        new MultiplyIntegerNullableProjection([
-                                            new IntegerNullableProjection(
-                                                new ExactIntegerNullableProjection(
-                                                    new RoundingIntegerNullableProjection(
-                                                        new RoundIntegerNullableProjection(
-                                                            new DecimalNullableProjection(
-                                                                new ExactDecimalNullableProjection(
-                                                                    new FieldDecimalNullable(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new UsersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new UserScoreColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerNullableProjection(
-                                                new IntegerProjection(
-                                                    new LiteralInteger(2)
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                        ),
+                        new LiteralInteger(2),
+                    ])
+                ),
+            ]
         );
 
     /// <summary>

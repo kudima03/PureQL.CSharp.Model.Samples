@@ -14,9 +14,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
@@ -33,154 +31,65 @@ public sealed record JoinOnNullableKeyQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new EmployeesTable().Name,
-                            ]
-                        ).TextValue,
-                        "a"
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "employee",
-                                new StringProjection(
-                                    new FieldString(
-                                        "a",
-                                        new EmployeeNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "colleague",
-                                new StringProjection(
-                                    new FieldString(
-                                        "b",
-                                        new EmployeeNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Inner,
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new RelationalSchemaWithForeignKeys().Name,
-                                    new EmployeesTable().Name,
-                                ]
-                            ).TextValue,
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new AndRow([
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new EqualRow(
-                                                    new EqualUuidRow(
-                                                        new UuidNullableRow(
-                                                            new ExactUuidNullableRow(
-                                                                new FieldUuidNullable(
-                                                                    "a",
-                                                                    new EmployeeManagerIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new UuidNullableRow(
-                                                            new ExactUuidNullableRow(
-                                                                new FieldUuidNullable(
-                                                                    "b",
-                                                                    new EmployeeManagerIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new NotEqualRow(
-                                                    new NotEqualUuidRow(
-                                                        new UuidNullableRow(
-                                                            new ExactUuidNullableRow(
-                                                                new FieldUuidNullable(
-                                                                    "a",
-                                                                    new EmployeeManagerIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new UuidNullableRow(
-                                                            new ExactUuidNullableRow(
-                                                                new LiteralUuidNullable()
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new NotEqualRow(
-                                                    new NotEqualUuidRow(
-                                                        new UuidNullableRow(
-                                                            new UuidRow(
-                                                                new FieldUuid(
-                                                                    "a",
-                                                                    new EmployeeIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new UuidNullableRow(
-                                                            new UuidRow(
-                                                                new FieldUuid(
-                                                                    "b",
-                                                                    new EmployeeIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                    ])
-                                )
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [
+                        new RelationalSchemaWithForeignKeys().Name,
+                        new EmployeesTable().Name,
+                    ]
+                ).TextValue,
+                "a"
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Inner,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new EmployeesTable().Name,
+                        ]
+                    ).TextValue,
+                    new AndRow([
+                        new EqualUuidRow(
+                            new FieldUuidNullable(
+                                "a",
+                                new EmployeeManagerIdColumn().Name.TextValue
                             ),
-                            "b"
-                        )
-                    ),
-                ],
-                where: null,
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+                            new FieldUuidNullable(
+                                "b",
+                                new EmployeeManagerIdColumn().Name.TextValue
+                            )
+                        ),
+                        new NotEqualUuidRow(
+                            new FieldUuidNullable(
+                                "a",
+                                new EmployeeManagerIdColumn().Name.TextValue
+                            ),
+                            new LiteralUuidNullable()
+                        ),
+                        new NotEqualUuidRow(
+                            new FieldUuid("a", new EmployeeIdColumn().Name.TextValue),
+                            new FieldUuid("b", new EmployeeIdColumn().Name.TextValue)
+                        ),
+                    ]),
+                    "b"
+                ),
+            ],
+            select:
+            [
+                new SelectItemProjection(
+                    "employee",
+                    new FieldString("a", new EmployeeNameColumn().Name.TextValue)
+                ),
+                new SelectItemProjection(
+                    "colleague",
+                    new FieldString("b", new EmployeeNameColumn().Name.TextValue)
+                ),
+            ]
         );
 
     /// <summary>

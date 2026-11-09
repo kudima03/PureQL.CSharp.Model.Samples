@@ -16,12 +16,10 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Lists;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -43,348 +41,159 @@ public sealed record RevenuePerTeamLeadPerPeriodQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Inner,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new EmployeesTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderUserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid("rep", new EmployeeUserIdColumn().Name.TextValue)
+                    ),
+                    "rep"
+                ),
+                new JoinEntity(
+                    JoinKind.Inner,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new EmployeesTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuidNullable(
+                            "rep",
+                            new EmployeeManagerIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid("lead", new EmployeeIdColumn().Name.TextValue)
+                    ),
+                    "lead"
+                ),
+            ],
+            where: new NotRow(
+                new InStringRow(
+                    new FieldString(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new OrderStatusColumn().Name.TextValue
+                    ),
+                    new ListLiteralString(["cancelled", "refunded"])
+                )
+            ),
+            groupBy:
+            [
+                new GroupKey(
+                    "period_no",
+                    new IntegerDivideIntegerRow(
+                        new DateDiffDaysIntegerRow(
+                            new FieldDate(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new PlacedOnColumn().Name.TextValue
+                            ),
+                            new LiteralDate(new DateOnly(2024, 6, 1))
+                        ),
+                        new LiteralInteger(3)
                     )
                 ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyInteger(
-                                "period_no",
-                                new IntegerRow(
-                                    new ArithmeticIntegerRow(
-                                        new IntegerDivideIntegerRow(
-                                            new IntegerRow(
-                                                new DateDiffDaysIntegerRow(
-                                                    new DateRow(
-                                                        new FieldDate(
-                                                            new JoinedString(
-                                                                new DotString(),
-                                                                [
-                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                    new OrdersTable().Name,
-                                                                ]
-                                                            ).TextValue,
-                                                            new PlacedOnColumn()
-                                                                .Name
-                                                                .TextValue
-                                                        )
-                                                    ),
-                                                    new DateRow(
-                                                        new LiteralDate(
-                                                            new DateOnly(2024, 6, 1)
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerRow(new LiteralInteger(3))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDate(
-                                "period_start",
-                                new DateGroup(
-                                    new DateAddDaysDateGroup(
-                                        new DateGroup(
-                                            new LiteralDate(new DateOnly(2024, 6, 1))
-                                        ),
-                                        new IntegerGroup(
-                                            new ArithmeticIntegerGroup(
-                                                new MultiplyIntegerGroup([
-                                                    new IntegerGroup(
-                                                        new KeyInteger("period_no")
-                                                    ),
-                                                    new IntegerGroup(
-                                                        new LiteralInteger(3)
-                                                    ),
-                                                ])
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "revenue_team_grace",
-                                new ExactDecimalGroup(
-                                    new RoundDecimalGroup(
-                                        new DecimalGroup(
-                                            new ExactDecimalGroup(
-                                                new AggregateDecimalGroup(
-                                                    new SumDecimalGroup(
-                                                        new DecimalNullableRow(
-                                                            new ExactDecimalRow(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new BooleanRow(
-                                                            new ComparisonRow(
-                                                                new EqualRow(
-                                                                    new EqualStringRow(
-                                                                        new StringNullableRow(
-                                                                            new StringRow(
-                                                                                new FieldString(
-                                                                                    "lead",
-                                                                                    new EmployeeNameColumn()
-                                                                                        .Name
-                                                                                        .TextValue
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new StringNullableRow(
-                                                                            new StringRow(
-                                                                                new LiteralString(
-                                                                                    "Grace"
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new IntegerGroup(new LiteralInteger(0))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "revenue_team_hank",
-                                new ExactDecimalGroup(
-                                    new RoundDecimalGroup(
-                                        new DecimalGroup(
-                                            new ExactDecimalGroup(
-                                                new AggregateDecimalGroup(
-                                                    new SumDecimalGroup(
-                                                        new DecimalNullableRow(
-                                                            new ExactDecimalRow(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new BooleanRow(
-                                                            new ComparisonRow(
-                                                                new EqualRow(
-                                                                    new EqualStringRow(
-                                                                        new StringNullableRow(
-                                                                            new StringRow(
-                                                                                new FieldString(
-                                                                                    "lead",
-                                                                                    new EmployeeNameColumn()
-                                                                                        .Name
-                                                                                        .TextValue
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new StringNullableRow(
-                                                                            new StringRow(
-                                                                                new LiteralString(
-                                                                                    "Hank"
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new IntegerGroup(new LiteralInteger(0))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Inner,
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new RelationalSchemaWithForeignKeys().Name,
-                                    new EmployeesTable().Name,
-                                ]
-                            ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        "rep",
-                                                        new EmployeeUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            "rep"
-                        )
-                    ),
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Inner,
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new RelationalSchemaWithForeignKeys().Name,
-                                    new EmployeesTable().Name,
-                                ]
-                            ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new ExactUuidNullableRow(
-                                                    new FieldUuidNullable(
-                                                        "rep",
-                                                        new EmployeeManagerIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        "lead",
-                                                        new EmployeeIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            "lead"
-                        )
-                    ),
-                ],
-                new BooleanRow(
-                    new LogicalRow(
-                        new NotRow(
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new InRow(
-                                        new InStringRow(
-                                            new StringNullableRow(
-                                                new StringRow(
-                                                    new FieldString(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderStatusColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new ListString(
-                                                new ListLiteralString([
-                                                    "cancelled",
-                                                    "refunded",
-                                                ])
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
+            ],
+            select:
+            [
+                new SelectItemGroup(
+                    "period_start",
+                    new DateAddDaysDateGroup(
+                        new LiteralDate(new DateOnly(2024, 6, 1)),
+                        new MultiplyIntegerGroup([
+                            new KeyInteger("period_no"),
+                            new LiteralInteger(3),
+                        ])
                     )
                 ),
-                having: null,
-                [
-                    new OrderItemGroup(
-                        new ExprGroup(
-                            new DecimalNullableGroup(
-                                new IntegerGroup(new KeyInteger("period_no"))
+                new SelectItemGroup(
+                    "revenue_team_grace",
+                    new RoundDecimalGroup(
+                        new SumDecimalGroup(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderTotalColumn().Name.TextValue
+                            ),
+                            new EqualStringRow(
+                                new FieldString(
+                                    "lead",
+                                    new EmployeeNameColumn().Name.TextValue
+                                ),
+                                new LiteralString("Grace")
                             )
-                        )
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                        ),
+                        new LiteralInteger(0)
+                    )
+                ),
+                new SelectItemGroup(
+                    "revenue_team_hank",
+                    new RoundDecimalGroup(
+                        new SumDecimalGroup(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderTotalColumn().Name.TextValue
+                            ),
+                            new EqualStringRow(
+                                new FieldString(
+                                    "lead",
+                                    new EmployeeNameColumn().Name.TextValue
+                                ),
+                                new LiteralString("Hank")
+                            )
+                        ),
+                        new LiteralInteger(0)
+                    )
+                ),
+            ],
+            orderBy: [new OrderItemGroup(new KeyInteger("period_no"))]
         );
 
     /// <summary>

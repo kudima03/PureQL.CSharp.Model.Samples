@@ -16,9 +16,7 @@ using Pure.RelationalSchema.Storage.Samples.Cells;
 using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.Samples.Cells;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
 using Double = Pure.Primitives.Number.Double;
@@ -36,59 +34,29 @@ public sealed record FieldsThroughFromAliasQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new OrdersTable().Name,
-                            ]
-                        ).TextValue,
-                        "o"
-                    )
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue,
+                "o"
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid("o", new OrderIdColumn().Name.TextValue)
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid("o", new OrderIdColumn().Name.TextValue)
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDatetime(
-                                "placed_at",
-                                new DatetimeProjection(
-                                    new FieldDatetime(
-                                        "o",
-                                        new PlacedAtColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "amount",
-                                new ExactDecimalProjection(
-                                    new FieldDecimal(
-                                        "o",
-                                        new OrderTotalColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                new SelectItemProjection(
+                    "placed_at",
+                    new FieldDatetime("o", new PlacedAtColumn().Name.TextValue)
+                ),
+                new SelectItemProjection(
+                    "amount",
+                    new FieldDecimal("o", new OrderTotalColumn().Name.TextValue)
+                ),
+            ]
         );
 
     /// <summary>

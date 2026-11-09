@@ -16,7 +16,6 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -33,209 +32,113 @@ public sealed record RoundingAndIntegerDivisionQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new ProductsTable().Name,
-                            ]
-                        ).TextValue
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new ProductsTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "price_floor",
+                    new FloorIntegerProjection(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductPriceColumn().Name.TextValue
+                        )
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "price_floor",
-                                new IntegerProjection(
-                                    new RoundingIntegerProjection(
-                                        new FloorIntegerProjection(
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new ProductsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ProductPriceColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                new SelectItemProjection(
+                    "price_ceiling",
+                    new CeilingIntegerProjection(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductPriceColumn().Name.TextValue
                         )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "price_ceiling",
-                                new IntegerProjection(
-                                    new RoundingIntegerProjection(
-                                        new CeilingIntegerProjection(
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new ProductsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ProductPriceColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                    )
+                ),
+                new SelectItemProjection(
+                    "price_rounded",
+                    new RoundIntegerProjection(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductPriceColumn().Name.TextValue
                         )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "price_rounded",
-                                new IntegerProjection(
-                                    new RoundingIntegerProjection(
-                                        new RoundIntegerProjection(
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new ProductsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ProductPriceColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
+                    )
+                ),
+                new SelectItemProjection(
+                    "price_tenths",
+                    new RoundDecimalProjection(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductPriceColumn().Name.TextValue
+                        ),
+                        new LiteralInteger(1)
+                    )
+                ),
+                new SelectItemProjection(
+                    "packs",
+                    new IntegerDivideIntegerProjection(
+                        new RoundIntegerProjection(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new ProductsTable().Name,
+                                    ]
+                                ).TextValue,
+                                new ProductPriceColumn().Name.TextValue
                             )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "price_tenths",
-                                new ExactDecimalProjection(
-                                    new RoundDecimalProjection(
-                                        new DecimalProjection(
-                                            new ExactDecimalProjection(
-                                                new FieldDecimal(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new ProductsTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new ProductPriceColumn()
-                                                        .Name
-                                                        .TextValue
-                                                )
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(1))
-                                    )
-                                )
+                        ),
+                        new LiteralInteger(6)
+                    )
+                ),
+                new SelectItemProjection(
+                    "loose",
+                    new ModuloIntegerProjection(
+                        new RoundIntegerProjection(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new ProductsTable().Name,
+                                    ]
+                                ).TextValue,
+                                new ProductPriceColumn().Name.TextValue
                             )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "packs",
-                                new IntegerProjection(
-                                    new ArithmeticIntegerProjection(
-                                        new IntegerDivideIntegerProjection(
-                                            new IntegerProjection(
-                                                new RoundingIntegerProjection(
-                                                    new RoundIntegerProjection(
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new ProductsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ProductPriceColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerProjection(new LiteralInteger(6))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "loose",
-                                new IntegerProjection(
-                                    new ArithmeticIntegerProjection(
-                                        new ModuloIntegerProjection(
-                                            new IntegerProjection(
-                                                new RoundingIntegerProjection(
-                                                    new RoundIntegerProjection(
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new ProductsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ProductPriceColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerProjection(new LiteralInteger(6))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                        ),
+                        new LiteralInteger(6)
+                    )
+                ),
+            ]
         );
 
     /// <summary>

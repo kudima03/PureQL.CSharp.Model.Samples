@@ -16,12 +16,10 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -42,386 +40,175 @@ public sealed record PlacedVersusShippedPerDayQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(new FromSubquery("placed_by_day")),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDate(
+        new MainPlainQueryWithoutPagination(
+            subqueries:
+            [
+                new Subquery(
+                    "placed_by_day",
+                    new GroupedQueryWithoutPaginationWithoutOrderBy(
+                        from: new FromEntity(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue
+                        ),
+                        groupBy:
+                        [
+                            new GroupKey(
                                 "placed_on",
-                                new DateProjection(
-                                    new FieldDate("placed_by_day", "placed_on")
+                                new FieldDate(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new PlacedOnColumn().Name.TextValue
                                 )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
+                            ),
+                        ],
+                        select:
+                        [
+                            new SelectItemGroup("placed_on", new KeyDate("placed_on")),
+                            new SelectItemGroup(
                                 "placed",
-                                new ExactDecimalProjection(
-                                    new RoundDecimalProjection(
-                                        new DecimalProjection(
-                                            new ExactDecimalProjection(
-                                                new FieldDecimal(
-                                                    "placed_by_day",
-                                                    "placed"
-                                                )
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(2))
+                                new SumDecimalGroup(
+                                    new FieldDecimal(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
+                            ),
+                            new SelectItemGroup("orders", new CountGroup()),
+                        ]
+                    )
+                ),
+                new Subquery(
+                    "shipped_by_day",
+                    new GroupedQueryWithoutPaginationWithoutOrderBy(
+                        from: new FromEntity(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue
+                        ),
+                        where: new EqualStringRow(
+                            new FieldString(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderStatusColumn().Name.TextValue
+                            ),
+                            new LiteralString("shipped")
+                        ),
+                        groupBy:
+                        [
+                            new GroupKey(
+                                "placed_on",
+                                new FieldDate(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new PlacedOnColumn().Name.TextValue
+                                )
+                            ),
+                        ],
+                        select:
+                        [
+                            new SelectItemGroup("placed_on", new KeyDate("placed_on")),
+                            new SelectItemGroup(
                                 "shipped",
-                                new ExactDecimalProjection(
-                                    new RoundDecimalProjection(
-                                        new DecimalProjection(
-                                            new ExactDecimalProjection(
-                                                new ConditionalDecimalProjection(
-                                                    new CoalesceDecimalProjection([
-                                                        new DecimalNullableProjection(
-                                                            new ExactDecimalNullableProjection(
-                                                                new FieldDecimalNullable(
-                                                                    "shipped_by_day",
-                                                                    "shipped"
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableProjection(
-                                                            new ExactDecimalProjection(
-                                                                new LiteralDecimal(0m)
-                                                            )
-                                                        ),
-                                                    ])
-                                                )
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(2))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "not_yet_shipped",
-                                new ExactDecimalProjection(
-                                    new RoundDecimalProjection(
-                                        new DecimalProjection(
-                                            new ExactDecimalProjection(
-                                                new ArithmeticDecimalProjection(
-                                                    new SubtractDecimalProjection([
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    "placed_by_day",
-                                                                    "placed"
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new ConditionalDecimalProjection(
-                                                                    new CoalesceDecimalProjection([
-                                                                        new DecimalNullableProjection(
-                                                                            new ExactDecimalNullableProjection(
-                                                                                new FieldDecimalNullable(
-                                                                                    "shipped_by_day",
-                                                                                    "shipped"
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalNullableProjection(
-                                                                            new ExactDecimalProjection(
-                                                                                new LiteralDecimal(
-                                                                                    0m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        ),
-                                                    ])
-                                                )
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(2))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new Subquery(
-                        "placed_by_day",
-                        new Query(
-                            new GroupedQuery(
-                                new From(
-                                    new FromEntity(
+                                new SumDecimalGroup(
+                                    new FieldDecimal(
                                         new JoinedString(
                                             new DotString(),
                                             [
                                                 new RelationalSchemaWithForeignKeys().Name,
                                                 new OrdersTable().Name,
                                             ]
-                                        ).TextValue
-                                    )
-                                ),
-                                [
-                                    new GroupKey(
-                                        new GroupKeyNonNullable(
-                                            new GroupKeyDate(
-                                                "placed_on",
-                                                new DateRow(
-                                                    new FieldDate(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedOnColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                [
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupDate(
-                                                "placed_on",
-                                                new DateGroup(new KeyDate("placed_on"))
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupDecimal(
-                                                "placed",
-                                                new ExactDecimalGroup(
-                                                    new AggregateDecimalGroup(
-                                                        new SumDecimalGroup(
-                                                            new DecimalNullableRow(
-                                                                new ExactDecimalRow(
-                                                                    new FieldDecimal(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderTotalColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupInteger(
-                                                "orders",
-                                                new IntegerGroup(
-                                                    new AggregateIntegerGroup(
-                                                        new CountGroup()
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                joins: null,
-                                where: null,
-                                having: null,
-                                orderBy: null,
-                                pagination: null,
-                                distinctBy: null
-                            )
-                        )
-                    ),
-                    new Subquery(
-                        "shipped_by_day",
-                        new Query(
-                            new GroupedQuery(
-                                new From(
-                                    new FromEntity(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue
-                                    )
-                                ),
-                                [
-                                    new GroupKey(
-                                        new GroupKeyNonNullable(
-                                            new GroupKeyDate(
-                                                "placed_on",
-                                                new DateRow(
-                                                    new FieldDate(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedOnColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                [
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupDate(
-                                                "placed_on",
-                                                new DateGroup(new KeyDate("placed_on"))
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupDecimal(
-                                                "shipped",
-                                                new ExactDecimalGroup(
-                                                    new AggregateDecimalGroup(
-                                                        new SumDecimalGroup(
-                                                            new DecimalNullableRow(
-                                                                new ExactDecimalRow(
-                                                                    new FieldDecimal(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderTotalColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                joins: null,
-                                new BooleanRow(
-                                    new ComparisonRow(
-                                        new EqualRow(
-                                            new EqualStringRow(
-                                                new StringNullableRow(
-                                                    new StringRow(
-                                                        new FieldString(
-                                                            new JoinedString(
-                                                                new DotString(),
-                                                                [
-                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                    new OrdersTable().Name,
-                                                                ]
-                                                            ).TextValue,
-                                                            new OrderStatusColumn()
-                                                                .Name
-                                                                .TextValue
-                                                        )
-                                                    )
-                                                ),
-                                                new StringNullableRow(
-                                                    new StringRow(
-                                                        new LiteralString("shipped")
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                ),
-                                having: null,
-                                orderBy: null,
-                                pagination: null,
-                                distinctBy: null
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new Join(
-                        new JoinSubquery(
-                            JoinKind.Left,
-                            "shipped_by_day",
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualDateRow(
-                                            new DateNullableRow(
-                                                new DateRow(
-                                                    new FieldDate(
-                                                        "placed_by_day",
-                                                        "placed_on"
-                                                    )
-                                                )
-                                            ),
-                                            new DateNullableRow(
-                                                new DateRow(
-                                                    new FieldDate(
-                                                        "shipped_by_day",
-                                                        "placed_on"
-                                                    )
-                                                )
-                                            )
-                                        )
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
-                            )
-                        )
-                    ),
-                ],
-                where: null,
-                [
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new DateNullableProjection(
-                                new DateProjection(
-                                    new FieldDate("placed_by_day", "placed_on")
-                                )
-                            )
-                        )
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            from: new FromSubquery("placed_by_day"),
+            joins:
+            [
+                new JoinSubquery(
+                    JoinKind.Left,
+                    "shipped_by_day",
+                    new EqualDateRow(
+                        new FieldDate("placed_by_day", "placed_on"),
+                        new FieldDate("shipped_by_day", "placed_on")
+                    )
+                ),
+            ],
+            select:
+            [
+                new SelectItemProjection(
+                    "placed_on",
+                    new FieldDate("placed_by_day", "placed_on")
+                ),
+                new SelectItemProjection(
+                    "placed",
+                    new RoundDecimalProjection(
+                        new FieldDecimal("placed_by_day", "placed"),
+                        new LiteralInteger(2)
+                    )
+                ),
+                new SelectItemProjection(
+                    "shipped",
+                    new RoundDecimalProjection(
+                        new CoalesceDecimalProjection([
+                            new FieldDecimalNullable("shipped_by_day", "shipped"),
+                            new LiteralDecimal(0m),
+                        ]),
+                        new LiteralInteger(2)
+                    )
+                ),
+                new SelectItemProjection(
+                    "not_yet_shipped",
+                    new RoundDecimalProjection(
+                        new SubtractDecimalProjection([
+                            new FieldDecimal("placed_by_day", "placed"),
+                            new CoalesceDecimalProjection([
+                                new FieldDecimalNullable("shipped_by_day", "shipped"),
+                                new LiteralDecimal(0m),
+                            ]),
+                        ]),
+                        new LiteralInteger(2)
+                    )
+                ),
+            ],
+            orderBy:
+            [
+                new OrderItemProjection(new FieldDate("placed_by_day", "placed_on")),
+            ]
         );
 
     /// <summary>

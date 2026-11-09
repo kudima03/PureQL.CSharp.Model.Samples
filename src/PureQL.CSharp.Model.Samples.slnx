@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="dotnet-tools.json" />
+    <File Path="stryker-config.json" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/PureQL.CSharp.Model.Samples.Tests/PureQL.CSharp.Model.Samples.Tests.csproj" />

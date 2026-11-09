@@ -13,9 +13,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Guid = Pure.Primitives.Guid.Guid;
 using Table = Pure.RelationalSchema.Table.Table;
 
@@ -29,132 +27,61 @@ public sealed record DatetimeUtcLiteralsQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            where: new AndRow([
+                new GreaterThanOrEqualDatetimeRow(
+                    new FieldDatetime(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
+                        ).TextValue,
+                        new PlacedAtColumn().Name.TextValue
                     ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new LogicalRow(
-                        new AndRow([
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new GreaterThanOrEqualRow(
-                                        new GreaterThanOrEqualDatetimeRow(
-                                            new DatetimeNullableRow(
-                                                new DatetimeRow(
-                                                    new FieldDatetime(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedAtColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DatetimeNullableRow(
-                                                new DatetimeRow(
-                                                    new LiteralDatetime(
-                                                        new DateTimeOffset(
-                                                            2024,
-                                                            6,
-                                                            2,
-                                                            0,
-                                                            0,
-                                                            0,
-                                                            TimeSpan.Zero
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new LessThanRow(
-                                        new LessThanDatetimeRow(
-                                            new DatetimeNullableRow(
-                                                new DatetimeRow(
-                                                    new FieldDatetime(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedAtColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DatetimeNullableRow(
-                                                new DatetimeRow(
-                                                    new LiteralDatetime(
-                                                        new DateTimeOffset(
-                                                            2024,
-                                                            6,
-                                                            5,
-                                                            8,
-                                                            30,
-                                                            0,
-                                                            123,
-                                                            456,
-                                                            TimeSpan.Zero
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                        ])
+                    new LiteralDatetime(
+                        new DateTimeOffset(2024, 6, 2, 0, 0, 0, TimeSpan.Zero)
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+                new LessThanDatetimeRow(
+                    new FieldDatetime(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new PlacedAtColumn().Name.TextValue
+                    ),
+                    new LiteralDatetime(
+                        new DateTimeOffset(2024, 6, 5, 8, 30, 0, 123, 456, TimeSpan.Zero)
+                    )
+                ),
+            ]),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
+                    )
+                ),
+            ]
         );
 
     /// <summary>

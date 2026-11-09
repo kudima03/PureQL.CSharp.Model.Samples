@@ -18,9 +18,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.Samples.Cells;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
 using Double = Pure.Primitives.Number.Double;
@@ -39,125 +37,51 @@ public sealed record LiteralOfEveryTypeNextToFieldQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "an_integer",
-                                new IntegerProjection(new LiteralInteger(42))
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "a_decimal",
-                                new ExactDecimalProjection(new LiteralDecimal(19.99m))
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "a_string",
-                                new StringProjection(new LiteralString("hello"))
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionBoolean(
-                                "a_boolean",
-                                new BooleanProjection(new LiteralBoolean(true))
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDate(
-                                "a_date",
-                                new DateProjection(
-                                    new LiteralDate(new DateOnly(2024, 1, 31))
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionTime(
-                                "a_time",
-                                new TimeProjection(
-                                    new LiteralTime(new TimeOnly(18, 30, 0))
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDatetime(
-                                "a_datetime",
-                                new DatetimeProjection(
-                                    new LiteralDatetime(
-                                        new DateTimeOffset(
-                                            2024,
-                                            1,
-                                            31,
-                                            18,
-                                            30,
-                                            0,
-                                            TimeSpan.Zero
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "a_uuid",
-                                new UuidProjection(
-                                    new LiteralUuid(
-                                        new System.Guid(999, 0, 0, new byte[8])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                new SelectItemProjection("an_integer", new LiteralInteger(42)),
+                new SelectItemProjection("a_decimal", new LiteralDecimal(19.99m)),
+                new SelectItemProjection("a_string", new LiteralString("hello")),
+                new SelectItemProjection("a_boolean", new LiteralBoolean(true)),
+                new SelectItemProjection(
+                    "a_date",
+                    new LiteralDate(new DateOnly(2024, 1, 31))
+                ),
+                new SelectItemProjection(
+                    "a_time",
+                    new LiteralTime(new TimeOnly(18, 30, 0))
+                ),
+                new SelectItemProjection(
+                    "a_datetime",
+                    new LiteralDatetime(
+                        new DateTimeOffset(2024, 1, 31, 18, 30, 0, TimeSpan.Zero)
+                    )
+                ),
+                new SelectItemProjection(
+                    "a_uuid",
+                    new LiteralUuid(new System.Guid(999, 0, 0, new byte[8]))
+                ),
+            ]
         );
 
     /// <summary>

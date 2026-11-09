@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-All `dotnet` commands must be run from the `./src` directory.
+All `dotnet` commands must be run from the `./src` directory. The SDK is pinned by `global.json` (.NET 11, for the model's C# 15 unions); where the system SDK is older, put `~/.dotnet` first on `PATH` with `DOTNET_ROOT=$HOME/.dotnet`.
 
 ```bash
 dotnet restore
@@ -22,13 +22,15 @@ dotnet pack --configuration Release -p:Version=<version> --output .
 
 This is a **sample-data NuGet library**: a catalogue of named, predefined PureQL `PureQLQuery` instances used as fixtures by other repositories in the ecosystem. There is no logic here — every type is a sealed record with parameterless construction and a hard-coded query.
 
-**Spec parity.** The catalogue mirrors the `samples/` of PureQL specification `0.1.0-preview.2.0.1` (`kudima03/PureQL-Specification`), the version `PureQL.CSharp.Model` 0.1.0-preview.13.0.0 models: one sample per specification sample, rewritten over the fixture tables of `Pure.RelationalSchema.Samples` so it can be executed, keeping the feature the specification sample demonstrates. The README's catalogue table maps every sample to its specification number.
+**Spec parity.** The catalogue mirrors the `samples/` of PureQL specification `0.1.0-preview.2.0.1` (`kudima03/PureQL-Specification`), the version `PureQL.CSharp.Model` 0.1.0-preview.14.0.0 is generated from: one sample per specification sample, rewritten over the fixture tables of `Pure.RelationalSchema.Samples` so it can be executed, keeping the feature the specification sample demonstrates. The README's catalogue table maps every sample to its specification number.
 
 **Projector parity.** The `Dashboards` folder holds one sample per PureQL query Projector stores (`GET https://projector.elegant-soft.com/api/v1/queries`), rewritten over the same fixtures the same way, every parameter replaced by a literal. The README's Dashboards table maps every one to its Projector query id. Some stored queries fail the specification's schema (e.g. a grouped `average` declared `decimal?`); an analog is always written valid, and those problems belong to the DecisionSupportSystem repository, not here.
 
 **One sealed record per file, under `Queries/<Folder>`.** The folders group samples by what they demonstrate (`Select`, `Parameters`, `Where`, `OrderBy`, `Pagination`, `Expressions`, `Temporal`, `Nulls`, `Joins`, `Aggregates`, `GroupBy`, `Subqueries`, and `Dashboards` for the Projector analogs). A sample's namespace is `PureQL.CSharp.Model.Samples.Queries.<Folder>`.
 
-**Sample shape.** `PureQL.CSharp.Model.PureQLQuery` is a sealed class with no interface, so a sample cannot implement it. Each sample instead exposes `public PureQLQuery Value => new PureQLQuery(...);` and is used as `new FooQuery().Value`. CA1822 is switched off for `Queries/**` in `src/.editorconfig` because of this — keep `Value` an instance member.
+**Sample shape.** `PureQL.CSharp.Model.PureQLQuery` is a `readonly union` (a struct) of the main query variants, so a sample cannot be one. Each sample instead exposes `public PureQLQuery Value => new MainPlainQueryWithoutPagination(...);`, the variant record converting implicitly to the union, and is used as `new FooQuery().Value`. `Value` is typed `PureQLQuery`, not the variant, in every sample: it is what engines and the serializer take, and a sample that gains or loses a clause that selects another variant (`pagination`, `groupBy`, `aggregate`) keeps its public type; `Value.Value` is the variant record. CA1822 is switched off for `Queries/**` in `src/.editorconfig` because `Value` touches no instance state — keep `Value` an instance member.
+
+**Model nodes.** `PureQL.CSharp.Model` has one sealed record per schema node, named after its `$defs` key (`add.integer.nullable@row` → `AddIntegerNullableRow`), and flat `union`s of them. A query is built from records only: a record converts implicitly into every union that lists it, so a union is never constructed explicitly. Every operator is the record of its exact declared type in the context of its position (`RowExpressions` for `where`, `join.on`, group keys and aggregate selectors and predicates; `ProjectionExpressions` for `select` / `orderBy` of a plain query; `GroupExpressions` for `select` / `having` / `orderBy` of a grouped one; `TotalExpressions` for `aggregate`), and every leaf the record of its type (`FieldDecimal`, `FieldDecimalNullable`, `LiteralInteger`, `KeyUuid`, `ParamDecimal`, `LiteralIntegerNullable()` for a typed null). The query variant follows the schema's dependencies: `pagination` needs `orderBy` (`…WithPagination`), a subquery's `orderBy` needs `pagination` or `distinctBy`, and a total query has `aggregate` instead of `select`.
 
 **Documentation.** `GenerateDocumentationFile` is on, so every public type and member needs an XML doc comment — a missing one is CS1591, an error under `-warnaserror`. A sample's `<summary>` describes the query in plain English (what it selects, from where, and each clause in order); `Value` carries the one-line `Builds the query afresh on every read.`
 
@@ -42,7 +44,7 @@ This is a **sample-data NuGet library**: a catalogue of named, predefined PureQL
 
 **Entity and field names are never literals.** They are derived from `Pure.RelationalSchema.Samples` metadata: `new JoinedString(new DotString(), [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]).TextValue` for an entity (and for a field's `source` when the entity has no alias), `new OrderTotalColumn().Name.TextValue` for a field. The only string literals in a query are aliases, subquery names and their column aliases, parameter names and value scalars. Uuid scalars use the fixtures' deterministic form `new Guid(n, 0, 0, new byte[8])`.
 
-**Field types.** A field is declared with the PureQL type of its storage column: `DoubleColumnType` → `decimal`, and the other column types by name (`BoolColumnType` → `boolean`). It is nullable where the fixture column holds a NULL (`users.user_score`, `employees.employee_manager_id`) and where the specification makes it nullable after an outer join. No fixture column is an `integer`; integers come from `round`/`floor`/`ceiling`, `count`, `dateDiffDays`, `integerDivide`, `modulo` and literals.
+**Field types.** A field is declared with the PureQL type of its storage column: `DoubleColumnType` → `decimal`, and the other column types by name (`BoolColumnType` → `boolean`). It is nullable where the fixture column holds a NULL (`users.user_score`, `employees.employee_manager_id`) and where the specification makes it nullable after an outer join. So a `decimal` column is a `FieldDecimal` (`FieldDecimalNullable` where nullable), a `string` one a `FieldString`, and so on. No fixture column is an `integer`; integers come from `round`/`floor`/`ceiling`, `count`, `dateDiffDays`, `integerDivide`, `modulo` and literals.
 
 **`PureQL.CSharp.Model.Pagination` must be aliased.** Inside `PureQL.CSharp.Model.Samples.Queries.*` the simple name `Pagination` binds to the `Queries.Pagination` namespace, so samples write `using ModelPagination = PureQL.CSharp.Model.Pagination;`.
 
@@ -52,11 +54,13 @@ This is a **sample-data NuGet library**: a catalogue of named, predefined PureQL
 
 **Dependencies:** `PureQL.CSharp.Model` for the AST; `Pure.RelationalSchema.Samples` for the names; `Pure.Primitives` (`DotString`) and `Pure.Primitives.String.Operations` (`JoinedString`) to compose them; `Pure.RelationalSchema.Storage.Samples`, `Pure.RelationalSchema`, `Pure.RelationalSchema.Storage`, `Pure.RelationalSchema.HashCodes` and `Pure.Collections.Generic` for the results. Do **not** reference any query engine (`Pure.RelationalSchema.Storage.PureQL.Projection`). Engines consume these samples, and a reference would create a cycle.
 
-**Multi-targeting:** net8.0, net9.0, net10.0. `IsAotCompatible` is set.
+**Target framework:** net11.0 only, as `PureQL.CSharp.Model` (C# 15 unions need .NET 11). `IsAotCompatible` is set.
 
-**Tests:** xUnit project targeting net10.0, mirroring the source layout one `…Tests` record per sample. Each test serializes the sample through `PureQL.CSharp.Model.Serialization` (`QueryJson`) and compares it with the expected PureQL document spelled out as a raw string literal (`ExpectedJson`). The expected document is written by hand after the specification sample and validated against `PureQL-Specification.json`, so it is an independent oracle — never regenerate it from the sample under test. A sample with a `Result` has a second test, which renders the result through `DataSetJson` (table name, columns with types, index count, cell text per row) and compares it with the expected document computed from the SQL answer.
+**Package validation:** disabled (`EnablePackageValidation` is `false`) until the first release on the union-based model, which becomes the new baseline.
 
-**CI thresholds** (`.github/workflows/build-and-test.yml`): line coverage 98 (warning at 99) and mutation score 98. The repository sits at 100 % line coverage and 100 % mutation score — the JSON comparison sees every string, collection and flag a mutant could change. This repository does not use `Stryker disable` comments; a real coverage or mutation gap is fixed by writing a test, not annotated away.
+**Tests:** xUnit project targeting net11.0, mirroring the source layout one `…Tests` record per sample. Each test serializes the sample through `PureQL.CSharp.Model.Serialization` (`QueryJson`) and compares it with the expected PureQL document spelled out as a raw string literal (`ExpectedJson`). Both sides are compared in canonical form (`CanonicalJson`: the properties of every object in ordinal order, arrays as they are), as the serializer writes properties in the specification's order and JSON objects are unordered. The expected document is written by hand after the specification sample and validated against `PureQL-Specification.json`, so it is an independent oracle — never regenerate it from the sample under test. A sample with a `Result` has a second test, which renders the result through `DataSetJson` (table name, columns with types, index count, cell text per row) and compares it with the expected document computed from the SQL answer.
+
+**CI thresholds** (`.github/workflows/build-and-test.yml`): line coverage 98 (warning at 99) and mutation score 98. `src/stryker-config.json` sets `language-version: Preview`, which Stryker needs to parse C# 15. The repository sits at 100 % line coverage and 100 % mutation score — the JSON comparison sees every string, collection and flag a mutant could change. This repository does not use `Stryker disable` comments; a real coverage or mutation gap is fixed by writing a test, not annotated away.
 
 **Publishing:** triggered by pushing a semver tag matching `*.*.*`. The tag name becomes the package version. Packages are published to both GitHub Packages and NuGet.org.
 
@@ -71,7 +75,7 @@ Enforced via `.editorconfig` and `dotnet format` + `csharpier` in CI:
 - No implicit object creation when the type is not apparent — `new Foo()`, not `new()`
 - Private fields: `_camelCase`
 - Max line length: 90 characters
-- Pass `null` for an absent query clause by name (`joins: null`), so the positional clauses around it stay readable
+- Name every clause of a query record (`from:`, `where:`, `select:`, …) and write them in the order `subqueries`, `from`, `joins`, `where`, `groupBy`, `having`, `select` / `aggregate`, `distinctBy`, `orderBy`, `pagination`; leave an absent clause out. A variant's constructor takes its required clauses first, so positional arguments would not read in clause order
 - Do **not** override `ToString()`/`GetHashCode()` — the *Samples* convention
 
 ## Commit Messages

@@ -14,11 +14,9 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
@@ -40,706 +38,36 @@ public sealed record ShippedSharePerUserAndTenantQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new OrdersTable().Name,
-                            ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyUuid(
-                                "order_tenant_id",
-                                new UuidRow(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderTenantIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupUuid(
-                                "order_tenant_id",
-                                new UuidGroup(new KeyUuid("order_tenant_id"))
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "shipped_pct_ann",
-                                new ExactDecimalGroup(
-                                    new ConditionalDecimalGroup(
-                                        new IfDecimalGroup(
-                                            new BooleanGroup(
-                                                new ComparisonGroup(
-                                                    new EqualGroup(
-                                                        new EqualDecimalGroup(
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new AggregateIntegerGroup(
-                                                                        new CountGroup(
-                                                                            new BooleanRow(
-                                                                                new ComparisonRow(
-                                                                                    new EqualRow(
-                                                                                        new EqualStringRow(
-                                                                                            new StringNullableRow(
-                                                                                                new StringRow(
-                                                                                                    new FieldString(
-                                                                                                        new JoinedString(
-                                                                                                            new DotString(),
-                                                                                                            [
-                                                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                new UsersTable().Name,
-                                                                                                            ]
-                                                                                                        ).TextValue,
-                                                                                                        new UserNameColumn()
-                                                                                                            .Name
-                                                                                                            .TextValue
-                                                                                                    )
-                                                                                                )
-                                                                                            ),
-                                                                                            new StringNullableRow(
-                                                                                                new StringRow(
-                                                                                                    new LiteralString(
-                                                                                                        "Ann"
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new LiteralInteger(0)
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new LiteralDecimal(0m)
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new RoundDecimalGroup(
-                                                        new DecimalGroup(
-                                                            new ExactDecimalGroup(
-                                                                new ArithmeticDecimalGroup(
-                                                                    new MultiplyDecimalGroup([
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new LiteralDecimal(
-                                                                                    100m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new ArithmeticDecimalGroup(
-                                                                                    new DivideDecimalGroup([
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new LogicalRow(
-                                                                                                                new AndRow([
-                                                                                                                    new BooleanRow(
-                                                                                                                        new ComparisonRow(
-                                                                                                                            new EqualRow(
-                                                                                                                                new EqualStringRow(
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new FieldString(
-                                                                                                                                                new JoinedString(
-                                                                                                                                                    new DotString(),
-                                                                                                                                                    [
-                                                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                        new OrdersTable().Name,
-                                                                                                                                                    ]
-                                                                                                                                                ).TextValue,
-                                                                                                                                                new OrderStatusColumn()
-                                                                                                                                                    .Name
-                                                                                                                                                    .TextValue
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    ),
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new LiteralString(
-                                                                                                                                                "shipped"
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    ),
-                                                                                                                    new BooleanRow(
-                                                                                                                        new ComparisonRow(
-                                                                                                                            new EqualRow(
-                                                                                                                                new EqualStringRow(
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new FieldString(
-                                                                                                                                                new JoinedString(
-                                                                                                                                                    new DotString(),
-                                                                                                                                                    [
-                                                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                        new UsersTable().Name,
-                                                                                                                                                    ]
-                                                                                                                                                ).TextValue,
-                                                                                                                                                new UserNameColumn()
-                                                                                                                                                    .Name
-                                                                                                                                                    .TextValue
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    ),
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new LiteralString(
-                                                                                                                                                "Ann"
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    ),
-                                                                                                                ])
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new ComparisonRow(
-                                                                                                                new EqualRow(
-                                                                                                                    new EqualStringRow(
-                                                                                                                        new StringNullableRow(
-                                                                                                                            new StringRow(
-                                                                                                                                new FieldString(
-                                                                                                                                    new JoinedString(
-                                                                                                                                        new DotString(),
-                                                                                                                                        [
-                                                                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                            new UsersTable().Name,
-                                                                                                                                        ]
-                                                                                                                                    ).TextValue,
-                                                                                                                                    new UserNameColumn()
-                                                                                                                                        .Name
-                                                                                                                                        .TextValue
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        ),
-                                                                                                                        new StringNullableRow(
-                                                                                                                            new StringRow(
-                                                                                                                                new LiteralString(
-                                                                                                                                    "Ann"
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                    ])
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        ),
-                                                        new IntegerGroup(
-                                                            new LiteralInteger(1)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "shipped_pct_cara",
-                                new ExactDecimalGroup(
-                                    new ConditionalDecimalGroup(
-                                        new IfDecimalGroup(
-                                            new BooleanGroup(
-                                                new ComparisonGroup(
-                                                    new EqualGroup(
-                                                        new EqualDecimalGroup(
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new AggregateIntegerGroup(
-                                                                        new CountGroup(
-                                                                            new BooleanRow(
-                                                                                new ComparisonRow(
-                                                                                    new EqualRow(
-                                                                                        new EqualStringRow(
-                                                                                            new StringNullableRow(
-                                                                                                new StringRow(
-                                                                                                    new FieldString(
-                                                                                                        new JoinedString(
-                                                                                                            new DotString(),
-                                                                                                            [
-                                                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                new UsersTable().Name,
-                                                                                                            ]
-                                                                                                        ).TextValue,
-                                                                                                        new UserNameColumn()
-                                                                                                            .Name
-                                                                                                            .TextValue
-                                                                                                    )
-                                                                                                )
-                                                                                            ),
-                                                                                            new StringNullableRow(
-                                                                                                new StringRow(
-                                                                                                    new LiteralString(
-                                                                                                        "Cara"
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new LiteralInteger(0)
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new LiteralDecimal(0m)
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new RoundDecimalGroup(
-                                                        new DecimalGroup(
-                                                            new ExactDecimalGroup(
-                                                                new ArithmeticDecimalGroup(
-                                                                    new MultiplyDecimalGroup([
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new LiteralDecimal(
-                                                                                    100m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new ArithmeticDecimalGroup(
-                                                                                    new DivideDecimalGroup([
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new LogicalRow(
-                                                                                                                new AndRow([
-                                                                                                                    new BooleanRow(
-                                                                                                                        new ComparisonRow(
-                                                                                                                            new EqualRow(
-                                                                                                                                new EqualStringRow(
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new FieldString(
-                                                                                                                                                new JoinedString(
-                                                                                                                                                    new DotString(),
-                                                                                                                                                    [
-                                                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                        new OrdersTable().Name,
-                                                                                                                                                    ]
-                                                                                                                                                ).TextValue,
-                                                                                                                                                new OrderStatusColumn()
-                                                                                                                                                    .Name
-                                                                                                                                                    .TextValue
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    ),
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new LiteralString(
-                                                                                                                                                "shipped"
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    ),
-                                                                                                                    new BooleanRow(
-                                                                                                                        new ComparisonRow(
-                                                                                                                            new EqualRow(
-                                                                                                                                new EqualStringRow(
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new FieldString(
-                                                                                                                                                new JoinedString(
-                                                                                                                                                    new DotString(),
-                                                                                                                                                    [
-                                                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                        new UsersTable().Name,
-                                                                                                                                                    ]
-                                                                                                                                                ).TextValue,
-                                                                                                                                                new UserNameColumn()
-                                                                                                                                                    .Name
-                                                                                                                                                    .TextValue
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    ),
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new LiteralString(
-                                                                                                                                                "Cara"
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    ),
-                                                                                                                ])
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new ComparisonRow(
-                                                                                                                new EqualRow(
-                                                                                                                    new EqualStringRow(
-                                                                                                                        new StringNullableRow(
-                                                                                                                            new StringRow(
-                                                                                                                                new FieldString(
-                                                                                                                                    new JoinedString(
-                                                                                                                                        new DotString(),
-                                                                                                                                        [
-                                                                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                            new UsersTable().Name,
-                                                                                                                                        ]
-                                                                                                                                    ).TextValue,
-                                                                                                                                    new UserNameColumn()
-                                                                                                                                        .Name
-                                                                                                                                        .TextValue
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        ),
-                                                                                                                        new StringNullableRow(
-                                                                                                                            new StringRow(
-                                                                                                                                new LiteralString(
-                                                                                                                                    "Cara"
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                    ])
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        ),
-                                                        new IntegerGroup(
-                                                            new LiteralInteger(1)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "shipped_pct_dan",
-                                new ExactDecimalGroup(
-                                    new ConditionalDecimalGroup(
-                                        new IfDecimalGroup(
-                                            new BooleanGroup(
-                                                new ComparisonGroup(
-                                                    new EqualGroup(
-                                                        new EqualDecimalGroup(
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new AggregateIntegerGroup(
-                                                                        new CountGroup(
-                                                                            new BooleanRow(
-                                                                                new ComparisonRow(
-                                                                                    new EqualRow(
-                                                                                        new EqualStringRow(
-                                                                                            new StringNullableRow(
-                                                                                                new StringRow(
-                                                                                                    new FieldString(
-                                                                                                        new JoinedString(
-                                                                                                            new DotString(),
-                                                                                                            [
-                                                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                new UsersTable().Name,
-                                                                                                            ]
-                                                                                                        ).TextValue,
-                                                                                                        new UserNameColumn()
-                                                                                                            .Name
-                                                                                                            .TextValue
-                                                                                                    )
-                                                                                                )
-                                                                                            ),
-                                                                                            new StringNullableRow(
-                                                                                                new StringRow(
-                                                                                                    new LiteralString(
-                                                                                                        "Dan"
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new LiteralInteger(0)
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new LiteralDecimal(0m)
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new RoundDecimalGroup(
-                                                        new DecimalGroup(
-                                                            new ExactDecimalGroup(
-                                                                new ArithmeticDecimalGroup(
-                                                                    new MultiplyDecimalGroup([
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new LiteralDecimal(
-                                                                                    100m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new ArithmeticDecimalGroup(
-                                                                                    new DivideDecimalGroup([
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new LogicalRow(
-                                                                                                                new AndRow([
-                                                                                                                    new BooleanRow(
-                                                                                                                        new ComparisonRow(
-                                                                                                                            new EqualRow(
-                                                                                                                                new EqualStringRow(
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new FieldString(
-                                                                                                                                                new JoinedString(
-                                                                                                                                                    new DotString(),
-                                                                                                                                                    [
-                                                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                        new OrdersTable().Name,
-                                                                                                                                                    ]
-                                                                                                                                                ).TextValue,
-                                                                                                                                                new OrderStatusColumn()
-                                                                                                                                                    .Name
-                                                                                                                                                    .TextValue
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    ),
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new LiteralString(
-                                                                                                                                                "shipped"
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    ),
-                                                                                                                    new BooleanRow(
-                                                                                                                        new ComparisonRow(
-                                                                                                                            new EqualRow(
-                                                                                                                                new EqualStringRow(
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new FieldString(
-                                                                                                                                                new JoinedString(
-                                                                                                                                                    new DotString(),
-                                                                                                                                                    [
-                                                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                        new UsersTable().Name,
-                                                                                                                                                    ]
-                                                                                                                                                ).TextValue,
-                                                                                                                                                new UserNameColumn()
-                                                                                                                                                    .Name
-                                                                                                                                                    .TextValue
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    ),
-                                                                                                                                    new StringNullableRow(
-                                                                                                                                        new StringRow(
-                                                                                                                                            new LiteralString(
-                                                                                                                                                "Dan"
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    ),
-                                                                                                                ])
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new ComparisonRow(
-                                                                                                                new EqualRow(
-                                                                                                                    new EqualStringRow(
-                                                                                                                        new StringNullableRow(
-                                                                                                                            new StringRow(
-                                                                                                                                new FieldString(
-                                                                                                                                    new JoinedString(
-                                                                                                                                        new DotString(),
-                                                                                                                                        [
-                                                                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                            new UsersTable().Name,
-                                                                                                                                        ]
-                                                                                                                                    ).TextValue,
-                                                                                                                                    new UserNameColumn()
-                                                                                                                                        .Name
-                                                                                                                                        .TextValue
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        ),
-                                                                                                                        new StringNullableRow(
-                                                                                                                            new StringRow(
-                                                                                                                                new LiteralString(
-                                                                                                                                    "Dan"
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                    ])
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        ),
-                                                        new IntegerGroup(
-                                                            new LiteralInteger(1)
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Inner,
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Inner,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new UsersTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderUserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid(
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -747,72 +75,270 @@ public sealed record ShippedSharePerUserAndTenantQuery
                                     new UsersTable().Name,
                                 ]
                             ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserIdColumn().Name.TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                            new UserIdColumn().Name.TextValue
                         )
-                    ),
-                ],
-                new BooleanRow(
-                    new FieldBoolean(
+                    )
+                ),
+            ],
+            where: new FieldBoolean(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue,
+                new UserActiveColumn().Name.TextValue
+            ),
+            groupBy:
+            [
+                new GroupKey(
+                    "order_tenant_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
-                                new UsersTable().Name,
+                                new OrdersTable().Name,
                             ]
                         ).TextValue,
-                        new UserActiveColumn().Name.TextValue
+                        new OrderTenantIdColumn().Name.TextValue
                     )
                 ),
-                having: null,
-                [
-                    new OrderItemGroup(
-                        new ExprGroup(
-                            new UuidNullableGroup(
-                                new UuidGroup(new KeyUuid("order_tenant_id"))
-                            )
+            ],
+            select:
+            [
+                new SelectItemGroup("order_tenant_id", new KeyUuid("order_tenant_id")),
+                new SelectItemGroup(
+                    "shipped_pct_ann",
+                    new IfDecimalGroup(
+                        new LiteralDecimal(0m),
+                        new RoundDecimalGroup(
+                            new MultiplyDecimalGroup([
+                                new LiteralDecimal(100m),
+                                new DivideDecimalGroup([
+                                    new CountGroup(
+                                        new AndRow([
+                                            new EqualStringRow(
+                                                new FieldString(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrdersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new OrderStatusColumn().Name.TextValue
+                                                ),
+                                                new LiteralString("shipped")
+                                            ),
+                                            new EqualStringRow(
+                                                new FieldString(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new UsersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new UserNameColumn().Name.TextValue
+                                                ),
+                                                new LiteralString("Ann")
+                                            ),
+                                        ])
+                                    ),
+                                    new CountGroup(
+                                        new EqualStringRow(
+                                            new FieldString(
+                                                new JoinedString(
+                                                    new DotString(),
+                                                    [
+                                                        new RelationalSchemaWithForeignKeys().Name,
+                                                        new UsersTable().Name,
+                                                    ]
+                                                ).TextValue,
+                                                new UserNameColumn().Name.TextValue
+                                            ),
+                                            new LiteralString("Ann")
+                                        )
+                                    ),
+                                ]),
+                            ]),
+                            new LiteralInteger(1)
+                        ),
+                        new EqualDecimalGroup(
+                            new CountGroup(
+                                new EqualStringRow(
+                                    new FieldString(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserNameColumn().Name.TextValue
+                                    ),
+                                    new LiteralString("Ann")
+                                )
+                            ),
+                            new LiteralInteger(0)
                         )
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                    )
+                ),
+                new SelectItemGroup(
+                    "shipped_pct_cara",
+                    new IfDecimalGroup(
+                        new LiteralDecimal(0m),
+                        new RoundDecimalGroup(
+                            new MultiplyDecimalGroup([
+                                new LiteralDecimal(100m),
+                                new DivideDecimalGroup([
+                                    new CountGroup(
+                                        new AndRow([
+                                            new EqualStringRow(
+                                                new FieldString(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrdersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new OrderStatusColumn().Name.TextValue
+                                                ),
+                                                new LiteralString("shipped")
+                                            ),
+                                            new EqualStringRow(
+                                                new FieldString(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new UsersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new UserNameColumn().Name.TextValue
+                                                ),
+                                                new LiteralString("Cara")
+                                            ),
+                                        ])
+                                    ),
+                                    new CountGroup(
+                                        new EqualStringRow(
+                                            new FieldString(
+                                                new JoinedString(
+                                                    new DotString(),
+                                                    [
+                                                        new RelationalSchemaWithForeignKeys().Name,
+                                                        new UsersTable().Name,
+                                                    ]
+                                                ).TextValue,
+                                                new UserNameColumn().Name.TextValue
+                                            ),
+                                            new LiteralString("Cara")
+                                        )
+                                    ),
+                                ]),
+                            ]),
+                            new LiteralInteger(1)
+                        ),
+                        new EqualDecimalGroup(
+                            new CountGroup(
+                                new EqualStringRow(
+                                    new FieldString(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserNameColumn().Name.TextValue
+                                    ),
+                                    new LiteralString("Cara")
+                                )
+                            ),
+                            new LiteralInteger(0)
+                        )
+                    )
+                ),
+                new SelectItemGroup(
+                    "shipped_pct_dan",
+                    new IfDecimalGroup(
+                        new LiteralDecimal(0m),
+                        new RoundDecimalGroup(
+                            new MultiplyDecimalGroup([
+                                new LiteralDecimal(100m),
+                                new DivideDecimalGroup([
+                                    new CountGroup(
+                                        new AndRow([
+                                            new EqualStringRow(
+                                                new FieldString(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrdersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new OrderStatusColumn().Name.TextValue
+                                                ),
+                                                new LiteralString("shipped")
+                                            ),
+                                            new EqualStringRow(
+                                                new FieldString(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new UsersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new UserNameColumn().Name.TextValue
+                                                ),
+                                                new LiteralString("Dan")
+                                            ),
+                                        ])
+                                    ),
+                                    new CountGroup(
+                                        new EqualStringRow(
+                                            new FieldString(
+                                                new JoinedString(
+                                                    new DotString(),
+                                                    [
+                                                        new RelationalSchemaWithForeignKeys().Name,
+                                                        new UsersTable().Name,
+                                                    ]
+                                                ).TextValue,
+                                                new UserNameColumn().Name.TextValue
+                                            ),
+                                            new LiteralString("Dan")
+                                        )
+                                    ),
+                                ]),
+                            ]),
+                            new LiteralInteger(1)
+                        ),
+                        new EqualDecimalGroup(
+                            new CountGroup(
+                                new EqualStringRow(
+                                    new FieldString(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new UsersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new UserNameColumn().Name.TextValue
+                                    ),
+                                    new LiteralString("Dan")
+                                )
+                            ),
+                            new LiteralInteger(0)
+                        )
+                    )
+                ),
+            ],
+            orderBy: [new OrderItemGroup(new KeyUuid("order_tenant_id"))]
         );
 
     /// <summary>

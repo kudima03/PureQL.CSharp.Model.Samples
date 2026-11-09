@@ -14,9 +14,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Guid = Pure.Primitives.Guid.Guid;
 using Table = Pure.RelationalSchema.Table.Table;
 
@@ -32,64 +30,80 @@ public sealed record NullableBooleanConditionsQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Left,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new UsersTable().Name,
+                        ]
+                    ).TextValue,
+                    new AndRow([
+                        new EqualUuidRow(
+                            new FieldUuid(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderUserIdColumn().Name.TextValue
+                            ),
+                            new FieldUuid(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new UsersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new UserIdColumn().Name.TextValue
+                            )
+                        ),
+                        new LessThanDecimalRow(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new UsersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new UserAgeColumn().Name.TextValue
+                            ),
+                            new LiteralInteger(40)
+                        ),
+                    ])
+                ),
+            ],
+            where: new OrRow([
+                new EqualBooleanRow(
+                    new FieldBooleanNullable(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
-                                new OrdersTable().Name,
+                                new UsersTable().Name,
                             ]
-                        ).TextValue
-                    )
+                        ).TextValue,
+                        new UserActiveColumn().Name.TextValue
+                    ),
+                    new LiteralBoolean(false)
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionBooleanNullable(
-                                "user_active",
-                                new ExactBooleanNullableProjection(
-                                    new FieldBooleanNullable(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserActiveColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Left,
+                new NotRow(
+                    new CoalesceBooleanRow([
+                        new FieldBooleanNullable(
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -97,154 +111,41 @@ public sealed record NullableBooleanConditionsQuery
                                     new UsersTable().Name,
                                 ]
                             ).TextValue,
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new AndRow([
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new EqualRow(
-                                                    new EqualUuidRow(
-                                                        new UuidNullableRow(
-                                                            new UuidRow(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderUserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new UuidNullableRow(
-                                                            new UuidRow(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new UsersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new UserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new LessThanRow(
-                                                    new LessThanDecimalRow(
-                                                        new DecimalNullableRow(
-                                                            new ExactDecimalRow(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new UsersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new UserAgeColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableRow(
-                                                            new IntegerRow(
-                                                                new LiteralInteger(40)
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                    ])
-                                )
-                            )
-                        )
-                    ),
-                ],
-                new BooleanRow(
-                    new LogicalRow(
-                        new OrRow([
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualBooleanRow(
-                                            new BooleanNullableRow(
-                                                new ExactBooleanNullableRow(
-                                                    new FieldBooleanNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserActiveColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new BooleanNullableRow(
-                                                new BooleanRow(new LiteralBoolean(false))
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new NotRow(
-                                        new BooleanRow(
-                                            new ConditionalBooleanRow(
-                                                new CoalesceBooleanRow([
-                                                    new BooleanNullableRow(
-                                                        new ExactBooleanNullableRow(
-                                                            new FieldBooleanNullable(
-                                                                new JoinedString(
-                                                                    new DotString(),
-                                                                    [
-                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                        new UsersTable().Name,
-                                                                    ]
-                                                                ).TextValue,
-                                                                new UserActiveColumn()
-                                                                    .Name
-                                                                    .TextValue
-                                                            )
-                                                        )
-                                                    ),
-                                                    new BooleanNullableRow(
-                                                        new BooleanRow(
-                                                            new LiteralBoolean(false)
-                                                        )
-                                                    ),
-                                                ])
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                        ])
+                            new UserActiveColumn().Name.TextValue
+                        ),
+                        new LiteralBoolean(false),
+                    ])
+                ),
+            ]),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+                new SelectItemProjection(
+                    "user_active",
+                    new FieldBooleanNullable(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserActiveColumn().Name.TextValue
+                    )
+                ),
+            ]
         );
 
     /// <summary>

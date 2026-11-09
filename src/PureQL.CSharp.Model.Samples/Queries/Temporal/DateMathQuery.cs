@@ -18,7 +18,6 @@ using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
@@ -35,128 +34,77 @@ public sealed record DateMathQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            where: new LessThanOrEqualDecimalRow(
+                new DateDiffDaysIntegerRow(
+                    new FieldDate(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new PlacedOnColumn().Name.TextValue
+                    ),
+                    new LiteralDate(new DateOnly(2024, 6, 1))
+                ),
+                new LiteralInteger(3)
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDate(
-                                "due_date",
-                                new DateProjection(
-                                    new DateAddDaysDateProjection(
-                                        new DateProjection(
-                                            new FieldDate(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new OrdersTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new PlacedOnColumn().Name.TextValue
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(14))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "days_open",
-                                new IntegerProjection(
-                                    new DateDiffDaysIntegerProjection(
-                                        new DateProjection(
-                                            new LiteralDate(new DateOnly(2024, 6, 30))
-                                        ),
-                                        new DateProjection(
-                                            new FieldDate(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new OrdersTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new PlacedOnColumn().Name.TextValue
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new ComparisonRow(
-                        new LessThanOrEqualRow(
-                            new LessThanOrEqualDecimalRow(
-                                new DecimalNullableRow(
-                                    new IntegerRow(
-                                        new DateDiffDaysIntegerRow(
-                                            new DateRow(
-                                                new FieldDate(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new OrdersTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new PlacedOnColumn().Name.TextValue
-                                                )
-                                            ),
-                                            new DateRow(
-                                                new LiteralDate(new DateOnly(2024, 6, 1))
-                                            )
-                                        )
-                                    )
-                                ),
-                                new DecimalNullableRow(
-                                    new IntegerRow(new LiteralInteger(3))
-                                )
-                            )
+                new SelectItemProjection(
+                    "due_date",
+                    new DateAddDaysDateProjection(
+                        new FieldDate(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new PlacedOnColumn().Name.TextValue
+                        ),
+                        new LiteralInteger(14)
+                    )
+                ),
+                new SelectItemProjection(
+                    "days_open",
+                    new DateDiffDaysIntegerProjection(
+                        new LiteralDate(new DateOnly(2024, 6, 30)),
+                        new FieldDate(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new PlacedOnColumn().Name.TextValue
                         )
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]
         );
 
     /// <summary>
