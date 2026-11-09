@@ -13,9 +13,7 @@ using Pure.RelationalSchema.Storage.Samples.Cells;
 using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
@@ -32,97 +30,52 @@ public sealed record SelfJoinThroughAliasQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new EmployeesTable().Name,
-                            ]
-                        ).TextValue,
-                        "e"
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [
+                        new RelationalSchemaWithForeignKeys().Name,
+                        new EmployeesTable().Name,
+                    ]
+                ).TextValue,
+                "e"
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Left,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new EmployeesTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuidNullable(
+                            "e",
+                            new EmployeeManagerIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid("manager", new EmployeeIdColumn().Name.TextValue)
+                    ),
+                    "manager"
+                ),
+            ],
+            select:
+            [
+                new SelectItemProjection(
+                    "name",
+                    new FieldString("e", new EmployeeNameColumn().Name.TextValue)
+                ),
+                new SelectItemProjection(
+                    "manager_name",
+                    new FieldStringNullable(
+                        "manager",
+                        new EmployeeNameColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "name",
-                                new StringProjection(
-                                    new FieldString(
-                                        "e",
-                                        new EmployeeNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionStringNullable(
-                                "manager_name",
-                                new ExactStringNullableProjection(
-                                    new FieldStringNullable(
-                                        "manager",
-                                        new EmployeeNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Left,
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new RelationalSchemaWithForeignKeys().Name,
-                                    new EmployeesTable().Name,
-                                ]
-                            ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new ExactUuidNullableRow(
-                                                    new FieldUuidNullable(
-                                                        "e",
-                                                        new EmployeeManagerIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        "manager",
-                                                        new EmployeeIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            "manager"
-                        )
-                    ),
-                ],
-                where: null,
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]
         );
 
     /// <summary>

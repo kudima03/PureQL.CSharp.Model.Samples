@@ -6,9 +6,7 @@ using Pure.RelationalSchema.Samples.Tables;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.Parameters;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where;
 
@@ -21,187 +19,104 @@ public sealed record DecimalRangesAgainstLiteralsParameterAndFieldQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            where: new AndRow([
+                new GreaterThanOrEqualDecimalRow(
+                    new FieldDecimal(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new UsersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new UserAgeColumn().Name.TextValue
+                    ),
+                    new LiteralDecimal(10.5m)
+                ),
+                new LessThanDecimalRow(
+                    new FieldDecimal(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserAgeColumn().Name.TextValue
+                    ),
+                    new LiteralInteger(1000)
+                ),
+                new GreaterThanDecimalRow(
+                    new FieldDecimal(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserAgeColumn().Name.TextValue
+                    ),
+                    new ParamDecimal("min_age")
+                ),
+                new LessThanOrEqualDecimalRow(
+                    new FieldDecimal(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserAgeColumn().Name.TextValue
+                    ),
+                    new FieldDecimalNullable(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserScoreColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "user_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "user_age",
-                                new ExactDecimalProjection(
-                                    new FieldDecimal(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserAgeColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new LogicalRow(
-                        new AndRow([
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new GreaterThanOrEqualRow(
-                                        new GreaterThanOrEqualDecimalRow(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserAgeColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new LiteralDecimal(10.5m)
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new LessThanRow(
-                                        new LessThanDecimalRow(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserAgeColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableRow(
-                                                new IntegerRow(new LiteralInteger(1000))
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new GreaterThanRow(
-                                        new GreaterThanDecimalRow(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserAgeColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new ParamDecimal("min_age")
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new LessThanOrEqualRow(
-                                        new LessThanOrEqualDecimalRow(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserAgeColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableRow(
-                                                new ExactDecimalNullableRow(
-                                                    new FieldDecimalNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserScoreColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                        ])
+            ]),
+            select:
+            [
+                new SelectItemProjection(
+                    "user_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserIdColumn().Name.TextValue
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+                new SelectItemProjection(
+                    "user_age",
+                    new FieldDecimal(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserAgeColumn().Name.TextValue
+                    )
+                ),
+            ]
         );
 }

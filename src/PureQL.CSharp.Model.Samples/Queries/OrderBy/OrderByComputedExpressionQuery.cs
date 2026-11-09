@@ -15,7 +15,6 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
@@ -34,88 +33,39 @@ public sealed record OrderByComputedExpressionQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new OrderItemsTable().Name,
-                            ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "item_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrderItemsTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new ItemIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "subtotal",
-                                new ExactDecimalProjection(
-                                    new ArithmeticDecimalProjection(
-                                        new MultiplyDecimalProjection([
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new ProductsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ProductPriceColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrderItemsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ItemQtyColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Inner,
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [
+                        new RelationalSchemaWithForeignKeys().Name,
+                        new OrderItemsTable().Name,
+                    ]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Inner,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new ProductsTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrderItemsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ItemProductIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid(
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -123,98 +73,80 @@ public sealed record OrderByComputedExpressionQuery
                                     new ProductsTable().Name,
                                 ]
                             ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrderItemsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ItemProductIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new ProductsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ProductIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                            new ProductIdColumn().Name.TextValue
                         )
-                    ),
-                ],
-                where: null,
-                [
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new DecimalNullableProjection(
-                                new ExactDecimalProjection(
-                                    new ArithmeticDecimalProjection(
-                                        new MultiplyDecimalProjection([
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new ProductsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ProductPriceColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrderItemsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ItemQtyColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
+                    )
+                ),
+            ],
+            select:
+            [
+                new SelectItemProjection(
+                    "item_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrderItemsTable().Name,
+                            ]
+                        ).TextValue,
+                        new ItemIdColumn().Name.TextValue
+                    )
+                ),
+                new SelectItemProjection(
+                    "subtotal",
+                    new MultiplyDecimalProjection([
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductPriceColumn().Name.TextValue
                         ),
-                        SortDirection.Desc
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrderItemsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ItemQtyColumn().Name.TextValue
+                        ),
+                    ])
+                ),
+            ],
+            orderBy:
+            [
+                new OrderItemProjection(
+                    new MultiplyDecimalProjection([
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductPriceColumn().Name.TextValue
+                        ),
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrderItemsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ItemQtyColumn().Name.TextValue
+                        ),
+                    ]),
+                    SortDirection.Desc
+                ),
+            ]
         );
 
     /// <summary>

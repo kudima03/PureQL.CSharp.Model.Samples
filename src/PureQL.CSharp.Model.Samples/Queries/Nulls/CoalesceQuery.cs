@@ -15,7 +15,6 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -31,99 +30,57 @@ public sealed record CoalesceQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new UsersTable().Name,
-                            ]
-                        ).TextValue
-                    )
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "score_or_age",
+                    new CoalesceDecimalProjection([
+                        new FieldDecimalNullable(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new UserScoreColumn().Name.TextValue
+                        ),
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new UserAgeColumn().Name.TextValue
+                        ),
+                    ])
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "score_or_age",
-                                new ExactDecimalProjection(
-                                    new ConditionalDecimalProjection(
-                                        new CoalesceDecimalProjection([
-                                            new DecimalNullableProjection(
-                                                new ExactDecimalNullableProjection(
-                                                    new FieldDecimalNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserScoreColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableProjection(
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserAgeColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionDecimalNullable(
-                                "score_or_null",
-                                new ExactDecimalNullableProjection(
-                                    new ConditionalDecimalNullableProjection(
-                                        new CoalesceDecimalNullableProjection([
-                                            new DecimalNullableProjection(
-                                                new ExactDecimalNullableProjection(
-                                                    new FieldDecimalNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserScoreColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableProjection(
-                                                new ExactDecimalNullableProjection(
-                                                    new LiteralDecimalNullable()
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                new SelectItemProjection(
+                    "score_or_null",
+                    new CoalesceDecimalNullableProjection([
+                        new FieldDecimalNullable(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new UserScoreColumn().Name.TextValue
+                        ),
+                        new LiteralDecimalNullable(),
+                    ])
+                ),
+            ]
         );
 
     /// <summary>

@@ -5,12 +5,10 @@ using Pure.RelationalSchema.Samples.Schemas;
 using Pure.RelationalSchema.Samples.Tables;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.Parameters;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 
 namespace PureQL.CSharp.Model.Samples.Queries.GroupBy;
 
@@ -24,197 +22,87 @@ public sealed record HavingBooleanLogicQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            groupBy:
+            [
+                new GroupKey(
+                    "order_user_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new OrderUserIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyUuid(
-                                "order_user_id",
-                                new UuidRow(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderUserIdColumn().Name.TextValue
-                                    )
-                                )
+            ],
+            having: new OrGroup([
+                new AndGroup([
+                    new GreaterThanDecimalGroup(
+                        new SumDecimalGroup(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderTotalColumn().Name.TextValue
+                            )
+                        ),
+                        new LiteralInteger(250)
+                    ),
+                    new NotGroup(
+                        new AnyGroup(
+                            new EqualStringRow(
+                                new FieldString(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderStatusColumn().Name.TextValue
+                                ),
+                                new LiteralString("cancelled")
                             )
                         )
                     ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupUuid(
-                                "order_user_id",
-                                new UuidGroup(new KeyUuid("order_user_id"))
-                            )
+                ]),
+                new GreaterThanOrEqualDecimalGroup(
+                    new CountGroup(),
+                    new ParamInteger("min_orders")
+                ),
+            ]),
+            select:
+            [
+                new SelectItemGroup("order_user_id", new KeyUuid("order_user_id")),
+                new SelectItemGroup(
+                    "revenue",
+                    new SumDecimalGroup(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderTotalColumn().Name.TextValue
                         )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "revenue",
-                                new ExactDecimalGroup(
-                                    new AggregateDecimalGroup(
-                                        new SumDecimalGroup(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderTotalColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                where: null,
-                new BooleanGroup(
-                    new LogicalGroup(
-                        new OrGroup([
-                            new BooleanGroup(
-                                new LogicalGroup(
-                                    new AndGroup([
-                                        new BooleanGroup(
-                                            new ComparisonGroup(
-                                                new GreaterThanGroup(
-                                                    new GreaterThanDecimalGroup(
-                                                        new DecimalNullableGroup(
-                                                            new ExactDecimalGroup(
-                                                                new AggregateDecimalGroup(
-                                                                    new SumDecimalGroup(
-                                                                        new DecimalNullableRow(
-                                                                            new ExactDecimalRow(
-                                                                                new FieldDecimal(
-                                                                                    new JoinedString(
-                                                                                        new DotString(),
-                                                                                        [
-                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                            new OrdersTable().Name,
-                                                                                        ]
-                                                                                    ).TextValue,
-                                                                                    new OrderTotalColumn()
-                                                                                        .Name
-                                                                                        .TextValue
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableGroup(
-                                                            new IntegerGroup(
-                                                                new LiteralInteger(250)
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanGroup(
-                                            new LogicalGroup(
-                                                new NotGroup(
-                                                    new BooleanGroup(
-                                                        new AggregateBooleanGroup(
-                                                            new AnyGroup(
-                                                                new BooleanRow(
-                                                                    new ComparisonRow(
-                                                                        new EqualRow(
-                                                                            new EqualStringRow(
-                                                                                new StringNullableRow(
-                                                                                    new StringRow(
-                                                                                        new FieldString(
-                                                                                            new JoinedString(
-                                                                                                new DotString(),
-                                                                                                [
-                                                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                                                    new OrdersTable().Name,
-                                                                                                ]
-                                                                                            ).TextValue,
-                                                                                            new OrderStatusColumn()
-                                                                                                .Name
-                                                                                                .TextValue
-                                                                                        )
-                                                                                    )
-                                                                                ),
-                                                                                new StringNullableRow(
-                                                                                    new StringRow(
-                                                                                        new LiteralString(
-                                                                                            "cancelled"
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                    ])
-                                )
-                            ),
-                            new BooleanGroup(
-                                new ComparisonGroup(
-                                    new GreaterThanOrEqualGroup(
-                                        new GreaterThanOrEqualDecimalGroup(
-                                            new DecimalNullableGroup(
-                                                new IntegerGroup(
-                                                    new AggregateIntegerGroup(
-                                                        new CountGroup()
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableGroup(
-                                                new IntegerGroup(
-                                                    new ParamInteger("min_orders")
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                        ])
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]
         );
 }

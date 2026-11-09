@@ -20,7 +20,6 @@ using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
 using PureQL.CSharp.Model.Samples.Cells;
-using PureQL.CSharp.Model.SelectItems;
 using PureQL.CSharp.Model.TotalExpressions;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
@@ -41,230 +40,113 @@ public sealed record AggregatesOverAllRowsQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainTotalQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new OrdersTable().Name,
-                            ]
-                        ).TextValue
+        new MainTotalQuery(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            aggregate:
+            [
+                new SelectItemTotal("orders", new CountTotal()),
+                new SelectItemTotal(
+                    "revenue",
+                    new SumDecimalTotal(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderTotalColumn().Name.TextValue
+                        )
                     )
                 ),
-                [
-                    new SelectItemTotal(
-                        new SelectItemTotalNonNullable(
-                            new SelectItemTotalInteger(
-                                "orders",
-                                new IntegerTotal(
-                                    new AggregateIntegerTotal(new CountTotal())
-                                )
-                            )
+                new SelectItemTotal(
+                    "smallest",
+                    new MinDecimalNullableTotal(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderTotalColumn().Name.TextValue
                         )
-                    ),
-                    new SelectItemTotal(
-                        new SelectItemTotalNonNullable(
-                            new SelectItemTotalDecimal(
-                                "revenue",
-                                new ExactDecimalTotal(
-                                    new SumDecimalTotal(
-                                        new DecimalNullableRow(
-                                            new ExactDecimalRow(
-                                                new FieldDecimal(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new OrdersTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new OrderTotalColumn().Name.TextValue
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                    )
+                ),
+                new SelectItemTotal(
+                    "latest",
+                    new MaxDatetimeNullableTotal(
+                        new FieldDatetime(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new PlacedAtColumn().Name.TextValue
                         )
-                    ),
-                    new SelectItemTotal(
-                        new SelectItemTotalNullable(
-                            new SelectItemTotalDecimalNullable(
-                                "smallest",
-                                new ExactDecimalNullableTotal(
-                                    new AggregateDecimalNullableTotal(
-                                        new MinDecimalNullableTotal(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderTotalColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                    )
+                ),
+                new SelectItemTotal(
+                    "average",
+                    new AverageDecimalNullableTotal(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderTotalColumn().Name.TextValue
                         )
-                    ),
-                    new SelectItemTotal(
-                        new SelectItemTotalNullable(
-                            new SelectItemTotalDatetimeNullable(
-                                "latest",
-                                new ExactDatetimeNullableTotal(
-                                    new AggregateDatetimeNullableTotal(
-                                        new MaxDatetimeNullableTotal(
-                                            new DatetimeNullableRow(
-                                                new DatetimeRow(
-                                                    new FieldDatetime(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedAtColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                    )
+                ),
+                new SelectItemTotal(
+                    "any_cancelled",
+                    new AnyTotal(
+                        new EqualStringRow(
+                            new FieldString(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderStatusColumn().Name.TextValue
+                            ),
+                            new LiteralString("cancelled")
                         )
-                    ),
-                    new SelectItemTotal(
-                        new SelectItemTotalNullable(
-                            new SelectItemTotalDecimalNullable(
-                                "average",
-                                new ExactDecimalNullableTotal(
-                                    new AggregateDecimalNullableTotal(
-                                        new AverageDecimalNullableTotal(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalRow(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderTotalColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                    )
+                ),
+                new SelectItemTotal(
+                    "all_positive",
+                    new AllTotal(
+                        new GreaterThanDecimalRow(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderTotalColumn().Name.TextValue
+                            ),
+                            new LiteralInteger(0)
                         )
-                    ),
-                    new SelectItemTotal(
-                        new SelectItemTotalNonNullable(
-                            new SelectItemTotalBoolean(
-                                "any_cancelled",
-                                new BooleanTotal(
-                                    new AggregateBooleanTotal(
-                                        new AnyTotal(
-                                            new BooleanRow(
-                                                new ComparisonRow(
-                                                    new EqualRow(
-                                                        new EqualStringRow(
-                                                            new StringNullableRow(
-                                                                new StringRow(
-                                                                    new FieldString(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderStatusColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new StringNullableRow(
-                                                                new StringRow(
-                                                                    new LiteralString(
-                                                                        "cancelled"
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemTotal(
-                        new SelectItemTotalNonNullable(
-                            new SelectItemTotalBoolean(
-                                "all_positive",
-                                new BooleanTotal(
-                                    new AggregateBooleanTotal(
-                                        new AllTotal(
-                                            new BooleanRow(
-                                                new ComparisonRow(
-                                                    new GreaterThanRow(
-                                                        new GreaterThanDecimalRow(
-                                                            new DecimalNullableRow(
-                                                                new ExactDecimalRow(
-                                                                    new FieldDecimal(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderTotalColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableRow(
-                                                                new IntegerRow(
-                                                                    new LiteralInteger(0)
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                    )
+                ),
+            ]
         );
 
     /// <summary>

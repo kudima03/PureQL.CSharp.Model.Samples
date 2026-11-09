@@ -5,9 +5,7 @@ using Pure.RelationalSchema.Samples.Schemas;
 using Pure.RelationalSchema.Samples.Tables;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Lists;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Where;
 
@@ -19,124 +17,61 @@ public sealed record InListParameterAndNotInListLiteralQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            where: new AndRow([
+                new InStringRow(
+                    new FieldString(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
+                        ).TextValue,
+                        new OrderStatusColumn().Name.TextValue
                     ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new LogicalRow(
-                        new AndRow([
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new InRow(
-                                        new InStringRow(
-                                            new StringNullableRow(
-                                                new StringRow(
-                                                    new FieldString(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderStatusColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new ListString(
-                                                new ListParamString("statuses")
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new NotRow(
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new InRow(
-                                                    new InUuidRow(
-                                                        new UuidNullableRow(
-                                                            new UuidRow(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderUserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new ListUuid(
-                                                            new ListLiteralUuid([
-                                                                new Guid(
-                                                                    2,
-                                                                    0,
-                                                                    0,
-                                                                    new byte[8]
-                                                                ),
-                                                                new Guid(
-                                                                    4,
-                                                                    0,
-                                                                    0,
-                                                                    new byte[8]
-                                                                ),
-                                                            ])
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
+                    new ListParamString("statuses")
+                ),
+                new NotRow(
+                    new InUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderUserIdColumn().Name.TextValue
+                        ),
+                        new ListLiteralUuid([
+                            new Guid(2, 0, 0, new byte[8]),
+                            new Guid(4, 0, 0, new byte[8]),
                         ])
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
+                    )
+                ),
+            ]
         );
 }

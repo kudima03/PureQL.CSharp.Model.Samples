@@ -12,9 +12,6 @@ using Pure.RelationalSchema.Storage.Samples.Cells;
 using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
-using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Guid = Pure.Primitives.Guid.Guid;
 using Table = Pure.RelationalSchema.Table.Table;
 
@@ -28,44 +25,25 @@ public sealed record WhereBooleanFieldQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new UsersTable().Name,
-                            ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "user_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new FieldBoolean(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            where: new FieldBoolean(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue,
+                new UserActiveColumn().Name.TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "user_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
@@ -73,13 +51,10 @@ public sealed record WhereBooleanFieldQuery
                                 new UsersTable().Name,
                             ]
                         ).TextValue,
-                        new UserActiveColumn().Name.TextValue
+                        new UserIdColumn().Name.TextValue
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]
         );
 
     /// <summary>

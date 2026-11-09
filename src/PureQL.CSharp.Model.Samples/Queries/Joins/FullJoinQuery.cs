@@ -16,7 +16,6 @@ using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
@@ -33,102 +32,33 @@ public sealed record FullJoinQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [new AuditRelationalSchema().Name, new LoginsTable().Name]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNullable(
-                            new SelectItemProjectionUuidNullable(
-                                "user_id",
-                                new ExactUuidNullableProjection(
-                                    new ConditionalUuidNullableProjection(
-                                        new CoalesceUuidNullableProjection([
-                                            new UuidNullableProjection(
-                                                new ExactUuidNullableProjection(
-                                                    new FieldUuidNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new AuditRelationalSchema().Name,
-                                                                new LoginsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new LoginUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableProjection(
-                                                new ExactUuidNullableProjection(
-                                                    new FieldUuidNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new EmployeeUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "employee",
-                                new StringProjection(
-                                    new ConditionalStringProjection(
-                                        new CoalesceStringProjection([
-                                            new StringNullableProjection(
-                                                new ExactStringNullableProjection(
-                                                    new FieldStringNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new EmployeeNameColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new StringNullableProjection(
-                                                new StringProjection(
-                                                    new LiteralString("none")
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Full,
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new AuditRelationalSchema().Name, new LoginsTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Full,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new EmployeesTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [new AuditRelationalSchema().Name, new LoginsTable().Name]
+                            ).TextValue,
+                            new LoginUserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid(
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -136,54 +66,52 @@ public sealed record FullJoinQuery
                                     new EmployeesTable().Name,
                                 ]
                             ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new AuditRelationalSchema().Name,
-                                                                new LoginsTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new LoginUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new EmployeeUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                            new EmployeeUserIdColumn().Name.TextValue
                         )
-                    ),
-                ],
-                where: null,
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+                    )
+                ),
+            ],
+            select:
+            [
+                new SelectItemProjection(
+                    "user_id",
+                    new CoalesceUuidNullableProjection([
+                        new FieldUuidNullable(
+                            new JoinedString(
+                                new DotString(),
+                                [new AuditRelationalSchema().Name, new LoginsTable().Name]
+                            ).TextValue,
+                            new LoginUserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuidNullable(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new EmployeesTable().Name,
+                                ]
+                            ).TextValue,
+                            new EmployeeUserIdColumn().Name.TextValue
+                        ),
+                    ])
+                ),
+                new SelectItemProjection(
+                    "employee",
+                    new CoalesceStringProjection([
+                        new FieldStringNullable(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new EmployeesTable().Name,
+                                ]
+                            ).TextValue,
+                            new EmployeeNameColumn().Name.TextValue
+                        ),
+                        new LiteralString("none"),
+                    ])
+                ),
+            ]
         );
 
     /// <summary>

@@ -15,12 +15,10 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Lists;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -42,229 +40,36 @@ public sealed record OrderStageExcludingUserQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new OrdersTable().Name,
-                            ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyString(
-                                "stage",
-                                new StringRow(
-                                    new ConditionalStringRow(
-                                        new IfStringRow(
-                                            new BooleanRow(
-                                                new ComparisonRow(
-                                                    new EqualRow(
-                                                        new EqualStringRow(
-                                                            new StringNullableRow(
-                                                                new StringRow(
-                                                                    new FieldString(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderStatusColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new StringNullableRow(
-                                                                new StringRow(
-                                                                    new LiteralString(
-                                                                        "pending"
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new StringRow(new LiteralString("1. Placed")),
-                                            new StringRow(
-                                                new ConditionalStringRow(
-                                                    new IfStringRow(
-                                                        new BooleanRow(
-                                                            new ComparisonRow(
-                                                                new EqualRow(
-                                                                    new EqualStringRow(
-                                                                        new StringNullableRow(
-                                                                            new StringRow(
-                                                                                new FieldString(
-                                                                                    new JoinedString(
-                                                                                        new DotString(),
-                                                                                        [
-                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                            new OrdersTable().Name,
-                                                                                        ]
-                                                                                    ).TextValue,
-                                                                                    new OrderStatusColumn()
-                                                                                        .Name
-                                                                                        .TextValue
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new StringNullableRow(
-                                                                            new StringRow(
-                                                                                new LiteralString(
-                                                                                    "shipped"
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        ),
-                                                        new StringRow(
-                                                            new LiteralString(
-                                                                "2. Shipped"
-                                                            )
-                                                        ),
-                                                        new StringRow(
-                                                            new ConditionalStringRow(
-                                                                new IfStringRow(
-                                                                    new BooleanRow(
-                                                                        new ComparisonRow(
-                                                                            new EqualRow(
-                                                                                new EqualStringRow(
-                                                                                    new StringNullableRow(
-                                                                                        new StringRow(
-                                                                                            new FieldString(
-                                                                                                new JoinedString(
-                                                                                                    new DotString(),
-                                                                                                    [
-                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                        new OrdersTable().Name,
-                                                                                                    ]
-                                                                                                ).TextValue,
-                                                                                                new OrderStatusColumn()
-                                                                                                    .Name
-                                                                                                    .TextValue
-                                                                                            )
-                                                                                        )
-                                                                                    ),
-                                                                                    new StringNullableRow(
-                                                                                        new StringRow(
-                                                                                            new LiteralString(
-                                                                                                "cancelled"
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    ),
-                                                                    new StringRow(
-                                                                        new LiteralString(
-                                                                            "3. Cancelled"
-                                                                        )
-                                                                    ),
-                                                                    new StringRow(
-                                                                        new LiteralString(
-                                                                            "4. Refunded"
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupString(
-                                "stage",
-                                new StringGroup(new KeyString("stage"))
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupInteger(
-                                "orders",
-                                new IntegerGroup(
-                                    new AggregateIntegerGroup(new CountGroup())
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "avg_user_score",
-                                new ExactDecimalGroup(
-                                    new RoundDecimalGroup(
-                                        new DecimalGroup(
-                                            new ExactDecimalGroup(
-                                                new ConditionalDecimalGroup(
-                                                    new CoalesceDecimalGroup([
-                                                        new DecimalNullableGroup(
-                                                            new ExactDecimalNullableGroup(
-                                                                new AggregateDecimalNullableGroup(
-                                                                    new AverageDecimalNullableGroup(
-                                                                        new DecimalNullableRow(
-                                                                            new ExactDecimalNullableRow(
-                                                                                new FieldDecimalNullable(
-                                                                                    new JoinedString(
-                                                                                        new DotString(),
-                                                                                        [
-                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                            new UsersTable().Name,
-                                                                                        ]
-                                                                                    ).TextValue,
-                                                                                    new UserScoreColumn()
-                                                                                        .Name
-                                                                                        .TextValue
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableGroup(
-                                                            new ExactDecimalGroup(
-                                                                new LiteralDecimal(0m)
-                                                            )
-                                                        ),
-                                                    ])
-                                                )
-                                            )
-                                        ),
-                                        new IntegerGroup(new LiteralInteger(1))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Inner,
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Inner,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new UsersTable().Name,
+                        ]
+                    ).TextValue,
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderUserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid(
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -272,125 +77,121 @@ public sealed record OrderStageExcludingUserQuery
                                     new UsersTable().Name,
                                 ]
                             ).TextValue,
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserIdColumn().Name.TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                            new UserIdColumn().Name.TextValue
                         )
-                    ),
-                ],
-                new BooleanRow(
-                    new LogicalRow(
-                        new AndRow([
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new InRow(
-                                        new InStringRow(
-                                            new StringNullableRow(
-                                                new StringRow(
-                                                    new FieldString(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderStatusColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new ListString(
-                                                new ListLiteralString([
-                                                    "pending",
-                                                    "shipped",
-                                                    "cancelled",
-                                                    "refunded",
-                                                ])
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new NotEqualRow(
-                                        new NotEqualStringRow(
-                                            new StringNullableRow(
-                                                new StringRow(
-                                                    new FieldString(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserNameColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new StringNullableRow(
-                                                new StringRow(new LiteralString("Ann"))
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                        ])
                     )
                 ),
-                having: null,
-                [
-                    new OrderItemGroup(
-                        new ExprGroup(
-                            new StringNullableGroup(
-                                new StringGroup(new KeyString("stage"))
-                            )
-                        )
+            ],
+            where: new AndRow([
+                new InStringRow(
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderStatusColumn().Name.TextValue
                     ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                    new ListLiteralString(["pending", "shipped", "cancelled", "refunded"])
+                ),
+                new NotEqualStringRow(
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserNameColumn().Name.TextValue
+                    ),
+                    new LiteralString("Ann")
+                ),
+            ]),
+            groupBy:
+            [
+                new GroupKey(
+                    "stage",
+                    new IfStringRow(
+                        new LiteralString("1. Placed"),
+                        new IfStringRow(
+                            new LiteralString("2. Shipped"),
+                            new IfStringRow(
+                                new LiteralString("3. Cancelled"),
+                                new LiteralString("4. Refunded"),
+                                new EqualStringRow(
+                                    new FieldString(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new OrderStatusColumn().Name.TextValue
+                                    ),
+                                    new LiteralString("cancelled")
+                                )
+                            ),
+                            new EqualStringRow(
+                                new FieldString(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderStatusColumn().Name.TextValue
+                                ),
+                                new LiteralString("shipped")
+                            )
+                        ),
+                        new EqualStringRow(
+                            new FieldString(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderStatusColumn().Name.TextValue
+                            ),
+                            new LiteralString("pending")
+                        )
+                    )
+                ),
+            ],
+            select:
+            [
+                new SelectItemGroup("stage", new KeyString("stage")),
+                new SelectItemGroup("orders", new CountGroup()),
+                new SelectItemGroup(
+                    "avg_user_score",
+                    new RoundDecimalGroup(
+                        new CoalesceDecimalGroup([
+                            new AverageDecimalNullableGroup(
+                                new FieldDecimalNullable(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new UsersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new UserScoreColumn().Name.TextValue
+                                )
+                            ),
+                            new LiteralDecimal(0m),
+                        ]),
+                        new LiteralInteger(1)
+                    )
+                ),
+            ],
+            orderBy: [new OrderItemGroup(new KeyString("stage"))]
         );
 
     /// <summary>

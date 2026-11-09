@@ -14,9 +14,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
@@ -35,151 +33,85 @@ public sealed record FromSubqueryQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(new FromSubquery("recent_orders")),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "id",
-                                new UuidProjection(new FieldUuid("recent_orders", "id"))
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "total",
-                                new ExactDecimalProjection(
-                                    new FieldDecimal("recent_orders", "total")
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new Subquery(
-                        "recent_orders",
-                        new Query(
-                            new PlainQuery(
-                                new From(
-                                    new FromEntity(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue
-                                    )
-                                ),
+        new MainPlainQueryWithPagination(
+            subqueries:
+            [
+                new Subquery(
+                    "recent_orders",
+                    new PlainQueryWithoutPaginationWithoutOrderBy(
+                        from: new FromEntity(
+                            new JoinedString(
+                                new DotString(),
                                 [
-                                    new SelectItemProjection(
-                                        new SelectItemProjectionNonNullable(
-                                            new SelectItemProjectionUuid(
-                                                "id",
-                                                new UuidProjection(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderIdColumn().Name.TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemProjection(
-                                        new SelectItemProjectionNonNullable(
-                                            new SelectItemProjectionDecimal(
-                                                "total",
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderTotalColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                joins: null,
-                                new BooleanRow(
-                                    new ComparisonRow(
-                                        new GreaterThanOrEqualRow(
-                                            new GreaterThanOrEqualDatetimeRow(
-                                                new DatetimeNullableRow(
-                                                    new DatetimeRow(
-                                                        new FieldDatetime(
-                                                            new JoinedString(
-                                                                new DotString(),
-                                                                [
-                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                    new OrdersTable().Name,
-                                                                ]
-                                                            ).TextValue,
-                                                            new PlacedAtColumn()
-                                                                .Name
-                                                                .TextValue
-                                                        )
-                                                    )
-                                                ),
-                                                new DatetimeNullableRow(
-                                                    new DatetimeRow(
-                                                        new LiteralDatetime(
-                                                            new DateTimeOffset(
-                                                                2024,
-                                                                6,
-                                                                3,
-                                                                0,
-                                                                0,
-                                                                0,
-                                                                TimeSpan.Zero
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                ),
-                                orderBy: null,
-                                pagination: null,
-                                distinctBy: null
-                            )
-                        )
-                    ),
-                ],
-                joins: null,
-                where: null,
-                [
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new DecimalNullableProjection(
-                                new ExactDecimalProjection(
-                                    new FieldDecimal("recent_orders", "total")
-                                )
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue
+                        ),
+                        where: new GreaterThanOrEqualDatetimeRow(
+                            new FieldDatetime(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new PlacedAtColumn().Name.TextValue
+                            ),
+                            new LiteralDatetime(
+                                new DateTimeOffset(2024, 6, 3, 0, 0, 0, TimeSpan.Zero)
                             )
                         ),
-                        SortDirection.Desc
-                    ),
-                ],
-                new ModelPagination(0, 2),
-                distinctBy: null
-            )
+                        select:
+                        [
+                            new SelectItemProjection(
+                                "id",
+                                new FieldUuid(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderIdColumn().Name.TextValue
+                                )
+                            ),
+                            new SelectItemProjection(
+                                "total",
+                                new FieldDecimal(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderTotalColumn().Name.TextValue
+                                )
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            from: new FromSubquery("recent_orders"),
+            select:
+            [
+                new SelectItemProjection("id", new FieldUuid("recent_orders", "id")),
+                new SelectItemProjection(
+                    "total",
+                    new FieldDecimal("recent_orders", "total")
+                ),
+            ],
+            orderBy:
+            [
+                new OrderItemProjection(
+                    new FieldDecimal("recent_orders", "total"),
+                    SortDirection.Desc
+                ),
+            ],
+            pagination: new ModelPagination(0, 2)
         );
 
     /// <summary>

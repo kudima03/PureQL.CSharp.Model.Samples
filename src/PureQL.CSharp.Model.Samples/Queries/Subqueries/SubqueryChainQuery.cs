@@ -14,12 +14,9 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -38,293 +35,147 @@ public sealed record SubqueryChainQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new UsersTable().Name,
-                            ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "user_name",
-                                new StringProjection(
-                                    new FieldString(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserNameColumn().Name.TextValue
-                                    )
+        new MainPlainQueryWithoutPagination(
+            subqueries:
+            [
+                new Subquery(
+                    "user_totals",
+                    new GroupedQueryWithoutPaginationWithoutOrderBy(
+                        from: new FromEntity(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue
+                        ),
+                        where: new EqualStringRow(
+                            new FieldString(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderStatusColumn().Name.TextValue
+                            ),
+                            new LiteralString("shipped")
+                        ),
+                        groupBy:
+                        [
+                            new GroupKey(
+                                "user_id",
+                                new FieldUuid(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderUserIdColumn().Name.TextValue
                                 )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
+                            ),
+                        ],
+                        select:
+                        [
+                            new SelectItemGroup("user_id", new KeyUuid("user_id")),
+                            new SelectItemGroup(
                                 "total",
-                                new ExactDecimalProjection(
-                                    new FieldDecimal("big_spenders", "total")
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new Subquery(
-                        "user_totals",
-                        new Query(
-                            new GroupedQuery(
-                                new From(
-                                    new FromEntity(
+                                new SumDecimalGroup(
+                                    new FieldDecimal(
                                         new JoinedString(
                                             new DotString(),
                                             [
                                                 new RelationalSchemaWithForeignKeys().Name,
                                                 new OrdersTable().Name,
                                             ]
-                                        ).TextValue
-                                    )
-                                ),
-                                [
-                                    new GroupKey(
-                                        new GroupKeyNonNullable(
-                                            new GroupKeyUuid(
-                                                "user_id",
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                [
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupUuid(
-                                                "user_id",
-                                                new UuidGroup(new KeyUuid("user_id"))
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupDecimal(
-                                                "total",
-                                                new ExactDecimalGroup(
-                                                    new AggregateDecimalGroup(
-                                                        new SumDecimalGroup(
-                                                            new DecimalNullableRow(
-                                                                new ExactDecimalRow(
-                                                                    new FieldDecimal(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderTotalColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupInteger(
-                                                "orders",
-                                                new IntegerGroup(
-                                                    new AggregateIntegerGroup(
-                                                        new CountGroup()
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                joins: null,
-                                new BooleanRow(
-                                    new ComparisonRow(
-                                        new EqualRow(
-                                            new EqualStringRow(
-                                                new StringNullableRow(
-                                                    new StringRow(
-                                                        new FieldString(
-                                                            new JoinedString(
-                                                                new DotString(),
-                                                                [
-                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                    new OrdersTable().Name,
-                                                                ]
-                                                            ).TextValue,
-                                                            new OrderStatusColumn()
-                                                                .Name
-                                                                .TextValue
-                                                        )
-                                                    )
-                                                ),
-                                                new StringNullableRow(
-                                                    new StringRow(
-                                                        new LiteralString("shipped")
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                ),
-                                having: null,
-                                orderBy: null,
-                                pagination: null,
-                                distinctBy: null
-                            )
-                        )
-                    ),
-                    new Subquery(
-                        "big_spenders",
-                        new Query(
-                            new PlainQuery(
-                                new From(new FromSubquery("user_totals")),
-                                [
-                                    new SelectItemProjection(
-                                        new SelectItemProjectionNonNullable(
-                                            new SelectItemProjectionUuid(
-                                                "user_id",
-                                                new UuidProjection(
-                                                    new FieldUuid(
-                                                        "user_totals",
-                                                        "user_id"
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemProjection(
-                                        new SelectItemProjectionNonNullable(
-                                            new SelectItemProjectionDecimal(
-                                                "total",
-                                                new ExactDecimalProjection(
-                                                    new FieldDecimal(
-                                                        "user_totals",
-                                                        "total"
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                joins: null,
-                                new BooleanRow(
-                                    new ComparisonRow(
-                                        new GreaterThanRow(
-                                            new GreaterThanDecimalRow(
-                                                new DecimalNullableRow(
-                                                    new ExactDecimalRow(
-                                                        new FieldDecimal(
-                                                            "user_totals",
-                                                            "total"
-                                                        )
-                                                    )
-                                                ),
-                                                new DecimalNullableRow(
-                                                    new IntegerRow(
-                                                        new LiteralInteger(150)
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                ),
-                                orderBy: null,
-                                pagination: null,
-                                distinctBy: null
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new Join(
-                        new JoinSubquery(
-                            JoinKind.Inner,
-                            "big_spenders",
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserIdColumn().Name.TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        "big_spenders",
-                                                        "user_id"
-                                                    )
-                                                )
-                                            )
-                                        )
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
-                            )
-                        )
-                    ),
-                ],
-                where: null,
-                [
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new DecimalNullableProjection(
-                                new ExactDecimalProjection(
-                                    new FieldDecimal("big_spenders", "total")
-                                )
-                            )
+                            ),
+                            new SelectItemGroup("orders", new CountGroup()),
+                        ]
+                    )
+                ),
+                new Subquery(
+                    "big_spenders",
+                    new PlainQueryWithoutPaginationWithoutOrderBy(
+                        from: new FromSubquery("user_totals"),
+                        where: new GreaterThanDecimalRow(
+                            new FieldDecimal("user_totals", "total"),
+                            new LiteralInteger(150)
                         ),
-                        SortDirection.Desc
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                        select:
+                        [
+                            new SelectItemProjection(
+                                "user_id",
+                                new FieldUuid("user_totals", "user_id")
+                            ),
+                            new SelectItemProjection(
+                                "total",
+                                new FieldDecimal("user_totals", "total")
+                            ),
+                        ]
+                    )
+                ),
+            ],
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinSubquery(
+                    JoinKind.Inner,
+                    "big_spenders",
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new UserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid("big_spenders", "user_id")
+                    )
+                ),
+            ],
+            select:
+            [
+                new SelectItemProjection(
+                    "user_name",
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserNameColumn().Name.TextValue
+                    )
+                ),
+                new SelectItemProjection(
+                    "total",
+                    new FieldDecimal("big_spenders", "total")
+                ),
+            ],
+            orderBy:
+            [
+                new OrderItemProjection(
+                    new FieldDecimal("big_spenders", "total"),
+                    SortDirection.Desc
+                ),
+            ]
         );
 
     /// <summary>

@@ -12,8 +12,6 @@ using Pure.RelationalSchema.Storage.Samples.Cells;
 using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
-using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
 
@@ -26,47 +24,30 @@ public sealed record DistinctOrderStatusQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_status",
+                    new FieldString(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new OrderStatusColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "order_status",
-                                new StringProjection(
-                                    new FieldString(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderStatusColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                where: null,
-                orderBy: null,
-                pagination: null,
-                distinctBy: ["order_status"]
-            )
+            ],
+            distinctBy: ["order_status"]
         );
 
     /// <summary>

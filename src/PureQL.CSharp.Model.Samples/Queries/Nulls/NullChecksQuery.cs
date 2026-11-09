@@ -13,9 +13,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
@@ -30,129 +28,70 @@ public sealed record NullChecksQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            where: new AndRow([
+                new EqualDecimalRow(
+                    new FieldDecimalNullable(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new UsersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new UserScoreColumn().Name.TextValue
+                    ),
+                    new LiteralDecimalNullable()
+                ),
+                new NotEqualStringRow(
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserNameColumn().Name.TextValue
+                    ),
+                    new LiteralStringNullable()
+                ),
+            ]),
+            select:
+            [
+                new SelectItemProjection(
+                    "user_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "user_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "user_name",
-                                new StringProjection(
-                                    new FieldString(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new LogicalRow(
-                        new AndRow([
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualDecimalRow(
-                                            new DecimalNullableRow(
-                                                new ExactDecimalNullableRow(
-                                                    new FieldDecimalNullable(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserScoreColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableRow(
-                                                new ExactDecimalNullableRow(
-                                                    new LiteralDecimalNullable()
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new NotEqualRow(
-                                        new NotEqualStringRow(
-                                            new StringNullableRow(
-                                                new StringRow(
-                                                    new FieldString(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new UserNameColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new StringNullableRow(
-                                                new ExactStringNullableRow(
-                                                    new LiteralStringNullable()
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                        ])
+                new SelectItemProjection(
+                    "user_name",
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserNameColumn().Name.TextValue
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]
         );
 
     /// <summary>

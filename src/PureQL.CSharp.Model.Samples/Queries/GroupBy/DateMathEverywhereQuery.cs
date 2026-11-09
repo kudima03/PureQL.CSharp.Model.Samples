@@ -15,11 +15,9 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
@@ -37,179 +35,96 @@ public sealed record DateMathEverywhereQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            where: new LessThanOrEqualDecimalRow(
+                new DateDiffDaysIntegerRow(
+                    new FieldDate(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new PlacedOnColumn().Name.TextValue
+                    ),
+                    new LiteralDate(new DateOnly(2024, 6, 1))
+                ),
+                new LiteralInteger(4)
+            ),
+            groupBy:
+            [
+                new GroupKey(
+                    "order_user_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderUserIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyUuid(
-                                "order_user_id",
-                                new UuidRow(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderUserIdColumn().Name.TextValue
-                                    )
-                                )
+            ],
+            having: new GreaterThanOrEqualDateGroup(
+                new MaxDateGroup(
+                    new FieldDate(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new PlacedOnColumn().Name.TextValue
+                    )
+                ),
+                new DateAddDaysDateGroup(
+                    new LiteralDate(new DateOnly(2024, 6, 30)),
+                    new LiteralInteger(-27)
+                )
+            ),
+            select:
+            [
+                new SelectItemGroup("order_user_id", new KeyUuid("order_user_id")),
+                new SelectItemGroup(
+                    "active_span_days",
+                    new DateDiffDaysIntegerGroup(
+                        new MaxDateGroup(
+                            new FieldDate(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new PlacedOnColumn().Name.TextValue
                             )
-                        )
-                    ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupUuid(
-                                "order_user_id",
-                                new UuidGroup(new KeyUuid("order_user_id"))
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupInteger(
-                                "active_span_days",
-                                new IntegerGroup(
-                                    new DateDiffDaysIntegerGroup(
-                                        new DateGroup(
-                                            new AggregateDateGroup(
-                                                new MaxDateGroup(
-                                                    new DateRow(
-                                                        new FieldDate(
-                                                            new JoinedString(
-                                                                new DotString(),
-                                                                [
-                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                    new OrdersTable().Name,
-                                                                ]
-                                                            ).TextValue,
-                                                            new PlacedOnColumn()
-                                                                .Name
-                                                                .TextValue
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new DateGroup(
-                                            new AggregateDateGroup(
-                                                new MinDateGroup(
-                                                    new DateRow(
-                                                        new FieldDate(
-                                                            new JoinedString(
-                                                                new DotString(),
-                                                                [
-                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                    new OrdersTable().Name,
-                                                                ]
-                                                            ).TextValue,
-                                                            new PlacedOnColumn()
-                                                                .Name
-                                                                .TextValue
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new ComparisonRow(
-                        new LessThanOrEqualRow(
-                            new LessThanOrEqualDecimalRow(
-                                new DecimalNullableRow(
-                                    new IntegerRow(
-                                        new DateDiffDaysIntegerRow(
-                                            new DateRow(
-                                                new FieldDate(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new OrdersTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new PlacedOnColumn().Name.TextValue
-                                                )
-                                            ),
-                                            new DateRow(
-                                                new LiteralDate(new DateOnly(2024, 6, 1))
-                                            )
-                                        )
-                                    )
-                                ),
-                                new DecimalNullableRow(
-                                    new IntegerRow(new LiteralInteger(4))
-                                )
+                        ),
+                        new MinDateGroup(
+                            new FieldDate(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new PlacedOnColumn().Name.TextValue
                             )
                         )
                     )
                 ),
-                new BooleanGroup(
-                    new ComparisonGroup(
-                        new GreaterThanOrEqualGroup(
-                            new GreaterThanOrEqualDateGroup(
-                                new DateNullableGroup(
-                                    new DateGroup(
-                                        new AggregateDateGroup(
-                                            new MaxDateGroup(
-                                                new DateRow(
-                                                    new FieldDate(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new PlacedOnColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                ),
-                                new DateNullableGroup(
-                                    new DateGroup(
-                                        new DateAddDaysDateGroup(
-                                            new DateGroup(
-                                                new LiteralDate(new DateOnly(2024, 6, 30))
-                                            ),
-                                            new IntegerGroup(new LiteralInteger(-27))
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
-                ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]
         );
 
     /// <summary>

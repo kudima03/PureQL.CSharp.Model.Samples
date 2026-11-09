@@ -12,8 +12,6 @@ using Pure.RelationalSchema.Storage.Samples.Cells;
 using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
-using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
@@ -28,122 +26,82 @@ public sealed record OrderByMultipleKeysQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "user_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new UsersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new UserIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "user_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
+                new SelectItemProjection(
+                    "user_name",
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserNameColumn().Name.TextValue
+                    )
+                ),
+            ],
+            orderBy:
+            [
+                new OrderItemProjection(
+                    new FieldDecimal(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserAgeColumn().Name.TextValue
+                    )
+                ),
+                new OrderItemProjection(
+                    new FieldDatetime(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new LastLoginColumn().Name.TextValue
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "user_name",
-                                new StringProjection(
-                                    new FieldString(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                where: null,
-                [
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new DecimalNullableProjection(
-                                new ExactDecimalProjection(
-                                    new FieldDecimal(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserAgeColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new DatetimeNullableProjection(
-                                new DatetimeProjection(
-                                    new FieldDatetime(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new LastLoginColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        ),
-                        SortDirection.Desc
-                    ),
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new UuidNullableProjection(
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                    SortDirection.Desc
+                ),
+                new OrderItemProjection(
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserIdColumn().Name.TextValue
+                    )
+                ),
+            ]
         );
 
     /// <summary>

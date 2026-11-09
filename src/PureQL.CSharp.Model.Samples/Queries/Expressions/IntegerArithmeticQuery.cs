@@ -16,7 +16,6 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
@@ -33,150 +32,87 @@ public sealed record IntegerArithmeticQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [
+                        new RelationalSchemaWithForeignKeys().Name,
+                        new OrderItemsTable().Name,
+                    ]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "item_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrderItemsTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new ItemIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "item_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrderItemsTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new ItemIdColumn().Name.TextValue
-                                    )
-                                )
+                new SelectItemProjection(
+                    "double_quantity",
+                    new MultiplyIntegerProjection([
+                        new RoundIntegerProjection(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrderItemsTable().Name,
+                                    ]
+                                ).TextValue,
+                                new ItemQtyColumn().Name.TextValue
                             )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "double_quantity",
-                                new IntegerProjection(
-                                    new ArithmeticIntegerProjection(
-                                        new MultiplyIntegerProjection([
-                                            new IntegerProjection(
-                                                new RoundingIntegerProjection(
-                                                    new RoundIntegerProjection(
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrderItemsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ItemQtyColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerProjection(new LiteralInteger(2)),
-                                        ])
-                                    )
-                                )
+                        ),
+                        new LiteralInteger(2),
+                    ])
+                ),
+                new SelectItemProjection(
+                    "one_less",
+                    new SubtractIntegerProjection([
+                        new RoundIntegerProjection(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrderItemsTable().Name,
+                                    ]
+                                ).TextValue,
+                                new ItemQtyColumn().Name.TextValue
                             )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "one_less",
-                                new IntegerProjection(
-                                    new ArithmeticIntegerProjection(
-                                        new SubtractIntegerProjection([
-                                            new IntegerProjection(
-                                                new RoundingIntegerProjection(
-                                                    new RoundIntegerProjection(
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrderItemsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ItemQtyColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerProjection(new LiteralInteger(1)),
-                                        ])
-                                    )
-                                )
+                        ),
+                        new LiteralInteger(1),
+                    ])
+                ),
+                new SelectItemProjection(
+                    "with_bonus",
+                    new AddIntegerProjection([
+                        new RoundIntegerProjection(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrderItemsTable().Name,
+                                    ]
+                                ).TextValue,
+                                new ItemQtyColumn().Name.TextValue
                             )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionInteger(
-                                "with_bonus",
-                                new IntegerProjection(
-                                    new ArithmeticIntegerProjection(
-                                        new AddIntegerProjection([
-                                            new IntegerProjection(
-                                                new RoundingIntegerProjection(
-                                                    new RoundIntegerProjection(
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrderItemsTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new ItemQtyColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerProjection(new LiteralInteger(1)),
-                                            new IntegerProjection(new LiteralInteger(10)),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                        ),
+                        new LiteralInteger(1),
+                        new LiteralInteger(10),
+                    ])
+                ),
+            ]
         );
 
     /// <summary>

@@ -13,9 +13,7 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
@@ -31,203 +29,100 @@ public sealed record WhereNestedAndOrQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            where: new OrRow([
+                new AndRow([
+                    new EqualStringRow(
+                        new FieldString(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderStatusColumn().Name.TextValue
+                        ),
+                        new LiteralString("shipped")
+                    ),
+                    new GreaterThanDecimalRow(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderTotalColumn().Name.TextValue
+                        ),
+                        new LiteralInteger(100)
+                    ),
+                ]),
+                new AndRow([
+                    new EqualStringRow(
+                        new FieldString(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderStatusColumn().Name.TextValue
+                        ),
+                        new LiteralString("pending")
+                    ),
+                    new LessThanDecimalRow(
+                        new FieldDecimal(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new OrderTotalColumn().Name.TextValue
+                        ),
+                        new LiteralInteger(60)
+                    ),
+                ]),
+            ]),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "order_status",
-                                new StringProjection(
-                                    new FieldString(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderStatusColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new LogicalRow(
-                        new OrRow([
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new AndRow([
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new EqualRow(
-                                                    new EqualStringRow(
-                                                        new StringNullableRow(
-                                                            new StringRow(
-                                                                new FieldString(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderStatusColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new StringNullableRow(
-                                                            new StringRow(
-                                                                new LiteralString(
-                                                                    "shipped"
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new GreaterThanRow(
-                                                    new GreaterThanDecimalRow(
-                                                        new DecimalNullableRow(
-                                                            new ExactDecimalRow(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableRow(
-                                                            new IntegerRow(
-                                                                new LiteralInteger(100)
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                    ])
-                                )
-                            ),
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new AndRow([
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new EqualRow(
-                                                    new EqualStringRow(
-                                                        new StringNullableRow(
-                                                            new StringRow(
-                                                                new FieldString(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderStatusColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new StringNullableRow(
-                                                            new StringRow(
-                                                                new LiteralString(
-                                                                    "pending"
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new LessThanRow(
-                                                    new LessThanDecimalRow(
-                                                        new DecimalNullableRow(
-                                                            new ExactDecimalRow(
-                                                                new FieldDecimal(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderTotalColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalNullableRow(
-                                                            new IntegerRow(
-                                                                new LiteralInteger(60)
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                    ])
-                                )
-                            ),
-                        ])
+                new SelectItemProjection(
+                    "order_status",
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderStatusColumn().Name.TextValue
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+            ]
         );
 
     /// <summary>

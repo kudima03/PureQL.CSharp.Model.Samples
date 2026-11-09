@@ -16,13 +16,11 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Lists;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -48,293 +46,137 @@ public sealed record ItemRevenueToOrderTotalPerEmployeeQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new EmployeesTable().Name,
-                            ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "employee_name",
-                                new StringProjection(
-                                    new FieldString(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new EmployeesTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new EmployeeNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionTime(
-                                "employee_shift_start",
-                                new TimeProjection(
-                                    new FieldTime(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new EmployeesTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new EmployeeShiftStartColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "ordered",
-                                new ExactDecimalProjection(
-                                    new RoundDecimalProjection(
-                                        new DecimalProjection(
-                                            new ExactDecimalProjection(
-                                                new FieldDecimal(
-                                                    "ordered_by_user",
-                                                    "ordered"
-                                                )
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(0))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "item_revenue",
-                                new ExactDecimalProjection(
-                                    new RoundDecimalProjection(
-                                        new DecimalProjection(
-                                            new ExactDecimalProjection(
-                                                new FieldDecimal(
-                                                    "item_revenue_by_user",
-                                                    "item_revenue"
-                                                )
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(0))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "item_revenue_per_ordered",
-                                new ExactDecimalProjection(
-                                    new RoundDecimalProjection(
-                                        new DecimalProjection(
-                                            new ExactDecimalProjection(
-                                                new ArithmeticDecimalProjection(
-                                                    new DivideDecimalProjection([
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    "item_revenue_by_user",
-                                                                    "item_revenue"
-                                                                )
-                                                            )
-                                                        ),
-                                                        new DecimalProjection(
-                                                            new ExactDecimalProjection(
-                                                                new FieldDecimal(
-                                                                    "ordered_by_user",
-                                                                    "ordered"
-                                                                )
-                                                            )
-                                                        ),
-                                                    ])
-                                                )
-                                            )
-                                        ),
-                                        new IntegerProjection(new LiteralInteger(2))
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new Subquery(
-                        "item_revenue_by_user",
-                        new Query(
-                            new GroupedQuery(
-                                new From(
-                                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            subqueries:
+            [
+                new Subquery(
+                    "item_revenue_by_user",
+                    new GroupedQueryWithoutPaginationWithoutOrderBy(
+                        from: new FromEntity(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrderItemsTable().Name,
+                                ]
+                            ).TextValue
+                        ),
+                        joins:
+                        [
+                            new JoinEntity(
+                                JoinKind.Inner,
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new EqualUuidRow(
+                                    new FieldUuid(
                                         new JoinedString(
                                             new DotString(),
                                             [
                                                 new RelationalSchemaWithForeignKeys().Name,
                                                 new OrderItemsTable().Name,
                                             ]
-                                        ).TextValue
+                                        ).TextValue,
+                                        new ItemOrderIdColumn().Name.TextValue
+                                    ),
+                                    new FieldUuid(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new OrderIdColumn().Name.TextValue
                                     )
+                                )
+                            ),
+                            new JoinEntity(
+                                JoinKind.Inner,
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new ProductsTable().Name,
+                                    ]
+                                ).TextValue,
+                                new EqualUuidRow(
+                                    new FieldUuid(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrderItemsTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new ItemProductIdColumn().Name.TextValue
+                                    ),
+                                    new FieldUuid(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new ProductsTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new ProductIdColumn().Name.TextValue
+                                    )
+                                )
+                            ),
+                        ],
+                        where: new NotRow(
+                            new InStringRow(
+                                new FieldString(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderStatusColumn().Name.TextValue
                                 ),
-                                [
-                                    new GroupKey(
-                                        new GroupKeyNonNullable(
-                                            new GroupKeyUuid(
-                                                "user_id",
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                [
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupUuid(
-                                                "user_id",
-                                                new UuidGroup(new KeyUuid("user_id"))
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupDecimal(
-                                                "item_revenue",
-                                                new ExactDecimalGroup(
-                                                    new AggregateDecimalGroup(
-                                                        new SumDecimalGroup(
-                                                            new DecimalNullableRow(
-                                                                new ExactDecimalRow(
-                                                                    new ArithmeticDecimalRow(
-                                                                        new MultiplyDecimalRow([
-                                                                            new DecimalRow(
-                                                                                new ExactDecimalRow(
-                                                                                    new FieldDecimal(
-                                                                                        new JoinedString(
-                                                                                            new DotString(),
-                                                                                            [
-                                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                                new OrderItemsTable().Name,
-                                                                                            ]
-                                                                                        ).TextValue,
-                                                                                        new ItemQtyColumn()
-                                                                                            .Name
-                                                                                            .TextValue
-                                                                                    )
-                                                                                )
-                                                                            ),
-                                                                            new DecimalRow(
-                                                                                new ExactDecimalRow(
-                                                                                    new FieldDecimal(
-                                                                                        new JoinedString(
-                                                                                            new DotString(),
-                                                                                            [
-                                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                                new ProductsTable().Name,
-                                                                                            ]
-                                                                                        ).TextValue,
-                                                                                        new ProductPriceColumn()
-                                                                                            .Name
-                                                                                            .TextValue
-                                                                                    )
-                                                                                )
-                                                                            ),
-                                                                        ])
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                [
-                                    new Join(
-                                        new JoinEntity(
-                                            JoinKind.Inner,
+                                new ListLiteralString(["cancelled", "refunded"])
+                            )
+                        ),
+                        groupBy:
+                        [
+                            new GroupKey(
+                                "user_id",
+                                new FieldUuid(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderUserIdColumn().Name.TextValue
+                                )
+                            ),
+                        ],
+                        select:
+                        [
+                            new SelectItemGroup("user_id", new KeyUuid("user_id")),
+                            new SelectItemGroup(
+                                "item_revenue",
+                                new SumDecimalGroup(
+                                    new MultiplyDecimalRow([
+                                        new FieldDecimal(
                                             new JoinedString(
                                                 new DotString(),
                                                 [
                                                     new RelationalSchemaWithForeignKeys().Name,
-                                                    new OrdersTable().Name,
+                                                    new OrderItemsTable().Name,
                                                 ]
                                             ).TextValue,
-                                            new BooleanRow(
-                                                new ComparisonRow(
-                                                    new EqualRow(
-                                                        new EqualUuidRow(
-                                                            new UuidNullableRow(
-                                                                new UuidRow(
-                                                                    new FieldUuid(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrderItemsTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new ItemOrderIdColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new UuidNullableRow(
-                                                                new UuidRow(
-                                                                    new FieldUuid(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderIdColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                    new Join(
-                                        new JoinEntity(
-                                            JoinKind.Inner,
+                                            new ItemQtyColumn().Name.TextValue
+                                        ),
+                                        new FieldDecimal(
                                             new JoinedString(
                                                 new DotString(),
                                                 [
@@ -342,300 +184,183 @@ public sealed record ItemRevenueToOrderTotalPerEmployeeQuery
                                                     new ProductsTable().Name,
                                                 ]
                                             ).TextValue,
-                                            new BooleanRow(
-                                                new ComparisonRow(
-                                                    new EqualRow(
-                                                        new EqualUuidRow(
-                                                            new UuidNullableRow(
-                                                                new UuidRow(
-                                                                    new FieldUuid(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrderItemsTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new ItemProductIdColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new UuidNullableRow(
-                                                                new UuidRow(
-                                                                    new FieldUuid(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new ProductsTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new ProductIdColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                new BooleanRow(
-                                    new LogicalRow(
-                                        new NotRow(
-                                            new BooleanRow(
-                                                new ComparisonRow(
-                                                    new InRow(
-                                                        new InStringRow(
-                                                            new StringNullableRow(
-                                                                new StringRow(
-                                                                    new FieldString(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderStatusColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new ListString(
-                                                                new ListLiteralString([
-                                                                    "cancelled",
-                                                                    "refunded",
-                                                                ])
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                ),
-                                having: null,
-                                orderBy: null,
-                                pagination: null,
-                                distinctBy: null
-                            )
-                        )
-                    ),
-                    new Subquery(
-                        "ordered_by_user",
-                        new Query(
-                            new GroupedQuery(
-                                new From(
-                                    new FromEntity(
+                                            new ProductPriceColumn().Name.TextValue
+                                        ),
+                                    ])
+                                )
+                            ),
+                        ]
+                    )
+                ),
+                new Subquery(
+                    "ordered_by_user",
+                    new GroupedQueryWithoutPaginationWithoutOrderBy(
+                        from: new FromEntity(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue
+                        ),
+                        groupBy:
+                        [
+                            new GroupKey(
+                                "user_id",
+                                new FieldUuid(
+                                    new JoinedString(
+                                        new DotString(),
+                                        [
+                                            new RelationalSchemaWithForeignKeys().Name,
+                                            new OrdersTable().Name,
+                                        ]
+                                    ).TextValue,
+                                    new OrderUserIdColumn().Name.TextValue
+                                )
+                            ),
+                        ],
+                        select:
+                        [
+                            new SelectItemGroup("user_id", new KeyUuid("user_id")),
+                            new SelectItemGroup(
+                                "ordered",
+                                new SumDecimalGroup(
+                                    new FieldDecimal(
                                         new JoinedString(
                                             new DotString(),
                                             [
                                                 new RelationalSchemaWithForeignKeys().Name,
                                                 new OrdersTable().Name,
                                             ]
-                                        ).TextValue
-                                    )
-                                ),
-                                [
-                                    new GroupKey(
-                                        new GroupKeyNonNullable(
-                                            new GroupKeyUuid(
-                                                "user_id",
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new OrdersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new OrderUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                [
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupUuid(
-                                                "user_id",
-                                                new UuidGroup(new KeyUuid("user_id"))
-                                            )
-                                        )
-                                    ),
-                                    new SelectItemGroup(
-                                        new SelectItemGroupNonNullable(
-                                            new SelectItemGroupDecimal(
-                                                "ordered",
-                                                new ExactDecimalGroup(
-                                                    new AggregateDecimalGroup(
-                                                        new SumDecimalGroup(
-                                                            new DecimalNullableRow(
-                                                                new ExactDecimalRow(
-                                                                    new FieldDecimal(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderTotalColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    ),
-                                ],
-                                joins: null,
-                                where: null,
-                                having: null,
-                                orderBy: null,
-                                pagination: null,
-                                distinctBy: null
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new Join(
-                        new JoinSubquery(
-                            JoinKind.Inner,
-                            "item_revenue_by_user",
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new EmployeeUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        "item_revenue_by_user",
-                                                        "user_id"
-                                                    )
-                                                )
-                                            )
-                                        )
+                                        ).TextValue,
+                                        new OrderTotalColumn().Name.TextValue
                                     )
                                 )
-                            )
-                        )
-                    ),
-                    new Join(
-                        new JoinSubquery(
-                            JoinKind.Inner,
-                            "ordered_by_user",
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new EqualRow(
-                                        new EqualUuidRow(
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new EmployeesTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new EmployeeUserIdColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new UuidNullableRow(
-                                                new UuidRow(
-                                                    new FieldUuid(
-                                                        "ordered_by_user",
-                                                        "user_id"
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                new BooleanRow(
-                    new ComparisonRow(
-                        new InRow(
-                            new InStringRow(
-                                new StringNullableRow(
-                                    new StringRow(
-                                        new FieldString(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new EmployeesTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new EmployeeNameColumn().Name.TextValue
-                                        )
-                                    )
-                                ),
-                                new ListString(
-                                    new ListLiteralString(["Hank", "Iris", "Jack"])
-                                )
-                            )
-                        )
+                            ),
+                        ]
                     )
                 ),
-                [
-                    new OrderItemProjection(
-                        new ExprProjection(
-                            new DecimalNullableProjection(
-                                new ExactDecimalProjection(
-                                    new FieldDecimal(
-                                        "item_revenue_by_user",
-                                        "item_revenue"
-                                    )
-                                )
-                            )
+            ],
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [
+                        new RelationalSchemaWithForeignKeys().Name,
+                        new EmployeesTable().Name,
+                    ]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinSubquery(
+                    JoinKind.Inner,
+                    "item_revenue_by_user",
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new EmployeesTable().Name,
+                                ]
+                            ).TextValue,
+                            new EmployeeUserIdColumn().Name.TextValue
                         ),
-                        SortDirection.Desc
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                        new FieldUuid("item_revenue_by_user", "user_id")
+                    )
+                ),
+                new JoinSubquery(
+                    JoinKind.Inner,
+                    "ordered_by_user",
+                    new EqualUuidRow(
+                        new FieldUuid(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new EmployeesTable().Name,
+                                ]
+                            ).TextValue,
+                            new EmployeeUserIdColumn().Name.TextValue
+                        ),
+                        new FieldUuid("ordered_by_user", "user_id")
+                    )
+                ),
+            ],
+            where: new InStringRow(
+                new FieldString(
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new EmployeesTable().Name,
+                        ]
+                    ).TextValue,
+                    new EmployeeNameColumn().Name.TextValue
+                ),
+                new ListLiteralString(["Hank", "Iris", "Jack"])
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "employee_name",
+                    new FieldString(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new EmployeesTable().Name,
+                            ]
+                        ).TextValue,
+                        new EmployeeNameColumn().Name.TextValue
+                    )
+                ),
+                new SelectItemProjection(
+                    "employee_shift_start",
+                    new FieldTime(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new EmployeesTable().Name,
+                            ]
+                        ).TextValue,
+                        new EmployeeShiftStartColumn().Name.TextValue
+                    )
+                ),
+                new SelectItemProjection(
+                    "ordered",
+                    new RoundDecimalProjection(
+                        new FieldDecimal("ordered_by_user", "ordered"),
+                        new LiteralInteger(0)
+                    )
+                ),
+                new SelectItemProjection(
+                    "item_revenue",
+                    new RoundDecimalProjection(
+                        new FieldDecimal("item_revenue_by_user", "item_revenue"),
+                        new LiteralInteger(0)
+                    )
+                ),
+                new SelectItemProjection(
+                    "item_revenue_per_ordered",
+                    new RoundDecimalProjection(
+                        new DivideDecimalProjection([
+                            new FieldDecimal("item_revenue_by_user", "item_revenue"),
+                            new FieldDecimal("ordered_by_user", "ordered"),
+                        ]),
+                        new LiteralInteger(2)
+                    )
+                ),
+            ],
+            orderBy:
+            [
+                new OrderItemProjection(
+                    new FieldDecimal("item_revenue_by_user", "item_revenue"),
+                    SortDirection.Desc
+                ),
+            ]
         );
 
     /// <summary>

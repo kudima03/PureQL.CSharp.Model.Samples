@@ -15,7 +15,6 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
@@ -33,171 +32,81 @@ public sealed record IfColumnQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
+                new SelectItemProjection(
+                    "size",
+                    new IfStringProjection(
+                        new LiteralString("large"),
+                        new LiteralString("small"),
+                        new GreaterThanDecimalProjection(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderTotalColumn().Name.TextValue
+                            ),
+                            new LiteralInteger(100)
                         )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "size",
-                                new StringProjection(
-                                    new ConditionalStringProjection(
-                                        new IfStringProjection(
-                                            new BooleanProjection(
-                                                new ComparisonProjection(
-                                                    new GreaterThanProjection(
-                                                        new GreaterThanDecimalProjection(
-                                                            new DecimalNullableProjection(
-                                                                new ExactDecimalProjection(
-                                                                    new FieldDecimal(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderTotalColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableProjection(
-                                                                new IntegerProjection(
-                                                                    new LiteralInteger(
-                                                                        100
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new StringProjection(
-                                                new LiteralString("large")
-                                            ),
-                                            new StringProjection(
-                                                new LiteralString("small")
-                                            )
-                                        )
-                                    )
-                                )
-                            )
+                    )
+                ),
+                new SelectItemProjection(
+                    "discount",
+                    new IfDecimalProjection(
+                        new MultiplyDecimalProjection([
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderTotalColumn().Name.TextValue
+                            ),
+                            new LiteralDecimal(0.1m),
+                        ]),
+                        new LiteralInteger(0),
+                        new EqualStringProjection(
+                            new FieldString(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderStatusColumn().Name.TextValue
+                            ),
+                            new LiteralString("shipped")
                         )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "discount",
-                                new ExactDecimalProjection(
-                                    new ConditionalDecimalProjection(
-                                        new IfDecimalProjection(
-                                            new BooleanProjection(
-                                                new ComparisonProjection(
-                                                    new EqualProjection(
-                                                        new EqualStringProjection(
-                                                            new StringNullableProjection(
-                                                                new StringProjection(
-                                                                    new FieldString(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderStatusColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new StringNullableProjection(
-                                                                new StringProjection(
-                                                                    new LiteralString(
-                                                                        "shipped"
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalProjection(
-                                                new ExactDecimalProjection(
-                                                    new ArithmeticDecimalProjection(
-                                                        new MultiplyDecimalProjection([
-                                                            new DecimalProjection(
-                                                                new ExactDecimalProjection(
-                                                                    new FieldDecimal(
-                                                                        new JoinedString(
-                                                                            new DotString(),
-                                                                            [
-                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                new OrdersTable().Name,
-                                                                            ]
-                                                                        ).TextValue,
-                                                                        new OrderTotalColumn()
-                                                                            .Name
-                                                                            .TextValue
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalProjection(
-                                                                new ExactDecimalProjection(
-                                                                    new LiteralDecimal(
-                                                                        0.1m
-                                                                    )
-                                                                )
-                                                            ),
-                                                        ])
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalProjection(
-                                                new IntegerProjection(
-                                                    new LiteralInteger(0)
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+                    )
+                ),
+            ]
         );
 
     /// <summary>

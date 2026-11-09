@@ -15,11 +15,9 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
@@ -39,169 +37,48 @@ public sealed record GroupKeyUsageQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new OrdersTable().Name,
-                            ]
-                        ).TextValue
-                    )
-                ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyUuid(
-                                "order_user_id",
-                                new UuidRow(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderUserIdColumn().Name.TextValue
-                                    )
-                                )
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            joins:
+            [
+                new JoinEntity(
+                    JoinKind.Left,
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new UsersTable().Name,
+                        ]
+                    ).TextValue,
+                    new AndRow([
+                        new EqualUuidRow(
+                            new FieldUuid(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new OrdersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new OrderUserIdColumn().Name.TextValue
+                            ),
+                            new FieldUuid(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new UsersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new UserIdColumn().Name.TextValue
                             )
-                        )
-                    ),
-                    new GroupKey(
-                        new GroupKeyNullable(
-                            new GroupKeyStringNullable(
-                                "buyer",
-                                new ExactStringNullableRow(
-                                    new FieldStringNullable(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserNameColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new GroupKey(
-                        new GroupKeyNullable(
-                            new GroupKeyIntegerNullable(
-                                "days_since_signup",
-                                new ExactIntegerNullableRow(
-                                    new DateDiffDaysIntegerNullableRow(
-                                        new DateNullableRow(
-                                            new DateRow(
-                                                new FieldDate(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new OrdersTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new PlacedOnColumn().Name.TextValue
-                                                )
-                                            )
-                                        ),
-                                        new DateNullableRow(
-                                            new ExactDateNullableRow(
-                                                new FieldDateNullable(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new UsersTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new SignupDateColumn().Name.TextValue
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupUuid(
-                                "order_user_id",
-                                new UuidGroup(new KeyUuid("order_user_id"))
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupString(
-                                "buyer",
-                                new StringGroup(
-                                    new ConditionalStringGroup(
-                                        new CoalesceStringGroup([
-                                            new StringNullableGroup(
-                                                new ExactStringNullableGroup(
-                                                    new KeyStringNullable("buyer")
-                                                )
-                                            ),
-                                            new StringNullableGroup(
-                                                new StringGroup(
-                                                    new LiteralString("unknown")
-                                                )
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNullable(
-                            new SelectItemGroupIntegerNullable(
-                                "hours_since_signup",
-                                new ExactIntegerNullableGroup(
-                                    new ArithmeticIntegerNullableGroup(
-                                        new MultiplyIntegerNullableGroup([
-                                            new IntegerNullableGroup(
-                                                new ExactIntegerNullableGroup(
-                                                    new KeyIntegerNullable(
-                                                        "days_since_signup"
-                                                    )
-                                                )
-                                            ),
-                                            new IntegerNullableGroup(
-                                                new IntegerGroup(new LiteralInteger(24))
-                                            ),
-                                        ])
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupInteger(
-                                "orders",
-                                new IntegerGroup(
-                                    new AggregateIntegerGroup(new CountGroup())
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                [
-                    new Join(
-                        new JoinEntity(
-                            JoinKind.Left,
+                        ),
+                        new FieldBoolean(
                             new JoinedString(
                                 new DotString(),
                                 [
@@ -209,134 +86,99 @@ public sealed record GroupKeyUsageQuery
                                     new UsersTable().Name,
                                 ]
                             ).TextValue,
-                            new BooleanRow(
-                                new LogicalRow(
-                                    new AndRow([
-                                        new BooleanRow(
-                                            new ComparisonRow(
-                                                new EqualRow(
-                                                    new EqualUuidRow(
-                                                        new UuidNullableRow(
-                                                            new UuidRow(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new OrdersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new OrderUserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        ),
-                                                        new UuidNullableRow(
-                                                            new UuidRow(
-                                                                new FieldUuid(
-                                                                    new JoinedString(
-                                                                        new DotString(),
-                                                                        [
-                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                            new UsersTable().Name,
-                                                                        ]
-                                                                    ).TextValue,
-                                                                    new UserIdColumn()
-                                                                        .Name
-                                                                        .TextValue
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new BooleanRow(
-                                            new FieldBoolean(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new UsersTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new UserActiveColumn().Name.TextValue
-                                            )
-                                        ),
-                                    ])
-                                )
-                            )
-                        )
-                    ),
-                ],
-                where: null,
-                new BooleanGroup(
-                    new LogicalGroup(
-                        new AndGroup([
-                            new BooleanGroup(
-                                new ComparisonGroup(
-                                    new NotEqualGroup(
-                                        new NotEqualStringGroup(
-                                            new StringNullableGroup(
-                                                new ExactStringNullableGroup(
-                                                    new KeyStringNullable("buyer")
-                                                )
-                                            ),
-                                            new StringNullableGroup(
-                                                new ExactStringNullableGroup(
-                                                    new LiteralStringNullable()
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanGroup(
-                                new ComparisonGroup(
-                                    new LessThanOrEqualGroup(
-                                        new LessThanOrEqualDecimalGroup(
-                                            new DecimalNullableGroup(
-                                                new ExactIntegerNullableGroup(
-                                                    new KeyIntegerNullable(
-                                                        "days_since_signup"
-                                                    )
-                                                )
-                                            ),
-                                            new DecimalNullableGroup(
-                                                new IntegerGroup(new LiteralInteger(1600))
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                        ])
+                            new UserActiveColumn().Name.TextValue
+                        ),
+                    ])
+                ),
+            ],
+            groupBy:
+            [
+                new GroupKey(
+                    "order_user_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new OrdersTable().Name,
+                            ]
+                        ).TextValue,
+                        new OrderUserIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new OrderItemGroup(
-                        new ExprGroup(
-                            new DecimalNullableGroup(
-                                new ExactIntegerNullableGroup(
-                                    new KeyIntegerNullable("days_since_signup")
-                                )
-                            )
-                        )
-                    ),
-                    new OrderItemGroup(
-                        new ExprGroup(
-                            new DecimalNullableGroup(
-                                new IntegerGroup(
-                                    new AggregateIntegerGroup(new CountGroup())
-                                )
-                            )
+                new GroupKey(
+                    "buyer",
+                    new FieldStringNullable(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserNameColumn().Name.TextValue
+                    )
+                ),
+                new GroupKey(
+                    "days_since_signup",
+                    new DateDiffDaysIntegerNullableRow(
+                        new FieldDate(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new OrdersTable().Name,
+                                ]
+                            ).TextValue,
+                            new PlacedOnColumn().Name.TextValue
                         ),
-                        SortDirection.Desc
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+                        new FieldDateNullable(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new SignupDateColumn().Name.TextValue
+                        )
+                    )
+                ),
+            ],
+            having: new AndGroup([
+                new NotEqualStringGroup(
+                    new KeyStringNullable("buyer"),
+                    new LiteralStringNullable()
+                ),
+                new LessThanOrEqualDecimalGroup(
+                    new KeyIntegerNullable("days_since_signup"),
+                    new LiteralInteger(1600)
+                ),
+            ]),
+            select:
+            [
+                new SelectItemGroup("order_user_id", new KeyUuid("order_user_id")),
+                new SelectItemGroup(
+                    "buyer",
+                    new CoalesceStringGroup([
+                        new KeyStringNullable("buyer"),
+                        new LiteralString("unknown"),
+                    ])
+                ),
+                new SelectItemGroup(
+                    "hours_since_signup",
+                    new MultiplyIntegerNullableGroup([
+                        new KeyIntegerNullable("days_since_signup"),
+                        new LiteralInteger(24),
+                    ])
+                ),
+                new SelectItemGroup("orders", new CountGroup()),
+            ],
+            orderBy:
+            [
+                new OrderItemGroup(new KeyIntegerNullable("days_since_signup")),
+                new OrderItemGroup(new CountGroup(), SortDirection.Desc),
+            ]
         );
 
     /// <summary>

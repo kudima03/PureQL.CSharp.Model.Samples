@@ -15,7 +15,6 @@ using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
@@ -30,60 +29,42 @@ public sealed record ConcatQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new ProductsTable().Name,
-                            ]
-                        ).TextValue
-                    )
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new ProductsTable().Name]
+                ).TextValue
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "label",
+                    new ConcatStringProjection([
+                        new FieldString(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductNameColumn().Name.TextValue
+                        ),
+                        new LiteralString(": "),
+                        new FieldString(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new ProductsTable().Name,
+                                ]
+                            ).TextValue,
+                            new ProductDescriptionColumn().Name.TextValue
+                        ),
+                    ])
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "label",
-                                new StringProjection(
-                                    new ConcatStringProjection([
-                                        new StringProjection(
-                                            new FieldString(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new ProductsTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new ProductNameColumn().Name.TextValue
-                                            )
-                                        ),
-                                        new StringProjection(new LiteralString(": ")),
-                                        new StringProjection(
-                                            new FieldString(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new ProductsTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new ProductDescriptionColumn()
-                                                    .Name
-                                                    .TextValue
-                                            )
-                                        ),
-                                    ])
-                                )
-                            )
-                        )
-                    ),
-                ]
-            )
+            ]
         );
 
     /// <summary>

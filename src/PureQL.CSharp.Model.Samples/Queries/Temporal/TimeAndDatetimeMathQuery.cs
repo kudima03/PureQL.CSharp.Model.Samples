@@ -18,7 +18,6 @@ using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
@@ -37,197 +36,96 @@ public sealed record TimeAndDatetimeMathQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new UsersTable().Name]
+                ).TextValue
+            ),
+            where: new AndRow([
+                new GreaterThanOrEqualDatetimeRow(
+                    new FieldDatetime(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new UsersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new LastLoginColumn().Name.TextValue
+                    ),
+                    new LiteralDatetime(
+                        new DateTimeOffset(2024, 6, 1, 0, 0, 0, TimeSpan.Zero)
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "user_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new UsersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new UserIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
+                new LessThanTimeRow(
+                    new FieldTime(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new ShiftStartColumn().Name.TextValue
                     ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionTime(
-                                "shift_end",
-                                new TimeProjection(
-                                    new TimeAddSecondsTimeProjection(
-                                        new TimeProjection(
-                                            new FieldTime(
-                                                new JoinedString(
-                                                    new DotString(),
-                                                    [
-                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                        new UsersTable().Name,
-                                                    ]
-                                                ).TextValue,
-                                                new ShiftStartColumn().Name.TextValue
-                                            )
-                                        ),
-                                        new DecimalProjection(
-                                            new IntegerProjection(
-                                                new ArithmeticIntegerProjection(
-                                                    new MultiplyIntegerProjection([
-                                                        new IntegerProjection(
-                                                            new LiteralInteger(16)
-                                                        ),
-                                                        new IntegerProjection(
-                                                            new LiteralInteger(3600)
-                                                        ),
-                                                    ])
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionDecimal(
-                                "seconds_since_june",
-                                new ExactDecimalProjection(
-                                    new DifferenceDecimalProjection(
-                                        new DatetimeDiffSecondsDecimalProjection(
-                                            new DatetimeProjection(
-                                                new FieldDatetime(
-                                                    new JoinedString(
-                                                        new DotString(),
-                                                        [
-                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                            new UsersTable().Name,
-                                                        ]
-                                                    ).TextValue,
-                                                    new LastLoginColumn().Name.TextValue
-                                                )
-                                            ),
-                                            new DatetimeProjection(
-                                                new LiteralDatetime(
-                                                    new DateTimeOffset(
-                                                        2024,
-                                                        6,
-                                                        1,
-                                                        0,
-                                                        0,
-                                                        0,
-                                                        TimeSpan.Zero
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new LogicalRow(
-                        new AndRow([
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new GreaterThanOrEqualRow(
-                                        new GreaterThanOrEqualDatetimeRow(
-                                            new DatetimeNullableRow(
-                                                new DatetimeRow(
-                                                    new FieldDatetime(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new LastLoginColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new DatetimeNullableRow(
-                                                new DatetimeRow(
-                                                    new LiteralDatetime(
-                                                        new DateTimeOffset(
-                                                            2024,
-                                                            6,
-                                                            1,
-                                                            0,
-                                                            0,
-                                                            0,
-                                                            TimeSpan.Zero
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
-                            new BooleanRow(
-                                new ComparisonRow(
-                                    new LessThanRow(
-                                        new LessThanTimeRow(
-                                            new TimeNullableRow(
-                                                new TimeRow(
-                                                    new FieldTime(
-                                                        new JoinedString(
-                                                            new DotString(),
-                                                            [
-                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                new UsersTable().Name,
-                                                            ]
-                                                        ).TextValue,
-                                                        new ShiftStartColumn()
-                                                            .Name
-                                                            .TextValue
-                                                    )
-                                                )
-                                            ),
-                                            new TimeNullableRow(
-                                                new TimeRow(
-                                                    new LiteralTime(
-                                                        new TimeOnly(10, 0, 0)
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            ),
+                    new LiteralTime(new TimeOnly(10, 0, 0))
+                ),
+            ]),
+            select:
+            [
+                new SelectItemProjection(
+                    "user_id",
+                    new FieldUuid(
+                        new JoinedString(
+                            new DotString(),
+                            [
+                                new RelationalSchemaWithForeignKeys().Name,
+                                new UsersTable().Name,
+                            ]
+                        ).TextValue,
+                        new UserIdColumn().Name.TextValue
+                    )
+                ),
+                new SelectItemProjection(
+                    "shift_end",
+                    new TimeAddSecondsTimeProjection(
+                        new FieldTime(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new ShiftStartColumn().Name.TextValue
+                        ),
+                        new MultiplyIntegerProjection([
+                            new LiteralInteger(16),
+                            new LiteralInteger(3600),
                         ])
                     )
                 ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+                new SelectItemProjection(
+                    "seconds_since_june",
+                    new DatetimeDiffSecondsDecimalProjection(
+                        new FieldDatetime(
+                            new JoinedString(
+                                new DotString(),
+                                [
+                                    new RelationalSchemaWithForeignKeys().Name,
+                                    new UsersTable().Name,
+                                ]
+                            ).TextValue,
+                            new LastLoginColumn().Name.TextValue
+                        ),
+                        new LiteralDatetime(
+                            new DateTimeOffset(2024, 6, 1, 0, 0, 0, TimeSpan.Zero)
+                        )
+                    )
+                ),
+            ]
         );
 
     /// <summary>

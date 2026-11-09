@@ -15,11 +15,9 @@ using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
 using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.GroupExpressions;
-using PureQL.CSharp.Model.GroupKeys;
 using PureQL.CSharp.Model.Keys;
 using PureQL.CSharp.Model.Literals;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 using Column = Pure.RelationalSchema.Column.Column;
 using Double = Pure.Primitives.Number.Double;
 using String = Pure.Primitives.String.String;
@@ -40,573 +38,135 @@ public sealed record OrdersPerWeekdayQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainGroupedQuery(
-                new From(
-                    new FromEntity(
-                        new JoinedString(
-                            new DotString(),
-                            [
-                                new RelationalSchemaWithForeignKeys().Name,
-                                new OrdersTable().Name,
-                            ]
-                        ).TextValue
-                    )
+        new MainGroupedQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            where: new NotEqualStringRow(
+                new FieldString(
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new OrdersTable().Name,
+                        ]
+                    ).TextValue,
+                    new OrderStatusColumn().Name.TextValue
                 ),
-                [
-                    new GroupKey(
-                        new GroupKeyNonNullable(
-                            new GroupKeyString(
-                                "weekday",
-                                new StringRow(
-                                    new ConditionalStringRow(
+                new LiteralString("cancelled")
+            ),
+            groupBy:
+            [
+                new GroupKey(
+                    "weekday",
+                    new IfStringRow(
+                        new LiteralString("1 Monday"),
+                        new IfStringRow(
+                            new LiteralString("2 Tuesday"),
+                            new IfStringRow(
+                                new LiteralString("3 Wednesday"),
+                                new IfStringRow(
+                                    new LiteralString("4 Thursday"),
+                                    new IfStringRow(
+                                        new LiteralString("5 Friday"),
                                         new IfStringRow(
-                                            new BooleanRow(
-                                                new ComparisonRow(
-                                                    new EqualRow(
-                                                        new EqualDecimalRow(
-                                                            new DecimalNullableRow(
-                                                                new IntegerRow(
-                                                                    new ArithmeticIntegerRow(
-                                                                        new ModuloIntegerRow(
-                                                                            new IntegerRow(
-                                                                                new DateDiffDaysIntegerRow(
-                                                                                    new DateRow(
-                                                                                        new FieldDate(
-                                                                                            new JoinedString(
-                                                                                                new DotString(),
-                                                                                                [
-                                                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                                                    new OrdersTable().Name,
-                                                                                                ]
-                                                                                            ).TextValue,
-                                                                                            new PlacedOnColumn()
-                                                                                                .Name
-                                                                                                .TextValue
-                                                                                        )
-                                                                                    ),
-                                                                                    new DateRow(
-                                                                                        new LiteralDate(
-                                                                                            new DateOnly(
-                                                                                                2024,
-                                                                                                5,
-                                                                                                27
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            ),
-                                                                            new IntegerRow(
-                                                                                new LiteralInteger(
-                                                                                    7
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableRow(
-                                                                new IntegerRow(
-                                                                    new LiteralInteger(0)
-                                                                )
-                                                            )
-                                                        )
-                                                    )
-                                                )
-                                            ),
-                                            new StringRow(new LiteralString("1 Monday")),
-                                            new StringRow(
-                                                new ConditionalStringRow(
-                                                    new IfStringRow(
-                                                        new BooleanRow(
-                                                            new ComparisonRow(
-                                                                new EqualRow(
-                                                                    new EqualDecimalRow(
-                                                                        new DecimalNullableRow(
-                                                                            new IntegerRow(
-                                                                                new ArithmeticIntegerRow(
-                                                                                    new ModuloIntegerRow(
-                                                                                        new IntegerRow(
-                                                                                            new DateDiffDaysIntegerRow(
-                                                                                                new DateRow(
-                                                                                                    new FieldDate(
-                                                                                                        new JoinedString(
-                                                                                                            new DotString(),
-                                                                                                            [
-                                                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                new OrdersTable().Name,
-                                                                                                            ]
-                                                                                                        ).TextValue,
-                                                                                                        new PlacedOnColumn()
-                                                                                                            .Name
-                                                                                                            .TextValue
-                                                                                                    )
-                                                                                                ),
-                                                                                                new DateRow(
-                                                                                                    new LiteralDate(
-                                                                                                        new DateOnly(
-                                                                                                            2024,
-                                                                                                            5,
-                                                                                                            27
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                        new IntegerRow(
-                                                                                            new LiteralInteger(
-                                                                                                7
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalNullableRow(
-                                                                            new IntegerRow(
-                                                                                new LiteralInteger(
-                                                                                    1
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
+                                            new LiteralString("6 Saturday"),
+                                            new LiteralString("7 Sunday"),
+                                            new EqualDecimalRow(
+                                                new ModuloIntegerRow(
+                                                    new DateDiffDaysIntegerRow(
+                                                        new FieldDate(
+                                                            new JoinedString(
+                                                                new DotString(),
+                                                                [
+                                                                    new RelationalSchemaWithForeignKeys().Name,
+                                                                    new OrdersTable().Name,
+                                                                ]
+                                                            ).TextValue,
+                                                            new PlacedOnColumn()
+                                                                .Name
+                                                                .TextValue
                                                         ),
-                                                        new StringRow(
-                                                            new LiteralString("2 Tuesday")
-                                                        ),
-                                                        new StringRow(
-                                                            new ConditionalStringRow(
-                                                                new IfStringRow(
-                                                                    new BooleanRow(
-                                                                        new ComparisonRow(
-                                                                            new EqualRow(
-                                                                                new EqualDecimalRow(
-                                                                                    new DecimalNullableRow(
-                                                                                        new IntegerRow(
-                                                                                            new ArithmeticIntegerRow(
-                                                                                                new ModuloIntegerRow(
-                                                                                                    new IntegerRow(
-                                                                                                        new DateDiffDaysIntegerRow(
-                                                                                                            new DateRow(
-                                                                                                                new FieldDate(
-                                                                                                                    new JoinedString(
-                                                                                                                        new DotString(),
-                                                                                                                        [
-                                                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                            new OrdersTable().Name,
-                                                                                                                        ]
-                                                                                                                    ).TextValue,
-                                                                                                                    new PlacedOnColumn()
-                                                                                                                        .Name
-                                                                                                                        .TextValue
-                                                                                                                )
-                                                                                                            ),
-                                                                                                            new DateRow(
-                                                                                                                new LiteralDate(
-                                                                                                                    new DateOnly(
-                                                                                                                        2024,
-                                                                                                                        5,
-                                                                                                                        27
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        )
-                                                                                                    ),
-                                                                                                    new IntegerRow(
-                                                                                                        new LiteralInteger(
-                                                                                                            7
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        )
-                                                                                    ),
-                                                                                    new DecimalNullableRow(
-                                                                                        new IntegerRow(
-                                                                                            new LiteralInteger(
-                                                                                                2
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    ),
-                                                                    new StringRow(
-                                                                        new LiteralString(
-                                                                            "3 Wednesday"
-                                                                        )
-                                                                    ),
-                                                                    new StringRow(
-                                                                        new ConditionalStringRow(
-                                                                            new IfStringRow(
-                                                                                new BooleanRow(
-                                                                                    new ComparisonRow(
-                                                                                        new EqualRow(
-                                                                                            new EqualDecimalRow(
-                                                                                                new DecimalNullableRow(
-                                                                                                    new IntegerRow(
-                                                                                                        new ArithmeticIntegerRow(
-                                                                                                            new ModuloIntegerRow(
-                                                                                                                new IntegerRow(
-                                                                                                                    new DateDiffDaysIntegerRow(
-                                                                                                                        new DateRow(
-                                                                                                                            new FieldDate(
-                                                                                                                                new JoinedString(
-                                                                                                                                    new DotString(),
-                                                                                                                                    [
-                                                                                                                                        new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                        new OrdersTable().Name,
-                                                                                                                                    ]
-                                                                                                                                ).TextValue,
-                                                                                                                                new PlacedOnColumn()
-                                                                                                                                    .Name
-                                                                                                                                    .TextValue
-                                                                                                                            )
-                                                                                                                        ),
-                                                                                                                        new DateRow(
-                                                                                                                            new LiteralDate(
-                                                                                                                                new DateOnly(
-                                                                                                                                    2024,
-                                                                                                                                    5,
-                                                                                                                                    27
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    )
-                                                                                                                ),
-                                                                                                                new IntegerRow(
-                                                                                                                    new LiteralInteger(
-                                                                                                                        7
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                ),
-                                                                                                new DecimalNullableRow(
-                                                                                                    new IntegerRow(
-                                                                                                        new LiteralInteger(
-                                                                                                            3
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                ),
-                                                                                new StringRow(
-                                                                                    new LiteralString(
-                                                                                        "4 Thursday"
-                                                                                    )
-                                                                                ),
-                                                                                new StringRow(
-                                                                                    new ConditionalStringRow(
-                                                                                        new IfStringRow(
-                                                                                            new BooleanRow(
-                                                                                                new ComparisonRow(
-                                                                                                    new EqualRow(
-                                                                                                        new EqualDecimalRow(
-                                                                                                            new DecimalNullableRow(
-                                                                                                                new IntegerRow(
-                                                                                                                    new ArithmeticIntegerRow(
-                                                                                                                        new ModuloIntegerRow(
-                                                                                                                            new IntegerRow(
-                                                                                                                                new DateDiffDaysIntegerRow(
-                                                                                                                                    new DateRow(
-                                                                                                                                        new FieldDate(
-                                                                                                                                            new JoinedString(
-                                                                                                                                                new DotString(),
-                                                                                                                                                [
-                                                                                                                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                    new OrdersTable().Name,
-                                                                                                                                                ]
-                                                                                                                                            ).TextValue,
-                                                                                                                                            new PlacedOnColumn()
-                                                                                                                                                .Name
-                                                                                                                                                .TextValue
-                                                                                                                                        )
-                                                                                                                                    ),
-                                                                                                                                    new DateRow(
-                                                                                                                                        new LiteralDate(
-                                                                                                                                            new DateOnly(
-                                                                                                                                                2024,
-                                                                                                                                                5,
-                                                                                                                                                27
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            ),
-                                                                                                                            new IntegerRow(
-                                                                                                                                new LiteralInteger(
-                                                                                                                                    7
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            ),
-                                                                                                            new DecimalNullableRow(
-                                                                                                                new IntegerRow(
-                                                                                                                    new LiteralInteger(
-                                                                                                                        4
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            ),
-                                                                                            new StringRow(
-                                                                                                new LiteralString(
-                                                                                                    "5 Friday"
-                                                                                                )
-                                                                                            ),
-                                                                                            new StringRow(
-                                                                                                new ConditionalStringRow(
-                                                                                                    new IfStringRow(
-                                                                                                        new BooleanRow(
-                                                                                                            new ComparisonRow(
-                                                                                                                new EqualRow(
-                                                                                                                    new EqualDecimalRow(
-                                                                                                                        new DecimalNullableRow(
-                                                                                                                            new IntegerRow(
-                                                                                                                                new ArithmeticIntegerRow(
-                                                                                                                                    new ModuloIntegerRow(
-                                                                                                                                        new IntegerRow(
-                                                                                                                                            new DateDiffDaysIntegerRow(
-                                                                                                                                                new DateRow(
-                                                                                                                                                    new FieldDate(
-                                                                                                                                                        new JoinedString(
-                                                                                                                                                            new DotString(),
-                                                                                                                                                            [
-                                                                                                                                                                new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                                                new OrdersTable().Name,
-                                                                                                                                                            ]
-                                                                                                                                                        ).TextValue,
-                                                                                                                                                        new PlacedOnColumn()
-                                                                                                                                                            .Name
-                                                                                                                                                            .TextValue
-                                                                                                                                                    )
-                                                                                                                                                ),
-                                                                                                                                                new DateRow(
-                                                                                                                                                    new LiteralDate(
-                                                                                                                                                        new DateOnly(
-                                                                                                                                                            2024,
-                                                                                                                                                            5,
-                                                                                                                                                            27
-                                                                                                                                                        )
-                                                                                                                                                    )
-                                                                                                                                                )
-                                                                                                                                            )
-                                                                                                                                        ),
-                                                                                                                                        new IntegerRow(
-                                                                                                                                            new LiteralInteger(
-                                                                                                                                                7
-                                                                                                                                            )
-                                                                                                                                        )
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        ),
-                                                                                                                        new DecimalNullableRow(
-                                                                                                                            new IntegerRow(
-                                                                                                                                new LiteralInteger(
-                                                                                                                                    5
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        ),
-                                                                                                        new StringRow(
-                                                                                                            new LiteralString(
-                                                                                                                "6 Saturday"
-                                                                                                            )
-                                                                                                        ),
-                                                                                                        new StringRow(
-                                                                                                            new LiteralString(
-                                                                                                                "7 Sunday"
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        )
-                                                                                    )
-                                                                                )
-                                                                            )
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
+                                                        new LiteralDate(
+                                                            new DateOnly(2024, 5, 27)
                                                         )
-                                                    )
-                                                )
+                                                    ),
+                                                    new LiteralInteger(7)
+                                                ),
+                                                new LiteralInteger(5)
                                             )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                ],
-                [
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupString(
-                                "weekday",
-                                new StringGroup(new KeyString("weekday"))
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupInteger(
-                                "orders",
-                                new IntegerGroup(
-                                    new AggregateIntegerGroup(new CountGroup())
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemGroup(
-                        new SelectItemGroupNonNullable(
-                            new SelectItemGroupDecimal(
-                                "tenant_385_share_pct",
-                                new ExactDecimalGroup(
-                                    new ConditionalDecimalGroup(
-                                        new IfDecimalGroup(
-                                            new BooleanGroup(
-                                                new ComparisonGroup(
-                                                    new EqualGroup(
-                                                        new EqualDecimalGroup(
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new AggregateIntegerGroup(
-                                                                        new CountGroup()
-                                                                    )
-                                                                )
-                                                            ),
-                                                            new DecimalNullableGroup(
-                                                                new IntegerGroup(
-                                                                    new LiteralInteger(0)
-                                                                )
-                                                            )
-                                                        )
+                                        ),
+                                        new EqualDecimalRow(
+                                            new ModuloIntegerRow(
+                                                new DateDiffDaysIntegerRow(
+                                                    new FieldDate(
+                                                        new JoinedString(
+                                                            new DotString(),
+                                                            [
+                                                                new RelationalSchemaWithForeignKeys().Name,
+                                                                new OrdersTable().Name,
+                                                            ]
+                                                        ).TextValue,
+                                                        new PlacedOnColumn()
+                                                            .Name
+                                                            .TextValue
+                                                    ),
+                                                    new LiteralDate(
+                                                        new DateOnly(2024, 5, 27)
                                                     )
-                                                )
+                                                ),
+                                                new LiteralInteger(7)
                                             ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new LiteralDecimal(0m)
-                                                )
-                                            ),
-                                            new DecimalGroup(
-                                                new ExactDecimalGroup(
-                                                    new RoundDecimalGroup(
-                                                        new DecimalGroup(
-                                                            new ExactDecimalGroup(
-                                                                new ArithmeticDecimalGroup(
-                                                                    new MultiplyDecimalGroup([
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new LiteralDecimal(
-                                                                                    100m
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                        new DecimalGroup(
-                                                                            new ExactDecimalGroup(
-                                                                                new ArithmeticDecimalGroup(
-                                                                                    new DivideDecimalGroup([
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup(
-                                                                                                        new BooleanRow(
-                                                                                                            new ComparisonRow(
-                                                                                                                new EqualRow(
-                                                                                                                    new EqualUuidRow(
-                                                                                                                        new UuidNullableRow(
-                                                                                                                            new UuidRow(
-                                                                                                                                new FieldUuid(
-                                                                                                                                    new JoinedString(
-                                                                                                                                        new DotString(),
-                                                                                                                                        [
-                                                                                                                                            new RelationalSchemaWithForeignKeys().Name,
-                                                                                                                                            new OrdersTable().Name,
-                                                                                                                                        ]
-                                                                                                                                    ).TextValue,
-                                                                                                                                    new OrderTenantIdColumn()
-                                                                                                                                        .Name
-                                                                                                                                        .TextValue
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        ),
-                                                                                                                        new UuidNullableRow(
-                                                                                                                            new UuidRow(
-                                                                                                                                new LiteralUuid(
-                                                                                                                                    new Guid(
-                                                                                                                                        901,
-                                                                                                                                        0,
-                                                                                                                                        0,
-                                                                                                                                        new byte[
-                                                                                                                                            8
-                                                                                                                                        ]
-                                                                                                                                    )
-                                                                                                                                )
-                                                                                                                            )
-                                                                                                                        )
-                                                                                                                    )
-                                                                                                                )
-                                                                                                            )
-                                                                                                        )
-                                                                                                    )
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                        new DecimalGroup(
-                                                                                            new IntegerGroup(
-                                                                                                new AggregateIntegerGroup(
-                                                                                                    new CountGroup()
-                                                                                                )
-                                                                                            )
-                                                                                        ),
-                                                                                    ])
-                                                                                )
-                                                                            )
-                                                                        ),
-                                                                    ])
-                                                                )
-                                                            )
-                                                        ),
-                                                        new IntegerGroup(
-                                                            new LiteralInteger(1)
-                                                        )
-                                                    )
-                                                )
-                                            )
+                                            new LiteralInteger(4)
                                         )
+                                    ),
+                                    new EqualDecimalRow(
+                                        new ModuloIntegerRow(
+                                            new DateDiffDaysIntegerRow(
+                                                new FieldDate(
+                                                    new JoinedString(
+                                                        new DotString(),
+                                                        [
+                                                            new RelationalSchemaWithForeignKeys().Name,
+                                                            new OrdersTable().Name,
+                                                        ]
+                                                    ).TextValue,
+                                                    new PlacedOnColumn().Name.TextValue
+                                                ),
+                                                new LiteralDate(new DateOnly(2024, 5, 27))
+                                            ),
+                                            new LiteralInteger(7)
+                                        ),
+                                        new LiteralInteger(3)
                                     )
+                                ),
+                                new EqualDecimalRow(
+                                    new ModuloIntegerRow(
+                                        new DateDiffDaysIntegerRow(
+                                            new FieldDate(
+                                                new JoinedString(
+                                                    new DotString(),
+                                                    [
+                                                        new RelationalSchemaWithForeignKeys().Name,
+                                                        new OrdersTable().Name,
+                                                    ]
+                                                ).TextValue,
+                                                new PlacedOnColumn().Name.TextValue
+                                            ),
+                                            new LiteralDate(new DateOnly(2024, 5, 27))
+                                        ),
+                                        new LiteralInteger(7)
+                                    ),
+                                    new LiteralInteger(2)
                                 )
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new ComparisonRow(
-                        new NotEqualRow(
-                            new NotEqualStringRow(
-                                new StringNullableRow(
-                                    new StringRow(
-                                        new FieldString(
+                            ),
+                            new EqualDecimalRow(
+                                new ModuloIntegerRow(
+                                    new DateDiffDaysIntegerRow(
+                                        new FieldDate(
                                             new JoinedString(
                                                 new DotString(),
                                                 [
@@ -614,30 +174,76 @@ public sealed record OrdersPerWeekdayQuery
                                                     new OrdersTable().Name,
                                                 ]
                                             ).TextValue,
-                                            new OrderStatusColumn().Name.TextValue
-                                        )
-                                    )
+                                            new PlacedOnColumn().Name.TextValue
+                                        ),
+                                        new LiteralDate(new DateOnly(2024, 5, 27))
+                                    ),
+                                    new LiteralInteger(7)
                                 ),
-                                new StringNullableRow(
-                                    new StringRow(new LiteralString("cancelled"))
-                                )
+                                new LiteralInteger(1)
                             )
+                        ),
+                        new EqualDecimalRow(
+                            new ModuloIntegerRow(
+                                new DateDiffDaysIntegerRow(
+                                    new FieldDate(
+                                        new JoinedString(
+                                            new DotString(),
+                                            [
+                                                new RelationalSchemaWithForeignKeys().Name,
+                                                new OrdersTable().Name,
+                                            ]
+                                        ).TextValue,
+                                        new PlacedOnColumn().Name.TextValue
+                                    ),
+                                    new LiteralDate(new DateOnly(2024, 5, 27))
+                                ),
+                                new LiteralInteger(7)
+                            ),
+                            new LiteralInteger(0)
                         )
                     )
                 ),
-                having: null,
-                [
-                    new OrderItemGroup(
-                        new ExprGroup(
-                            new StringNullableGroup(
-                                new StringGroup(new KeyString("weekday"))
-                            )
-                        )
-                    ),
-                ],
-                pagination: null,
-                distinctBy: null
-            )
+            ],
+            select:
+            [
+                new SelectItemGroup("weekday", new KeyString("weekday")),
+                new SelectItemGroup("orders", new CountGroup()),
+                new SelectItemGroup(
+                    "tenant_385_share_pct",
+                    new IfDecimalGroup(
+                        new LiteralDecimal(0m),
+                        new RoundDecimalGroup(
+                            new MultiplyDecimalGroup([
+                                new LiteralDecimal(100m),
+                                new DivideDecimalGroup([
+                                    new CountGroup(
+                                        new EqualUuidRow(
+                                            new FieldUuid(
+                                                new JoinedString(
+                                                    new DotString(),
+                                                    [
+                                                        new RelationalSchemaWithForeignKeys().Name,
+                                                        new OrdersTable().Name,
+                                                    ]
+                                                ).TextValue,
+                                                new OrderTenantIdColumn().Name.TextValue
+                                            ),
+                                            new LiteralUuid(
+                                                new Guid(901, 0, 0, new byte[8])
+                                            )
+                                        )
+                                    ),
+                                    new CountGroup(),
+                                ]),
+                            ]),
+                            new LiteralInteger(1)
+                        ),
+                        new EqualDecimalGroup(new CountGroup(), new LiteralInteger(0))
+                    )
+                ),
+            ],
+            orderBy: [new OrderItemGroup(new KeyString("weekday"))]
         );
 
     /// <summary>

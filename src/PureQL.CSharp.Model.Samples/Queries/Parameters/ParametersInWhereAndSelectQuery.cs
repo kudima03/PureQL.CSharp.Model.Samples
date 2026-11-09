@@ -5,9 +5,7 @@ using Pure.RelationalSchema.Samples.Schemas;
 using Pure.RelationalSchema.Samples.Tables;
 using PureQL.CSharp.Model.Fields;
 using PureQL.CSharp.Model.Parameters;
-using PureQL.CSharp.Model.ProjectionExpressions;
 using PureQL.CSharp.Model.RowExpressions;
-using PureQL.CSharp.Model.SelectItems;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Parameters;
 
@@ -20,78 +18,42 @@ public sealed record ParametersInWhereAndSelectQuery
 {
     /// <summary>Builds the query afresh on every read.</summary>
     public PureQLQuery Value =>
-        new PureQLQuery(
-            new MainPlainQuery(
-                new From(
-                    new FromEntity(
+        new MainPlainQueryWithoutPagination(
+            from: new FromEntity(
+                new JoinedString(
+                    new DotString(),
+                    [new RelationalSchemaWithForeignKeys().Name, new OrdersTable().Name]
+                ).TextValue
+            ),
+            where: new GreaterThanOrEqualDatetimeRow(
+                new FieldDatetime(
+                    new JoinedString(
+                        new DotString(),
+                        [
+                            new RelationalSchemaWithForeignKeys().Name,
+                            new OrdersTable().Name,
+                        ]
+                    ).TextValue,
+                    new PlacedAtColumn().Name.TextValue
+                ),
+                new ParamDatetime("since")
+            ),
+            select:
+            [
+                new SelectItemProjection(
+                    "order_id",
+                    new FieldUuid(
                         new JoinedString(
                             new DotString(),
                             [
                                 new RelationalSchemaWithForeignKeys().Name,
                                 new OrdersTable().Name,
                             ]
-                        ).TextValue
+                        ).TextValue,
+                        new OrderIdColumn().Name.TextValue
                     )
                 ),
-                [
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionUuid(
-                                "order_id",
-                                new UuidProjection(
-                                    new FieldUuid(
-                                        new JoinedString(
-                                            new DotString(),
-                                            [
-                                                new RelationalSchemaWithForeignKeys().Name,
-                                                new OrdersTable().Name,
-                                            ]
-                                        ).TextValue,
-                                        new OrderIdColumn().Name.TextValue
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    new SelectItemProjection(
-                        new SelectItemProjectionNonNullable(
-                            new SelectItemProjectionString(
-                                "report_currency",
-                                new StringProjection(new ParamString("currency"))
-                            )
-                        )
-                    ),
-                ],
-                subqueries: null,
-                joins: null,
-                new BooleanRow(
-                    new ComparisonRow(
-                        new GreaterThanOrEqualRow(
-                            new GreaterThanOrEqualDatetimeRow(
-                                new DatetimeNullableRow(
-                                    new DatetimeRow(
-                                        new FieldDatetime(
-                                            new JoinedString(
-                                                new DotString(),
-                                                [
-                                                    new RelationalSchemaWithForeignKeys().Name,
-                                                    new OrdersTable().Name,
-                                                ]
-                                            ).TextValue,
-                                            new PlacedAtColumn().Name.TextValue
-                                        )
-                                    )
-                                ),
-                                new DatetimeNullableRow(
-                                    new DatetimeRow(new ParamDatetime("since"))
-                                )
-                            )
-                        )
-                    )
-                ),
-                orderBy: null,
-                pagination: null,
-                distinctBy: null
-            )
+                new SelectItemProjection("report_currency", new ParamString("currency")),
+            ]
         );
 }
