@@ -5,17 +5,17 @@ All notable changes to `PureQL.CSharp.Model.Samples` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.0-preview.3.0.0] - 2026-11-09
 
 ### Changed
 
-- **Breaking:** migrated the catalogue to `PureQL.CSharp.Model` 0.1.0-preview.14.0.0, the model rewritten with C# 15 unions on .NET 11. `Value` is still a `PureQLQuery`, now a union of the query variants: each sample builds the variant its clauses select (`MainPlainQueryWithPagination`, `MainGroupedQueryWithoutPagination`, `MainTotalQuery`, …) from the model's records, every operator the record of its exact declared type in its context (`AddIntegerNullableRow`, `SumDecimalGroup`) and every leaf the record of its type (`FieldDecimal`, `LiteralInteger`, `KeyUuid`). No sample is renamed, every sample serializes to the same PureQL document as before, and expected results are unchanged.
-- **Breaking:** targets .NET 11 only, as `PureQL.CSharp.Model` does; the SDK is pinned by `global.json`.
-- Tests serialize through `PureQL.CSharp.Model.Serialization` 0.1.0-preview.6.0.0, which writes properties in the specification's order; expected documents are compared with the properties of every object in canonical order, and their content is unchanged.
+- **Breaking:** migrated the catalogue to `PureQL.CSharp.Model` 0.1.0-preview.14.0.0, the model rewritten with C# 15 unions on .NET 11. `Value` is still a `PureQLQuery`, now a union of the query variants: each sample builds the variant its clauses select (`MainPlainQueryWithPagination`, `MainGroupedQueryWithoutPagination`, `MainTotalQuery`, …) from the model's records, every operator the record of its exact declared type in its context (`AddIntegerNullableRow`, `SumDecimalGroup`) and every leaf the record of its type (`FieldDecimal`, `LiteralInteger`, `KeyUuid`). No sample is renamed, every sample serializes to the same PureQL document as before, and expected results are unchanged (#60).
+- **Breaking:** targets .NET 11 only, as `PureQL.CSharp.Model` does; the SDK is pinned by `global.json` (#60).
+- Tests serialize through `PureQL.CSharp.Model.Serialization` 0.1.0-preview.6.0.0, which writes properties in the specification's order; expected documents are compared with the properties of every object in canonical order, and their content is unchanged (#60).
 
 ### Removed
 
-- Package validation, until the first release on the union-based model becomes the baseline.
+- Package validation for this release; it is re-enabled with 0.1.0-preview.3.0.0 as the baseline (#62).
 
 ## [0.1.0-preview.2.3.1] - 2026-11-02
 
