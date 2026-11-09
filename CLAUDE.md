@@ -56,7 +56,7 @@ This is a **sample-data NuGet library**: a catalogue of named, predefined PureQL
 
 **Target framework:** net11.0 only, as `PureQL.CSharp.Model` (C# 15 unions need .NET 11). `IsAotCompatible` is set.
 
-**Package validation:** disabled (`EnablePackageValidation` is `false`) until the first release on the union-based model, which becomes the new baseline.
+**Package validation:** enabled against `PackageValidationBaselineVersion` 0.1.0-preview.3.0.0, the first release on the union-based model.
 
 **Tests:** xUnit project targeting net11.0, mirroring the source layout one `…Tests` record per sample. Each test serializes the sample through `PureQL.CSharp.Model.Serialization` (`QueryJson`) and compares it with the expected PureQL document spelled out as a raw string literal (`ExpectedJson`). Both sides are compared in canonical form (`CanonicalJson`: the properties of every object in ordinal order, arrays as they are), as the serializer writes properties in the specification's order and JSON objects are unordered. The expected document is written by hand after the specification sample and validated against `PureQL-Specification.json`, so it is an independent oracle — never regenerate it from the sample under test. A sample with a `Result` has a second test, which renders the result through `DataSetJson` (table name, columns with types, index count, cell text per row) and compares it with the expected document computed from the SQL answer.
 
