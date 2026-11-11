@@ -5,6 +5,13 @@ All notable changes to `PureQL.CSharp.Model.Samples` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0-preview.3.1.0] - 2026-11-11
+
+### Changed
+
+- Builds on the .NET 11 releases of the dependencies: `PureQL.CSharp.Model` 0.1.0-preview.14.1.0, `Pure.Primitives` 3.8.0, `Pure.Primitives.String.Operations` 1.8.0, `Pure.RelationalSchema` 2.2.0, `Pure.RelationalSchema.HashCodes` 3.4.0, `Pure.RelationalSchema.Samples` 0.1.0-preview.1.2.0, `Pure.RelationalSchema.Storage` 0.1.0-preview.8.1.0, `Pure.RelationalSchema.Storage.Samples` 0.1.0-preview.1.3.0 and `Pure.Collections.Generic` 0.1.0-preview.3.1.0; tests serialize through `PureQL.CSharp.Model.Serialization` 0.1.0-preview.6.1.0 (#66).
+- Builds and publishes with the .NET 11 GA SDK, installed by version (`11.x.x`); `global.json` is removed (#66).
+
 ## [0.1.0-preview.3.0.0] - 2026-11-09
 
 ### Changed
