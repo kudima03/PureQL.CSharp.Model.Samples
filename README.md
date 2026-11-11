@@ -223,15 +223,15 @@ Every result is computed over `[new SchemaDataSetWithForeignKeys(), new AuditSch
 
 ## Dependencies
 
-- [`PureQL.CSharp.Model` 0.1.0-preview.14.0.0](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.14.0.0): the query AST every sample builds
-- [`Pure.RelationalSchema.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Samples/tree/0.1.0-preview.2.0.1): the schema, table and column fixtures that entity, field and result column names come from
-- [`Pure.RelationalSchema.Storage.Samples` 0.1.0-preview.1.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples/tree/0.1.0-preview.2.0.1): the fixture rows the results are computed over, and `StoredTableDataSet`, `InvariantCell` and `EmptyCell`, which the results are built from
-- [`Pure.RelationalSchema` 2.0.3](https://github.com/kudima03/Pure.RelationalSchema/tree/2.0.3): `Table`, `Column` and the column types of a result's schema
-- [`Pure.RelationalSchema.Storage` 0.1.0-preview.8.0.0](https://github.com/kudima03/Pure.RelationalSchema.Storage/tree/0.1.0-preview.8.0.0): `Row`
-- [`Pure.RelationalSchema.HashCodes` 3.3.0](https://github.com/kudima03/Pure.RelationalSchema.HashCodes/tree/3.3.0): `ColumnHash`, which keys a row's cells
-- [`Pure.Collections.Generic` 0.1.0-preview.3.0.0](https://github.com/kudima03/Pure.Collections.Generic/tree/0.1.0-preview.3.0.0): the hash-keyed dictionary behind `IRow.Cells`
-- [`Pure.Primitives` 3.6.5](https://github.com/kudima03/Pure.Primitives/tree/3.6.5): `DotString`, the `schema.table` separator, and the typed values a result's cells wrap
-- [`Pure.Primitives.String.Operations` 1.5.1](https://github.com/kudima03/Pure.Primitives.String.Operations/tree/1.5.1): `JoinedString`, which composes the entity name
+- [`PureQL.CSharp.Model` 0.1.0-preview.14.1.0](https://github.com/kudima03/PureQL.CSharp.Model/tree/0.1.0-preview.14.1.0): the query AST every sample builds
+- [`Pure.RelationalSchema.Samples` 0.1.0-preview.1.2.0](https://github.com/kudima03/Pure.RelationalSchema.Samples/tree/0.1.0-preview.2.0.1): the schema, table and column fixtures that entity, field and result column names come from
+- [`Pure.RelationalSchema.Storage.Samples` 0.1.0-preview.1.3.0](https://github.com/kudima03/Pure.RelationalSchema.Storage.Samples/tree/0.1.0-preview.2.0.1): the fixture rows the results are computed over, and `StoredTableDataSet`, `InvariantCell` and `EmptyCell`, which the results are built from
+- [`Pure.RelationalSchema` 2.2.0](https://github.com/kudima03/Pure.RelationalSchema/tree/2.2.0): `Table`, `Column` and the column types of a result's schema
+- [`Pure.RelationalSchema.Storage` 0.1.0-preview.8.1.0](https://github.com/kudima03/Pure.RelationalSchema.Storage/tree/0.1.0-preview.8.1.0): `Row`
+- [`Pure.RelationalSchema.HashCodes` 3.4.0](https://github.com/kudima03/Pure.RelationalSchema.HashCodes/tree/3.4.0): `ColumnHash`, which keys a row's cells
+- [`Pure.Collections.Generic` 0.1.0-preview.3.1.0](https://github.com/kudima03/Pure.Collections.Generic/tree/0.1.0-preview.3.1.0): the hash-keyed dictionary behind `IRow.Cells`
+- [`Pure.Primitives` 3.8.0](https://github.com/kudima03/Pure.Primitives/tree/3.8.0): `DotString`, the `schema.table` separator, and the typed values a result's cells wrap
+- [`Pure.Primitives.String.Operations` 1.8.0](https://github.com/kudima03/Pure.Primitives.String.Operations/tree/1.8.0): `JoinedString`, which composes the entity name
 
 No PureQL engine is referenced. Engines are what these samples test.
 
