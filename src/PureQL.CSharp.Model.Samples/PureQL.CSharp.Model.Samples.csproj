@@ -19,18 +19,18 @@
     <PackageProjectUrl>https://github.com/kudima03/PureQL.CSharp.Model.Samples</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pure.Collections.Generic" Version="0.1.0-preview.3.0.0" />
-    <PackageReference Include="Pure.Primitives" Version="3.7.0" />
-    <PackageReference Include="Pure.Primitives.String.Operations" Version="1.7.0" />
-    <PackageReference Include="Pure.RelationalSchema" Version="2.1.0" />
-    <PackageReference Include="Pure.RelationalSchema.HashCodes" Version="3.3.0" />
-    <PackageReference Include="Pure.RelationalSchema.Samples" Version="0.1.0-preview.1.1.0" />
-    <PackageReference Include="Pure.RelationalSchema.Storage" Version="0.1.0-preview.8.0.0" />
+    <PackageReference Include="Pure.Collections.Generic" Version="0.1.0-preview.3.1.0" />
+    <PackageReference Include="Pure.Primitives" Version="3.8.0" />
+    <PackageReference Include="Pure.Primitives.String.Operations" Version="1.8.0" />
+    <PackageReference Include="Pure.RelationalSchema" Version="2.2.0" />
+    <PackageReference Include="Pure.RelationalSchema.HashCodes" Version="3.4.0" />
+    <PackageReference Include="Pure.RelationalSchema.Samples" Version="0.1.0-preview.1.2.0" />
+    <PackageReference Include="Pure.RelationalSchema.Storage" Version="0.1.0-preview.8.1.0" />
     <PackageReference
       Include="Pure.RelationalSchema.Storage.Samples"
-      Version="0.1.0-preview.1.2.0"
+      Version="0.1.0-preview.1.3.0"
     />
-    <PackageReference Include="PureQL.CSharp.Model" Version="0.1.0-preview.14.0.0" />
+    <PackageReference Include="PureQL.CSharp.Model" Version="0.1.0-preview.14.1.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="../../README.md" Pack="true" PackagePath="/" />
