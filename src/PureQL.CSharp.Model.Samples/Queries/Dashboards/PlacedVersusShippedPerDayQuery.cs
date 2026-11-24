@@ -207,7 +207,9 @@ public sealed record PlacedVersusShippedPerDayQuery
             ],
             orderBy:
             [
-                new OrderItemProjectionExpression(new FieldDate("placed_by_day", "placed_on")),
+                new OrderItemProjectionExpression(
+                    new FieldDate("placed_by_day", "placed_on")
+                ),
             ]
         );
 

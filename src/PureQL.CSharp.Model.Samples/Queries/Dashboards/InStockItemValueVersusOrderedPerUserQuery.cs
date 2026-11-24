@@ -316,7 +316,9 @@ public sealed record InStockItemValueVersusOrderedPerUserQuery
             ],
             orderBy:
             [
-                new OrderItemProjectionExpression(new FieldUuid("ordered_by_user", "user_id")),
+                new OrderItemProjectionExpression(
+                    new FieldUuid("ordered_by_user", "user_id")
+                ),
             ]
         );
 
