@@ -85,7 +85,7 @@ public sealed record LiftedOperatorsQuery
                             ).TextValue,
                             new SignupDateColumn().Name.TextValue
                         ),
-                        new RoundIntegerNullableProjection(
+                        new RoundWithoutDigitsIntegerNullableProjection(
                             new FieldDecimalNullable(
                                 new JoinedString(
                                     new DotString(),
@@ -102,7 +102,7 @@ public sealed record LiftedOperatorsQuery
                 new SelectItemProjection(
                     "double_score",
                     new MultiplyIntegerNullableProjection([
-                        new RoundIntegerNullableProjection(
+                        new RoundWithoutDigitsIntegerNullableProjection(
                             new FieldDecimalNullable(
                                 new JoinedString(
                                     new DotString(),

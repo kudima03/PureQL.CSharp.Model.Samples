@@ -373,7 +373,6 @@ public sealed record SubqueryPipelineQueryTests
                     }
                   ],
                   "pagination": {
-                    "skip": 0,
                     "take": 50
                   }
                 }

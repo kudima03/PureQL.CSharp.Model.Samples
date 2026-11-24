@@ -342,7 +342,7 @@ public sealed record DailyInStockRevenueShareQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyDate("placed_on"))]
+            orderBy: [new OrderItemGroupExpression(new KeyDate("placed_on"))]
         );
 
     /// <summary>

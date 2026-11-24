@@ -50,7 +50,7 @@ public sealed record UnbilledOrderAgingQuery
         new MainPlainQueryWithPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "item_value_by_order",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -423,7 +423,7 @@ public sealed record UnbilledOrderAgingQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new DateDiffDaysIntegerProjection(
                         new LiteralDate(new DateOnly(2024, 6, 10)),
                         new FieldDate(
@@ -439,7 +439,7 @@ public sealed record UnbilledOrderAgingQuery
                     ),
                     SortDirection.Desc
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new SubtractDecimalProjection([
                         new FieldDecimal(
                             new JoinedString(
@@ -459,7 +459,7 @@ public sealed record UnbilledOrderAgingQuery
                     SortDirection.Desc
                 ),
             ],
-            pagination: new ModelPagination(0, 100)
+            pagination: new ModelPagination(take: 100)
         );
 
     /// <summary>

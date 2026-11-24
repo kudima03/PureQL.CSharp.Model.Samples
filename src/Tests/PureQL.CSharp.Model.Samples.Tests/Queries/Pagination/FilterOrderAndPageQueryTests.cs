@@ -105,7 +105,6 @@ public sealed record FilterOrderAndPageQueryTests
                     }
                   ],
                   "pagination": {
-                    "skip": 0,
                     "take": 20
                   }
                 }

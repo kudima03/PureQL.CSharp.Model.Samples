@@ -57,7 +57,7 @@ public sealed record UserAccountOverviewQuery
         new MainPlainQueryWithPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "revenue_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -200,7 +200,7 @@ public sealed record UserAccountOverviewQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "orders_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -265,7 +265,7 @@ public sealed record UserAccountOverviewQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "logins_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -312,7 +312,7 @@ public sealed record UserAccountOverviewQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "units_by_order",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -361,7 +361,7 @@ public sealed record UserAccountOverviewQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "units_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -627,12 +627,12 @@ public sealed record UserAccountOverviewQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("revenue_by_user", "revenue"),
                     SortDirection.Desc
                 ),
             ],
-            pagination: new ModelPagination(0, 2)
+            pagination: new ModelPagination(take: 2)
         );
 
     /// <summary>

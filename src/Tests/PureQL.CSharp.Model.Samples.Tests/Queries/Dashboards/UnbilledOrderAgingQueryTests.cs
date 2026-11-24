@@ -610,7 +610,6 @@ public sealed record UnbilledOrderAgingQueryTests
                     }
                   ],
                   "pagination": {
-                    "skip": 0,
                     "take": 100
                   }
                 }

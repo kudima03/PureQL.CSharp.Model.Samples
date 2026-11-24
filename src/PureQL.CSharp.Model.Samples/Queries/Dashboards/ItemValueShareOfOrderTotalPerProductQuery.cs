@@ -209,7 +209,7 @@ public sealed record ItemValueShareOfOrderTotalPerProductQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(
+                new OrderItemGroupExpression(
                     new SumDecimalGroup(
                         new MultiplyDecimalRow([
                             new FieldDecimal(

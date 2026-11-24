@@ -140,13 +140,13 @@ public sealed record RevenuePerTeamLeadPerPeriodQueryTests
                         "type": {
                           "name": "date"
                         },
-                        "left": {
+                        "operand": {
                           "type": {
                             "name": "date"
                           },
                           "value": "2024-06-01"
                         },
-                        "right": {
+                        "days": {
                           "operator": "multiply",
                           "type": {
                             "name": "integer"

@@ -121,7 +121,7 @@ public sealed record OrderByComputedExpressionQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new MultiplyDecimalProjection([
                         new FieldDecimal(
                             new JoinedString(

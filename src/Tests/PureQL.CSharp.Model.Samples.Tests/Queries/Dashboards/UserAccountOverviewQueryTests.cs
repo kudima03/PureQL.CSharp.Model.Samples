@@ -751,7 +751,6 @@ public sealed record UserAccountOverviewQueryTests
                     }
                   ],
                   "pagination": {
-                    "skip": 0,
                     "take": 2
                   }
                 }

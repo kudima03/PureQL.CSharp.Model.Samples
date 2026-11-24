@@ -73,7 +73,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                 ),
                 new SelectItemProjection(
                     "price_rounded",
-                    new RoundIntegerProjection(
+                    new RoundWithoutDigitsIntegerProjection(
                         new FieldDecimal(
                             new JoinedString(
                                 new DotString(),
@@ -105,7 +105,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                 new SelectItemProjection(
                     "packs",
                     new IntegerDivideIntegerProjection(
-                        new RoundIntegerProjection(
+                        new RoundWithoutDigitsIntegerProjection(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),
@@ -123,7 +123,7 @@ public sealed record RoundingAndIntegerDivisionQuery
                 new SelectItemProjection(
                     "loose",
                     new ModuloIntegerProjection(
-                        new RoundIntegerProjection(
+                        new RoundWithoutDigitsIntegerProjection(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),

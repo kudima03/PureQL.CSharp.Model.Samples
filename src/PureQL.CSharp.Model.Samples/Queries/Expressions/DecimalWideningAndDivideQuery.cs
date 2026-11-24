@@ -107,7 +107,7 @@ public sealed record DecimalWideningAndDivideQuery
                             ).TextValue,
                             new ProductPriceColumn().Name.TextValue
                         ),
-                        new RoundIntegerProjection(
+                        new RoundWithoutDigitsIntegerProjection(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),
@@ -124,7 +124,7 @@ public sealed record DecimalWideningAndDivideQuery
                 new SelectItemProjection(
                     "half_quantity",
                     new DivideDecimalProjection([
-                        new RoundIntegerProjection(
+                        new RoundWithoutDigitsIntegerProjection(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),

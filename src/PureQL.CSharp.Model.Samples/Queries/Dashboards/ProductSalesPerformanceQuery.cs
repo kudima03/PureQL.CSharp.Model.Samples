@@ -55,7 +55,7 @@ public sealed record ProductSalesPerformanceQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "sales_performance",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -295,7 +295,7 @@ public sealed record ProductSalesPerformanceQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "inactive_user_lines",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -543,11 +543,11 @@ public sealed record ProductSalesPerformanceQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("sales_performance", "early_pct"),
                     SortDirection.Desc
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldString(
                         new JoinedString(
                             new DotString(),

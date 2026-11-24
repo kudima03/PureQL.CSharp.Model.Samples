@@ -49,7 +49,7 @@ public sealed record LineRestockSuggestionQuery
         new MainPlainQueryWithPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "recent_units",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -578,7 +578,7 @@ public sealed record LineRestockSuggestionQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new SubtractDecimalProjection([
                         new FieldDecimal(
                             new JoinedString(
@@ -614,7 +614,7 @@ public sealed record LineRestockSuggestionQuery
                         ]),
                     ])
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldString(
                         new JoinedString(
                             new DotString(),
@@ -627,7 +627,7 @@ public sealed record LineRestockSuggestionQuery
                     )
                 ),
             ],
-            pagination: new ModelPagination(0, 100)
+            pagination: new ModelPagination(take: 100)
         );
 
     /// <summary>

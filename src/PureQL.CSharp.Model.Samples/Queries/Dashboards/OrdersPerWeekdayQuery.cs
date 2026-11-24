@@ -243,7 +243,7 @@ public sealed record OrdersPerWeekdayQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyString("weekday"))]
+            orderBy: [new OrderItemGroupExpression(new KeyString("weekday"))]
         );
 
     /// <summary>

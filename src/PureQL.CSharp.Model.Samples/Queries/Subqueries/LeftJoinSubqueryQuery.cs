@@ -39,7 +39,7 @@ public sealed record LeftJoinSubqueryQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "user_totals",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(

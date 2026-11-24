@@ -243,7 +243,7 @@ public sealed record ItemValuePerUserAndProductQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(
+                new OrderItemGroupExpression(
                     new SumDecimalGroup(
                         new MultiplyDecimalRow([
                             new FieldDecimal(

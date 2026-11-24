@@ -323,7 +323,7 @@ public sealed record LineFlagsPerUserAndStatusQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(
+                new OrderItemGroupExpression(
                     new CountGroup(
                         new AndRow([
                             new EqualDecimalRow(
@@ -355,7 +355,7 @@ public sealed record LineFlagsPerUserAndStatusQuery
                     ),
                     SortDirection.Desc
                 ),
-                new OrderItemGroup(new KeyString("user_name")),
+                new OrderItemGroupExpression(new KeyString("user_name")),
             ]
         );
 

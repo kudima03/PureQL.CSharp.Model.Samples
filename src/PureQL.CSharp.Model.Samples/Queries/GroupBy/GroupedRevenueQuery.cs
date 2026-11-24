@@ -213,8 +213,8 @@ public sealed record GroupedRevenueQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(new CountGroup(), SortDirection.Desc),
-                new OrderItemGroup(new KeyUuid("order_user_id")),
+                new OrderItemGroupExpression(new CountGroup(), SortDirection.Desc),
+                new OrderItemGroupExpression(new KeyUuid("order_user_id")),
             ]
         );
 

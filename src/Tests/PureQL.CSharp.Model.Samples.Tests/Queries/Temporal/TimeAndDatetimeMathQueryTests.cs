@@ -79,14 +79,14 @@ public sealed record TimeAndDatetimeMathQueryTests
                         "type": {
                           "name": "time"
                         },
-                        "left": {
+                        "operand": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "shift_start",
                           "type": {
                             "name": "time"
                           }
                         },
-                        "right": {
+                        "seconds": {
                           "operator": "multiply",
                           "type": {
                             "name": "integer"

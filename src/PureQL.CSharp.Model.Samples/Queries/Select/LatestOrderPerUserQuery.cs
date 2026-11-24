@@ -83,7 +83,7 @@ public sealed record LatestOrderPerUserQuery
             distinctBy: ["order_user_id"],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDatetime(
                         new JoinedString(
                             new DotString(),
@@ -96,7 +96,7 @@ public sealed record LatestOrderPerUserQuery
                     ),
                     SortDirection.Desc
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldUuid(
                         new JoinedString(
                             new DotString(),

@@ -176,8 +176,8 @@ public sealed record GroupKeyUsageQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(new KeyIntegerNullable("days_since_signup")),
-                new OrderItemGroup(new CountGroup(), SortDirection.Desc),
+                new OrderItemGroupExpression(new KeyIntegerNullable("days_since_signup")),
+                new OrderItemGroupExpression(new CountGroup(), SortDirection.Desc),
             ]
         );
 

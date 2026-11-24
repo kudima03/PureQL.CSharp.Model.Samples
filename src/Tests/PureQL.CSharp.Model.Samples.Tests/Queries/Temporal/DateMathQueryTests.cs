@@ -64,14 +64,14 @@ public sealed record DateMathQueryTests
                         "type": {
                           "name": "date"
                         },
-                        "left": {
+                        "operand": {
                           "source": "schema_with_foreign_keys.orders",
                           "field": "placed_on",
                           "type": {
                             "name": "date"
                           }
                         },
-                        "right": {
+                        "days": {
                           "type": {
                             "name": "integer"
                           },

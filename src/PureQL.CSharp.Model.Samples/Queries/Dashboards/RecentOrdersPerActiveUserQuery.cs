@@ -150,8 +150,8 @@ public sealed record RecentOrdersPerActiveUserQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(new CountGroup(), SortDirection.Desc),
-                new OrderItemGroup(new KeyString("user_name")),
+                new OrderItemGroupExpression(new CountGroup(), SortDirection.Desc),
+                new OrderItemGroupExpression(new KeyString("user_name")),
             ]
         );
 

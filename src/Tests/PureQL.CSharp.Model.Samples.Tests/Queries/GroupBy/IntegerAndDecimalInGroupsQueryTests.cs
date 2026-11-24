@@ -223,7 +223,7 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                         "type": {
                           "name": "date"
                         },
-                        "left": {
+                        "operand": {
                           "operator": "max",
                           "type": {
                             "name": "date"
@@ -236,7 +236,7 @@ public sealed record IntegerAndDecimalInGroupsQueryTests
                             }
                           }
                         },
-                        "right": {
+                        "days": {
                           "operator": "floor",
                           "type": {
                             "name": "integer"

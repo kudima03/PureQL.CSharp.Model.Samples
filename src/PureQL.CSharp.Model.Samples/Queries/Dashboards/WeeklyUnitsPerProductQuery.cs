@@ -276,7 +276,7 @@ public sealed record WeeklyUnitsPerProductQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyInteger("week_no"))]
+            orderBy: [new OrderItemGroupExpression(new KeyInteger("week_no"))]
         );
 
     /// <summary>

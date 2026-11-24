@@ -193,7 +193,7 @@ public sealed record NullableGroupKeyAndAggregatesQuery
                     ])
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyStringNullable("buyer"))]
+            orderBy: [new OrderItemGroupExpression(new KeyStringNullable("buyer"))]
         );
 
     /// <summary>

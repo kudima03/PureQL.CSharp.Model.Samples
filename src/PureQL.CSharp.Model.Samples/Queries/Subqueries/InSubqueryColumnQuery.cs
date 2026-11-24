@@ -32,7 +32,7 @@ public sealed record InSubqueryColumnQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "active_users",
                     new PlainQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(

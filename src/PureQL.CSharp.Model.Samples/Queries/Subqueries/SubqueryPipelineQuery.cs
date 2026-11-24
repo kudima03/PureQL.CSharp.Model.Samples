@@ -43,7 +43,7 @@ public sealed record SubqueryPipelineQuery
         new MainPlainQueryWithPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "shipped_lines",
                     new PlainQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -178,7 +178,7 @@ public sealed record SubqueryPipelineQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "user_revenue",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromSubquery("shipped_lines"),
@@ -208,7 +208,7 @@ public sealed record SubqueryPipelineQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "dormant",
                     new PlainQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -298,15 +298,15 @@ public sealed record SubqueryPipelineQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("user_revenue", "revenue"),
                     SortDirection.Desc
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldString("u", new UserNameColumn().Name.TextValue)
                 ),
             ],
-            pagination: new ModelPagination(0, 50)
+            pagination: new ModelPagination(take: 50)
         );
 
     /// <summary>

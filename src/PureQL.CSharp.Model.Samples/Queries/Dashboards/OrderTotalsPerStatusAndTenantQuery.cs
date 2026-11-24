@@ -244,7 +244,7 @@ public sealed record OrderTotalsPerStatusAndTenantQuery
                 ),
                 new SelectItemGroup("orders", new CountGroup()),
             ],
-            orderBy: [new OrderItemGroup(new KeyUuid("order_tenant_id"))]
+            orderBy: [new OrderItemGroupExpression(new KeyUuid("order_tenant_id"))]
         );
 
     /// <summary>

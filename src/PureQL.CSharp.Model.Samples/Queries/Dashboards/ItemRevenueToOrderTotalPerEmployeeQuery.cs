@@ -49,7 +49,7 @@ public sealed record ItemRevenueToOrderTotalPerEmployeeQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "item_revenue_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -192,7 +192,7 @@ public sealed record ItemRevenueToOrderTotalPerEmployeeQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "ordered_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -356,7 +356,7 @@ public sealed record ItemRevenueToOrderTotalPerEmployeeQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("item_revenue_by_user", "item_revenue"),
                     SortDirection.Desc
                 ),
