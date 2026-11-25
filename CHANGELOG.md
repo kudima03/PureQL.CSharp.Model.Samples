@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Breaking:** built on `PureQL.CSharp.Model` 0.1.0-preview.15.0.0, which follows PureQL specification 0.1.0-preview.3.0.0. Order items are `OrderItem{Projection,Group}Expression`, subqueries `SubqueryQuery`, rounding to a whole number `RoundWithoutDigitsInteger…`, and `dateAddDays` / `timeAddSeconds` / `datetimeAddSeconds` take `operand` and `days` / `seconds`; a first page is `new Pagination(take: n)`, so `Subqueries.FromSubqueryQuery`, `Subqueries.SubqueryPipelineQuery`, `Pagination.FilterOrderAndPageQuery`, `Dashboards.UnbilledOrderAgingQuery`, `Dashboards.LineRestockSuggestionQuery` and `Dashboards.UserAccountOverviewQuery` no longer write `"skip": 0`. No sample is renamed and every expected result is unchanged.
 - The catalogue maps every sample to its 3.0.0 specification number; the `Dashboards` samples are specification samples 123 to 151.
-- Tests serialize through `PureQL.CSharp.Model.Serialization` SERIALIZATION_VERSION.
+- Tests serialize through `PureQL.CSharp.Model.Serialization` 0.1.0-preview.7.0.0.
 
 ## [0.1.0-preview.3.1.0] - 2026-11-11
 
