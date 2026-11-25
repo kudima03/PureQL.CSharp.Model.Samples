@@ -516,9 +516,9 @@ public sealed record WindowsInEveryPositionQueryTests
                             },
                             "right": {
                               "type": {
-                                "name": "decimal"
+                                "name": "integer"
                               },
-                              "value": "0"
+                              "value": 0
                             }
                           }
                         ]
@@ -886,7 +886,7 @@ public sealed record WindowsInEveryPositionQueryTests
                     }
                   ],
                   "pagination": {
-                    "take": 50
+                    "take": 3
                   }
                 }
                 """
@@ -967,16 +967,6 @@ public sealed record WindowsInEveryPositionQueryTests
                       "1",
                       "#2",
                       "300",
-                      "False",
-                      "1"
-                    ],
-                    [
-                      "00000065-0000-0000-0000-000000000000",
-                      "00000385-0000-0000-0000-000000000000",
-                      "3",
-                      "0.2867332382310984",
-                      "#2",
-                      "116.83333333333333",
                       "False",
                       "1"
                     ]

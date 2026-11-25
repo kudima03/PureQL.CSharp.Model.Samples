@@ -500,9 +500,9 @@ public sealed record WindowsOverNullableFieldsQueryTests
                         },
                         "default": {
                           "type": {
-                            "name": "decimal"
+                            "name": "integer"
                           },
-                          "value": "0"
+                          "value": 0
                         }
                       }
                     },

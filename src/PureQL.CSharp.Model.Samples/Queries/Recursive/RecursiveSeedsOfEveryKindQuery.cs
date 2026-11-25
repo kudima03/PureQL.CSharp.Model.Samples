@@ -127,7 +127,7 @@ public sealed record RecursiveSeedsOfEveryKindQuery
                                             ).TextValue,
                                             new EmployeeManagerIdColumn().Name.TextValue
                                         ),
-                                        new FieldUuid("from_top_managers", "id")
+                                        new FieldUuidNullable("from_top_managers", "id")
                                     )
                                 ),
                             ],

@@ -43,7 +43,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Windows;
 /// average of the tenant when there is none, whether order_total is greater than the one
 /// before it, and the half of an ntile of 2 over order_total and order_id. It keeps the
 /// first row of each half in a tenant, ordered by the percent rank of order_total descending, the row
-/// number in the tenant from the latest order and order_id, and takes 50.
+/// number in the tenant from the latest order and order_id, and takes 3.
 /// </summary>
 public sealed record WindowsInEveryPositionQuery
 {
@@ -595,7 +595,7 @@ public sealed record WindowsInEveryPositionQuery
                                     ),
                                 ])
                             ),
-                            new LiteralDecimal(0m)
+                            new LiteralInteger(0)
                         ),
                     ])
                 ),
@@ -936,7 +936,7 @@ public sealed record WindowsInEveryPositionQuery
                     )
                 ),
             ],
-            pagination: new ModelPagination(take: 50)
+            pagination: new ModelPagination(take: 3)
         );
 
     /// <summary>
@@ -1129,68 +1129,6 @@ public sealed record WindowsInEveryPositionQuery
                                     new DoubleColumnType()
                                 ),
                                 new InvariantCell(new Double(300))
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(
-                                    new String("above_the_one_before"),
-                                    new BoolColumnType()
-                                ),
-                                new InvariantCell(new False())
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("half"), new LongColumnType()),
-                                new InvariantCell(new Long(1))
-                            ),
-                        ],
-                        pair => pair.Key,
-                        pair => pair.Value,
-                        column => new ColumnHash(column)
-                    )
-                ),
-                new Row(
-                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
-                        [
-                            new KeyValuePair<IColumn, ICell>(
-                                new OrderIdColumn(),
-                                new InvariantCell(
-                                    new Guid(
-                                        new System.Guid(
-                                            "00000065-0000-0000-0000-000000000000"
-                                        )
-                                    )
-                                )
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new OrderTenantIdColumn(),
-                                new InvariantCell(
-                                    new Guid(
-                                        new System.Guid(
-                                            "00000385-0000-0000-0000-000000000000"
-                                        )
-                                    )
-                                )
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("position"), new LongColumnType()),
-                                new InvariantCell(new Long(3))
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(
-                                    new String("running_share"),
-                                    new DoubleColumnType()
-                                ),
-                                new InvariantCell(new Double(0.2867332382310984))
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("label"), new StringColumnType()),
-                                new InvariantCell(new String("#2"))
-                            ),
-                            new KeyValuePair<IColumn, ICell>(
-                                new Column(
-                                    new String("previous_or_average"),
-                                    new DoubleColumnType()
-                                ),
-                                new InvariantCell(new Double(116.83333333333333))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(

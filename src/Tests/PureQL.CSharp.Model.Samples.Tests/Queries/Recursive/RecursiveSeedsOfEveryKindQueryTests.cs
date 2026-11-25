@@ -110,7 +110,8 @@ public sealed record RecursiveSeedsOfEveryKindQueryTests
                                   "source": "from_top_managers",
                                   "field": "id",
                                   "type": {
-                                    "name": "uuid"
+                                    "name": "uuid",
+                                    "nullable": true
                                   }
                                 }
                               }

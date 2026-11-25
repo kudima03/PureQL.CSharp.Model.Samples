@@ -528,7 +528,7 @@ public sealed record WindowsOverNullableFieldsQuery
                                 ),
                             ]
                         ),
-                        @default: new LiteralDecimal(0m)
+                        @default: new LiteralInteger(0)
                     )
                 ),
                 new SelectItemProjection(
