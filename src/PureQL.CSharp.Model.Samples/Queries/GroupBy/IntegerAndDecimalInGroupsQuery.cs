@@ -119,7 +119,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
             ],
             where: new EqualDecimalRow(
                 new ModuloIntegerRow(
-                    new RoundIntegerRow(
+                    new RoundWithoutDigitsIntegerRow(
                         new FieldDecimal(
                             new JoinedString(
                                 new DotString(),
@@ -157,7 +157,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                 new SelectItemGroup(
                     "units",
                     new SumIntegerGroup(
-                        new RoundIntegerRow(
+                        new RoundWithoutDigitsIntegerRow(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),
@@ -176,7 +176,7 @@ public sealed record IntegerAndDecimalInGroupsQuery
                     new RoundDecimalGroup(
                         new SumDecimalGroup(
                             new MultiplyDecimalRow([
-                                new RoundIntegerRow(
+                                new RoundWithoutDigitsIntegerRow(
                                     new FieldDecimal(
                                         new JoinedString(
                                             new DotString(),

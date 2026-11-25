@@ -60,14 +60,14 @@ public sealed record LiftedOperatorsQueryTests
                           "name": "date",
                           "nullable": true
                         },
-                        "left": {
+                        "operand": {
                           "source": "schema_with_foreign_keys.users",
                           "field": "signup_date",
                           "type": {
                             "name": "date"
                           }
                         },
-                        "right": {
+                        "days": {
                           "operator": "round",
                           "type": {
                             "name": "integer",

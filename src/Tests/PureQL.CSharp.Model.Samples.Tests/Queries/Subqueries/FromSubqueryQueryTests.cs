@@ -101,7 +101,6 @@ public sealed record FromSubqueryQueryTests
                     }
                   ],
                   "pagination": {
-                    "skip": 0,
                     "take": 2
                   }
                 }

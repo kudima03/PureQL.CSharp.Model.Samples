@@ -45,7 +45,7 @@ public sealed record RepeatBuyerOrderAndItemProfileQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "orders_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -95,7 +95,7 @@ public sealed record RepeatBuyerOrderAndItemProfileQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "items_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -277,7 +277,7 @@ public sealed record RepeatBuyerOrderAndItemProfileQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("orders_by_user", "avg_order_total")
                 ),
             ]

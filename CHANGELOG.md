@@ -5,6 +5,18 @@ All notable changes to `PureQL.CSharp.Model.Samples` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.0-preview.4.0.0] - 2026-11-24
+
+### Added
+
+- 65 samples, one for each new sample of PureQL specification 0.1.0-preview.3.0.0, rewritten over the fixtures like the others: `Numbers` (operators over a list, whole numbers, integer bands, decimal remainders, `halfEven` rounding, `abs` / `sign` / `truncate`, `greatest` / `least`, powers and logarithms, trigonometry), `Strings` (`length`, `upper` / `lower`, `trim`, `substring`, matching, `foldCase`, `normalize`, `removeDiacritics`, `replace` / `position` / `splitPart`, padding and `concatWith`, regular expressions), `Temporal` (months, amounts named by their unit, parts, dates from parts), `TimeZones` (local days, parts, periods, instants and months), `Conversions` (`as…`, `tryAs…`, explicit widening), `Nulls` (`nullIfEqual`, nullable comparisons, lifting over every operand), `Aggregates` (`countDistinct`, `first` / `last`, statistics, temporal means, covariance and correlation, regression, `concatAll`), `SetOperations` (`unionAll`, a combined main query), `Windows` (partitions, running totals, moving averages, range frames, ranking, `previous` / `next`, top N per group, windows over grouped rows, row expressions in windows) and `Recursive` (descendants, ancestors, a tree in order, a roll-up, a calendar of days, a rate of return by iteration), plus `Where.OptionalListFiltersQuery`, `Pagination.OrdersAfterTheLatestQuery`, `OrderBy.OrderBySelectColumnQuery`, `GroupBy.GroupByMonthQuery` and `Subqueries.InlineStatusRowsQuery`. Every one but `Where.OptionalListFiltersQuery`, which is about parameters, carries a result computed on PostgreSQL 17.
+
+### Changed
+
+- **Breaking:** built on `PureQL.CSharp.Model` 0.1.0-preview.15.0.0, which follows PureQL specification 0.1.0-preview.3.0.0. Order items are `OrderItem{Projection,Group}Expression`, subqueries `SubqueryQuery`, rounding to a whole number `RoundWithoutDigitsInteger…`, and `dateAddDays` / `timeAddSeconds` / `datetimeAddSeconds` take `operand` and `days` / `seconds`; a first page is `new Pagination(take: n)`, so `Subqueries.FromSubqueryQuery`, `Subqueries.SubqueryPipelineQuery`, `Pagination.FilterOrderAndPageQuery`, `Dashboards.UnbilledOrderAgingQuery`, `Dashboards.LineRestockSuggestionQuery` and `Dashboards.UserAccountOverviewQuery` no longer write `"skip": 0`. No sample is renamed and every expected result is unchanged.
+- The catalogue maps every sample to its 3.0.0 specification number; the `Dashboards` samples are specification samples 123 to 151.
+- Tests serialize through `PureQL.CSharp.Model.Serialization` 0.1.0-preview.7.0.0.
+
 ## [0.1.0-preview.3.1.0] - 2026-11-11
 
 ### Changed

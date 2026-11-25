@@ -55,7 +55,7 @@ public sealed record EmployeeScorecardQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "revenue_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -228,7 +228,7 @@ public sealed record EmployeeScorecardQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "orders_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -366,7 +366,7 @@ public sealed record EmployeeScorecardQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "logins_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -545,7 +545,7 @@ public sealed record EmployeeScorecardQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("revenue_by_user", "revenue"),
                     SortDirection.Desc
                 ),

@@ -60,7 +60,7 @@ public sealed record IntegerArithmeticQuery
                 new SelectItemProjection(
                     "double_quantity",
                     new MultiplyIntegerProjection([
-                        new RoundIntegerProjection(
+                        new RoundWithoutDigitsIntegerProjection(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),
@@ -78,7 +78,7 @@ public sealed record IntegerArithmeticQuery
                 new SelectItemProjection(
                     "one_less",
                     new SubtractIntegerProjection([
-                        new RoundIntegerProjection(
+                        new RoundWithoutDigitsIntegerProjection(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),
@@ -96,7 +96,7 @@ public sealed record IntegerArithmeticQuery
                 new SelectItemProjection(
                     "with_bonus",
                     new AddIntegerProjection([
-                        new RoundIntegerProjection(
+                        new RoundWithoutDigitsIntegerProjection(
                             new FieldDecimal(
                                 new JoinedString(
                                     new DotString(),

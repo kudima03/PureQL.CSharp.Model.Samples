@@ -362,7 +362,7 @@ public sealed record RevenuePerEmployeeAndAgeQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(
+                new OrderItemGroupExpression(
                     new SumDecimalGroup(
                         new MultiplyDecimalRow([
                             new FieldDecimal(

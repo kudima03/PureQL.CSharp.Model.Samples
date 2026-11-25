@@ -128,13 +128,13 @@ public sealed record WeeklyUnitsPerProductQueryTests
                         "type": {
                           "name": "date"
                         },
-                        "left": {
+                        "operand": {
                           "type": {
                             "name": "date"
                           },
                           "value": "2024-05-27"
                         },
-                        "right": {
+                        "days": {
                           "operator": "multiply",
                           "type": {
                             "name": "integer"

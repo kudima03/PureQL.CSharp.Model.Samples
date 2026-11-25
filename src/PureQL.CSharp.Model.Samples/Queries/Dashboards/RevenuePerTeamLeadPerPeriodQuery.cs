@@ -193,7 +193,7 @@ public sealed record RevenuePerTeamLeadPerPeriodQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyInteger("period_no"))]
+            orderBy: [new OrderItemGroupExpression(new KeyInteger("period_no"))]
         );
 
     /// <summary>

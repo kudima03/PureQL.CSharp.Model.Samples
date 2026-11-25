@@ -47,7 +47,7 @@ public sealed record InStockItemValueVersusOrderedPerUserQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "ordered_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -96,7 +96,7 @@ public sealed record InStockItemValueVersusOrderedPerUserQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "in_stock_value_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -316,7 +316,9 @@ public sealed record InStockItemValueVersusOrderedPerUserQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(new FieldUuid("ordered_by_user", "user_id")),
+                new OrderItemProjectionExpression(
+                    new FieldUuid("ordered_by_user", "user_id")
+                ),
             ]
         );
 

@@ -43,7 +43,7 @@ public sealed record PlacedVersusShippedPerDayQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "placed_by_day",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -93,7 +93,7 @@ public sealed record PlacedVersusShippedPerDayQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "shipped_by_day",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -207,7 +207,9 @@ public sealed record PlacedVersusShippedPerDayQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(new FieldDate("placed_by_day", "placed_on")),
+                new OrderItemProjectionExpression(
+                    new FieldDate("placed_by_day", "placed_on")
+                ),
             ]
         );
 

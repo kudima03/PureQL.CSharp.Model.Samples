@@ -64,7 +64,7 @@ public sealed record OrderByMultipleKeysQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal(
                         new JoinedString(
                             new DotString(),
@@ -76,7 +76,7 @@ public sealed record OrderByMultipleKeysQuery
                         new UserAgeColumn().Name.TextValue
                     )
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDatetime(
                         new JoinedString(
                             new DotString(),
@@ -89,7 +89,7 @@ public sealed record OrderByMultipleKeysQuery
                     ),
                     SortDirection.Desc
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldUuid(
                         new JoinedString(
                             new DotString(),

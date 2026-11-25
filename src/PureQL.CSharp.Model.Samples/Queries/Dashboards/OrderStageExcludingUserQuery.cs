@@ -191,7 +191,7 @@ public sealed record OrderStageExcludingUserQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyString("stage"))]
+            orderBy: [new OrderItemGroupExpression(new KeyString("stage"))]
         );
 
     /// <summary>

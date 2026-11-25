@@ -85,7 +85,7 @@ public sealed record ComputedGroupKeyQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyString("size_bucket"))]
+            orderBy: [new OrderItemGroupExpression(new KeyString("size_bucket"))]
         );
 
     /// <summary>

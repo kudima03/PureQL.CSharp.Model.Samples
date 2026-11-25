@@ -38,7 +38,7 @@ public sealed record SubqueryChainQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "user_totals",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -101,7 +101,7 @@ public sealed record SubqueryChainQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "big_spenders",
                     new PlainQueryWithoutPaginationWithoutOrderBy(
                         from: new FromSubquery("user_totals"),
@@ -171,7 +171,7 @@ public sealed record SubqueryChainQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("big_spenders", "total"),
                     SortDirection.Desc
                 ),

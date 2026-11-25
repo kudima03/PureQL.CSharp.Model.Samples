@@ -87,7 +87,7 @@ public sealed record FilterOrderAndPageQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal(
                         new JoinedString(
                             new DotString(),
@@ -100,7 +100,7 @@ public sealed record FilterOrderAndPageQuery
                     ),
                     SortDirection.Desc
                 ),
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldUuid(
                         new JoinedString(
                             new DotString(),
@@ -113,6 +113,6 @@ public sealed record FilterOrderAndPageQuery
                     )
                 ),
             ],
-            pagination: new ModelPagination(0, 20)
+            pagination: new ModelPagination(take: 20)
         );
 }

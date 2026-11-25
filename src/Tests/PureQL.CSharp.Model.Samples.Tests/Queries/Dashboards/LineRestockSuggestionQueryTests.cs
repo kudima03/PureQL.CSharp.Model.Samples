@@ -802,7 +802,6 @@ public sealed record LineRestockSuggestionQueryTests
                     }
                   ],
                   "pagination": {
-                    "skip": 0,
                     "take": 100
                   }
                 }

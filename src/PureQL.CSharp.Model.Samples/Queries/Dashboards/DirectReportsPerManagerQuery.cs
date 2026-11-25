@@ -213,8 +213,8 @@ public sealed record DirectReportsPerManagerQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(new CountGroup(), SortDirection.Desc),
-                new OrderItemGroup(new KeyString("manager")),
+                new OrderItemGroupExpression(new CountGroup(), SortDirection.Desc),
+                new OrderItemGroupExpression(new KeyString("manager")),
             ]
         );
 

@@ -36,7 +36,7 @@ public sealed record FromSubqueryQuery
         new MainPlainQueryWithPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "recent_orders",
                     new PlainQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -106,12 +106,12 @@ public sealed record FromSubqueryQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new FieldDecimal("recent_orders", "total"),
                     SortDirection.Desc
                 ),
             ],
-            pagination: new ModelPagination(0, 2)
+            pagination: new ModelPagination(take: 2)
         );
 
     /// <summary>

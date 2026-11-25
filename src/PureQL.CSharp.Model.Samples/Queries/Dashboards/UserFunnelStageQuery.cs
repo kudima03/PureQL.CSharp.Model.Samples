@@ -43,7 +43,7 @@ public sealed record UserFunnelStageQuery
         new MainGroupedQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "orders_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -183,7 +183,7 @@ public sealed record UserFunnelStageQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyString("stage"))]
+            orderBy: [new OrderItemGroupExpression(new KeyString("stage"))]
         );
 
     /// <summary>

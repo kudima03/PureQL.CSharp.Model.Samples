@@ -52,7 +52,7 @@ public sealed record UserSalesSummaryQuery
         new MainPlainQueryWithoutPagination(
             subqueries:
             [
-                new Subquery(
+                new SubqueryQuery(
                     "item_sales_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -249,7 +249,7 @@ public sealed record UserSalesSummaryQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "orders_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -302,7 +302,7 @@ public sealed record UserSalesSummaryQuery
                         ]
                     )
                 ),
-                new Subquery(
+                new SubqueryQuery(
                     "logins_by_user",
                     new GroupedQueryWithoutPaginationWithoutOrderBy(
                         from: new FromEntity(
@@ -515,7 +515,7 @@ public sealed record UserSalesSummaryQuery
             ],
             orderBy:
             [
-                new OrderItemProjection(
+                new OrderItemProjectionExpression(
                     new CoalesceDecimalProjection([
                         new FieldDecimalNullable("item_sales_by_user", "revenue"),
                         new LiteralDecimal(0m),

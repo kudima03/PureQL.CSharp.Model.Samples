@@ -182,7 +182,7 @@ public sealed record BilledWithFeePerEmployeeQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(
+                new OrderItemGroupExpression(
                     new SumDecimalGroup(
                         new AddDecimalRow([
                             new FieldDecimal(

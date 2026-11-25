@@ -275,7 +275,7 @@ public sealed record ScoreByProductPerOrderDayQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyInteger("days_since_launch"))]
+            orderBy: [new OrderItemGroupExpression(new KeyInteger("days_since_launch"))]
         );
 
     /// <summary>

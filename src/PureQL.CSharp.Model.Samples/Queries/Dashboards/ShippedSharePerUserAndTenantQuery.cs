@@ -338,7 +338,7 @@ public sealed record ShippedSharePerUserAndTenantQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyUuid("order_tenant_id"))]
+            orderBy: [new OrderItemGroupExpression(new KeyUuid("order_tenant_id"))]
         );
 
     /// <summary>

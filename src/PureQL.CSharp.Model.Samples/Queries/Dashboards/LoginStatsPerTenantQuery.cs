@@ -185,7 +185,7 @@ public sealed record LoginStatsPerTenantQuery
                     )
                 ),
             ],
-            orderBy: [new OrderItemGroup(new KeyUuid("user_tenant_id"))]
+            orderBy: [new OrderItemGroupExpression(new KeyUuid("user_tenant_id"))]
         );
 
     /// <summary>

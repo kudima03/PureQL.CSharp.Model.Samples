@@ -81,13 +81,13 @@ public sealed record DateMathEverywhereQueryTests
                       "type": {
                         "name": "date"
                       },
-                      "left": {
+                      "operand": {
                         "type": {
                           "name": "date"
                         },
                         "value": "2024-06-30"
                       },
-                      "right": {
+                      "days": {
                         "type": {
                           "name": "integer"
                         },

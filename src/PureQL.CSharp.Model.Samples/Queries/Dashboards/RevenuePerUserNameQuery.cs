@@ -216,7 +216,7 @@ public sealed record RevenuePerUserNameQuery
             ],
             orderBy:
             [
-                new OrderItemGroup(
+                new OrderItemGroupExpression(
                     new SumDecimalGroup(
                         new MultiplyDecimalRow([
                             new FieldDecimal(
