@@ -172,6 +172,34 @@ public sealed record DecimalRemaindersInAGroupedQueryTests
                       }
                     },
                     {
+                      "alias": "tens_in_the_sum",
+                      "expression": {
+                        "operator": "integerDivide",
+                        "type": {
+                          "name": "integer"
+                        },
+                        "left": {
+                          "operator": "sum",
+                          "type": {
+                            "name": "decimal"
+                          },
+                          "selector": {
+                            "source": "schema_with_foreign_keys.products",
+                            "field": "product_price",
+                            "type": {
+                              "name": "decimal"
+                            }
+                          }
+                        },
+                        "right": {
+                          "type": {
+                            "name": "integer"
+                          },
+                          "value": 10
+                        }
+                      }
+                    },
+                    {
                       "alias": "average_remainder",
                       "expression": {
                         "operator": "average",
@@ -345,6 +373,10 @@ public sealed record DecimalRemaindersInAGroupedQueryTests
                       "type": "double"
                     },
                     {
+                      "name": "tens_in_the_sum",
+                      "type": "long"
+                    },
+                    {
                       "name": "average_remainder",
                       "type": "double"
                     },
@@ -367,6 +399,7 @@ public sealed record DecimalRemaindersInAGroupedQueryTests
                       "0",
                       "0.99",
                       "9.98",
+                      "1",
                       "0.04",
                       "2",
                       "0",
@@ -376,6 +409,7 @@ public sealed record DecimalRemaindersInAGroupedQueryTests
                       "1",
                       "0.99",
                       "9.99",
+                      "1",
                       "0.04",
                       "1",
                       "10",

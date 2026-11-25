@@ -30,7 +30,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Numbers;
 /// item_product_id, grouped by product_price integer-divided by 10 as price_band and
 /// product_price modulo 1 as cents, having the sum of product_price modulo 10 greater
 /// than the decimal 4.75: price_band, cents, the sum of product_price modulo 10 as
-/// remainder_of_the_sum, the average of product_price modulo 0.05 as average_remainder,
+/// remainder_of_the_sum and integer-divided by 10 as tens_in_the_sum, the average of product_price modulo 0.05 as average_remainder,
 /// the count of rows whose product_price modulo 0.05 is not 0 as off_step, price_band
 /// multiplied by 10 as band_start and the sum of item_qty rounded to a whole number
 /// integer-divided by 2 as pairs, ordered by price_band and cents.
@@ -160,6 +160,24 @@ public sealed record DecimalRemaindersInAGroupedQuery
                     )
                 ),
                 new SelectItemGroup(
+                    "tens_in_the_sum",
+                    new IntegerDivideIntegerGroup(
+                        new SumDecimalGroup(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new ProductsTable().Name,
+                                    ]
+                                ).TextValue,
+                                new ProductPriceColumn().Name.TextValue
+                            )
+                        ),
+                        new LiteralInteger(10)
+                    )
+                ),
+                new SelectItemGroup(
                     "average_remainder",
                     new AverageDecimalGroup(
                         new ModuloDecimalRow(
@@ -249,6 +267,7 @@ public sealed record DecimalRemaindersInAGroupedQuery
                         new String("remainder_of_the_sum"),
                         new DoubleColumnType()
                     ),
+                    new Column(new String("tens_in_the_sum"), new LongColumnType()),
                     new Column(new String("average_remainder"), new DoubleColumnType()),
                     new Column(new String("off_step"), new LongColumnType()),
                     new Column(new String("band_start"), new LongColumnType()),
@@ -277,6 +296,13 @@ public sealed record DecimalRemaindersInAGroupedQuery
                                     new DoubleColumnType()
                                 ),
                                 new InvariantCell(new Double(9.98))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("tens_in_the_sum"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(1))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
@@ -326,6 +352,13 @@ public sealed record DecimalRemaindersInAGroupedQuery
                                     new DoubleColumnType()
                                 ),
                                 new InvariantCell(new Double(9.99))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("tens_in_the_sum"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(1))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
