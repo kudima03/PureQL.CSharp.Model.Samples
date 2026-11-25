@@ -175,7 +175,7 @@ public sealed record OrderLabelsOverJoinsQuery
                             ).TextValue,
                             new OrderIdColumn().Name.TextValue
                         ),
-                        new FieldUuidNullable("coupons", "order_id")
+                        new FieldUuid("coupons", "order_id")
                     )
                 ),
             ],

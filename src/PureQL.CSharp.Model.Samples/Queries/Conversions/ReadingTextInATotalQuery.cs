@@ -28,7 +28,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Conversions;
 /// <summary>
 /// Aggregates schema_with_foreign_keys.users inner joined on user_id to an inline
 /// subquery imports of text columns (tier, postal_code and a nullable mobile), where
-/// last_login is at most asDatetime of the text "2024-06-03T00:00:00Z", into one row:
+/// last_login is at most asDatetime of the text "2024-06-04T00:00:00Z", into one row:
 /// the count of rows as users, the count of rows whose tier tryAsInteger is not null as
 /// numeric_tiers, the max of tryAsInteger of tier as highest_tier, the average of
 /// tryAsInteger of postal_code as average_postal_number, asInteger of the text "4" as
@@ -139,7 +139,7 @@ public sealed record ReadingTextInATotalQuery
                     ).TextValue,
                     new LastLoginColumn().Name.TextValue
                 ),
-                new AsDatetimeStringDatetimeRow(new LiteralString("2024-06-03T00:00:00Z"))
+                new AsDatetimeStringDatetimeRow(new LiteralString("2024-06-04T00:00:00Z"))
             ),
             aggregate:
             [
@@ -222,14 +222,14 @@ public sealed record ReadingTextInATotalQuery
                         [
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(new String("users"), new LongColumnType()),
-                                new InvariantCell(new Long(4))
+                                new InvariantCell(new Long(5))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
                                     new String("numeric_tiers"),
                                     new LongColumnType()
                                 ),
-                                new InvariantCell(new Long(2))
+                                new InvariantCell(new Long(3))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
@@ -243,7 +243,7 @@ public sealed record ReadingTextInATotalQuery
                                     new String("average_postal_number"),
                                     new DoubleColumnType()
                                 ),
-                                new InvariantCell(new Double(42558))
+                                new InvariantCell(new Double(29052))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(new String("target"), new LongColumnType()),
@@ -261,7 +261,7 @@ public sealed record ReadingTextInATotalQuery
                                     new String("all_mobiles_are_numbers"),
                                     new BoolColumnType()
                                 ),
-                                new InvariantCell(new True())
+                                new InvariantCell(new False())
                             ),
                         ],
                         pair => pair.Key,

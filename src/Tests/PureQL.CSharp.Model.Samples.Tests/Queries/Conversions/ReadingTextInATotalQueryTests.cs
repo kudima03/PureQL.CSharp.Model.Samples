@@ -298,7 +298,7 @@ public sealed record ReadingTextInATotalQueryTests
                         "type": {
                           "name": "string"
                         },
-                        "value": "2024-06-03T00:00:00Z"
+                        "value": "2024-06-04T00:00:00Z"
                       }
                     }
                   },
@@ -525,13 +525,13 @@ public sealed record ReadingTextInATotalQueryTests
                   "indexes": 0,
                   "rows": [
                     [
-                      "4",
-                      "2",
+                      "5",
+                      "3",
                       "10",
-                      "42558",
+                      "29052",
                       "4",
                       "True",
-                      "True"
+                      "False"
                     ]
                   ]
                 }

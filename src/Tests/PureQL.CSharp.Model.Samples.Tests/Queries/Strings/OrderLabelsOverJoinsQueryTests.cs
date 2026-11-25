@@ -380,8 +380,7 @@ public sealed record OrderLabelsOverJoinsQueryTests
                           "source": "coupons",
                           "field": "order_id",
                           "type": {
-                            "name": "uuid",
-                            "nullable": true
+                            "name": "uuid"
                           }
                         }
                       }
