@@ -8,7 +8,7 @@ public sealed record DeepNumericNestingQueryTests
     public void ValueSerializesToExpectedJson()
     {
         Assert.Equal(
-            new DeepExpectedJson(
+            new ExpectedJson(
                 /*lang=json,strict*/
                 """
                 {
@@ -73,7 +73,7 @@ public sealed record DeepNumericNestingQueryTests
                 }
                 """
             ).TextValue,
-            new DeepQueryJson(new DeepNumericNestingQuery().Value).TextValue
+            new QueryJson(new DeepNumericNestingQuery().Value).TextValue
         );
     }
 

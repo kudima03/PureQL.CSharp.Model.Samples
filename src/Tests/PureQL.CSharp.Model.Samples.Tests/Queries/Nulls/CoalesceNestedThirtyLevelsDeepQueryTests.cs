@@ -8,7 +8,7 @@ public sealed record CoalesceNestedThirtyLevelsDeepQueryTests
     public void ValueSerializesToExpectedJson()
     {
         Assert.Equal(
-            new DeepJson(
+            new ExpectedJson(
                 /*lang=json,strict*/
                 """
                 {
@@ -480,7 +480,7 @@ public sealed record CoalesceNestedThirtyLevelsDeepQueryTests
                 }
                 """
             ).TextValue,
-            new DeepJson(new CoalesceNestedThirtyLevelsDeepQuery().Value).TextValue
+            new QueryJson(new CoalesceNestedThirtyLevelsDeepQuery().Value).TextValue
         );
     }
 

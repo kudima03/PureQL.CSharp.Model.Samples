@@ -8,7 +8,7 @@ public sealed record DeepOperandChainsQueryTests
     public void ValueSerializesToExpectedJson()
     {
         Assert.Equal(
-            new DeepExpectedJson(
+            new ExpectedJson(
                 /*lang=json,strict*/
                 """
                 {
@@ -86,7 +86,7 @@ public sealed record DeepOperandChainsQueryTests
                 }
                 """
             ).TextValue,
-            new DeepQueryJson(new DeepOperandChainsQuery().Value).TextValue
+            new QueryJson(new DeepOperandChainsQuery().Value).TextValue
         );
     }
 

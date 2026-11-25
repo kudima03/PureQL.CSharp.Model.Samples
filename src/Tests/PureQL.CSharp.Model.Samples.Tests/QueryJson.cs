@@ -21,13 +21,16 @@ internal sealed record QueryJson
 
     public string TextValue =>
         new CanonicalJson(
-            JsonNode.Parse(JsonSerializer.Serialize(_query, Options()))
+            JsonNode.Parse(
+                JsonSerializer.Serialize(_query, Options()),
+                documentOptions: new JsonDocumentOptions { MaxDepth = 512 }
+            )
         ).TextValue;
 
     private static JsonSerializerOptions Options()
     {
-        // Deeply nested expressions can exceed the default depth of 64.
-        JsonSerializerOptions options = new JsonSerializerOptions { MaxDepth = 256 };
+        // Deeply nested expressions exceed the default depth of 64.
+        JsonSerializerOptions options = new JsonSerializerOptions { MaxDepth = 512 };
 
         foreach (JsonConverter converter in new PureQLConverters())
         {
