@@ -36,7 +36,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Recursive;
 /// recursive subquery referrals, which starts from the employee 000002bd of
 /// schema_with_foreign_keys.employees (employee_id as id, employee_name as first_name,
 /// depth 0) and adds every employee whose employee_manager_id is the id of a row, with
-/// depth + 1 (maxDepth 1). Two subqueries read it: levels, grouped by depth with the
+/// depth + 1, only from rows whose depth is below 1 (maxDepth 1). Two subqueries read it: levels, grouped by depth with the
 /// count as members, and deepest, a total query with the max of depth. The main query
 /// reads referrals, inner joins levels on depth and schema_with_foreign_keys.employees on
 /// employee_id equal to id, and keeps the rows whose depth is in the column depth of
@@ -139,6 +139,10 @@ public sealed record RecursiveSubqueryReadersQuery
                                     )
                                 ),
                             ],
+                            where: new LessThanDecimalRow(
+                                new FieldInteger("referrals", "depth"),
+                                new LiteralInteger(1)
+                            ),
                             select:
                             [
                                 new SelectItemRow(

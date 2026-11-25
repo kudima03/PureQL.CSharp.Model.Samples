@@ -63,8 +63,7 @@ public sealed record RecursiveColumnTypesQueryTests
                                       "source": "audit.logins",
                                       "field": "login_user_id",
                                       "type": {
-                                        "name": "uuid",
-                                        "nullable": true
+                                        "name": "uuid"
                                       }
                                     },
                                     "right": {
@@ -84,8 +83,7 @@ public sealed record RecursiveColumnTypesQueryTests
                                       "source": "audit.logins",
                                       "field": "login_at",
                                       "type": {
-                                        "name": "datetime",
-                                        "nullable": true
+                                        "name": "datetime"
                                       }
                                     },
                                     "right": {
@@ -275,8 +273,7 @@ public sealed record RecursiveColumnTypesQueryTests
                                   "source": "audit.logins",
                                   "field": "login_user_id",
                                   "type": {
-                                    "name": "uuid",
-                                    "nullable": true
+                                    "name": "uuid"
                                   }
                                 },
                                 "right": {

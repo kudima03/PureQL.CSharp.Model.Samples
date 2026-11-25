@@ -109,7 +109,7 @@ public sealed record RecursiveColumnTypesQuery
                                     ).TextValue,
                                     new AndRow([
                                         new EqualUuidRow(
-                                            new FieldUuidNullable(
+                                            new FieldUuid(
                                                 new JoinedString(
                                                     new DotString(),
                                                     [
@@ -131,7 +131,7 @@ public sealed record RecursiveColumnTypesQuery
                                             )
                                         ),
                                         new LessThanDatetimeRow(
-                                            new FieldDatetimeNullable(
+                                            new FieldDatetime(
                                                 new JoinedString(
                                                     new DotString(),
                                                     [
@@ -313,7 +313,7 @@ public sealed record RecursiveColumnTypesQuery
                                         ]
                                     ).TextValue,
                                     new EqualUuidRow(
-                                        new FieldUuidNullable(
+                                        new FieldUuid(
                                             new JoinedString(
                                                 new DotString(),
                                                 [

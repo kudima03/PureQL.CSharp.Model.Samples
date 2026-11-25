@@ -138,7 +138,7 @@ public sealed record MatchingWithoutCaseOverJoinsQuery
                         ]
                     ).TextValue,
                     new EqualUuidRow(
-                        new FieldUuidNullable(
+                        new FieldUuid(
                             new JoinedString(
                                 new DotString(),
                                 [

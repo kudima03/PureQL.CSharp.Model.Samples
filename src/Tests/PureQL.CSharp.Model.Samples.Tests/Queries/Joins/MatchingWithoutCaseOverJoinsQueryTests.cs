@@ -382,8 +382,7 @@ public sealed record MatchingWithoutCaseOverJoinsQueryTests
                           "source": "schema_with_foreign_keys.orders",
                           "field": "order_user_id",
                           "type": {
-                            "name": "uuid",
-                            "nullable": true
+                            "name": "uuid"
                           }
                         },
                         "right": {

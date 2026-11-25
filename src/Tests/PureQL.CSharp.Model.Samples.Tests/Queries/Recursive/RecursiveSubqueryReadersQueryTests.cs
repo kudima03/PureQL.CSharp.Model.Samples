@@ -102,6 +102,25 @@ public sealed record RecursiveSubqueryReadersQueryTests
                               }
                             }
                           ],
+                          "where": {
+                            "operator": "lessThan",
+                            "type": {
+                              "name": "boolean"
+                            },
+                            "left": {
+                              "source": "referrals",
+                              "field": "depth",
+                              "type": {
+                                "name": "integer"
+                              }
+                            },
+                            "right": {
+                              "type": {
+                                "name": "integer"
+                              },
+                              "value": 1
+                            }
+                          },
                           "select": [
                             {
                               "alias": "id",
