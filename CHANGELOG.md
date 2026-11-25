@@ -5,6 +5,18 @@ All notable changes to `PureQL.CSharp.Model.Samples` are documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- 235 samples, one for each sample the PureQL specification's `main` branch (at `75f1d7c`, after 0.1.0-preview.3.0.0) holds that the catalogue did not mirror, rewritten over the fixtures like the others: the three new `.json` samples (`Pagination.UsersAfterACursorQuery`, `TimeZones.OperatorsWithAndWithoutAZoneQuery`, `Joins.RightJoinAfterLeftJoinsQuery`) and 232 of the 234 `.jsonc` tests: edge cases (deep nesting, literal boundaries, operator and operand typing), every operator signature in every clause, and real-world shapes, across every folder but `Dashboards`. 222 of them carry a result computed on PostgreSQL 17; the other 13 keep a parameter their specification sample is about.
+- A `time` or `datetime` result with a fractional second (in `Select.LiteralEdgeValuesOfEveryTypeQuery`, `Select.LiteralsAtTheEdgesOfEveryFormatQuery`, `Temporal.AmountsOfEveryKindQuery`, `GroupBy.AddedAmountsInAGroupedQuery` and `Temporal.PartsAndBackQuery`) is written as its text, as the specification spells it, since a `Pure.Primitives` time holds whole seconds.
+
+### Changed
+
+- The catalogue follows the numbering of the specification's `main` branch: samples 018 and later move by one, 057 and later by two, 078 and later by three, and the `Dashboards` samples are specification samples 126 to 154. Specification tests 166 and 193, whose feature is the spelling of entity and field names, are not mirrored.
+- Tests read and write documents with a maximum JSON depth of 512, as the deepest specification samples need.
+
 ## [0.1.0-preview.4.0.0] - 2026-11-24
 
 ### Added
