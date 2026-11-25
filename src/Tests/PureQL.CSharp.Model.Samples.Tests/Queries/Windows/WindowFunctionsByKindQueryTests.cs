@@ -118,7 +118,7 @@ public sealed record WindowFunctionsByKindQueryTests
                           "partitionBy": [
                             {
                               "source": "schema_with_foreign_keys.orders",
-                              "field": "order_user_id",
+                              "field": "order_tenant_id",
                               "type": {
                                 "name": "uuid"
                               }
@@ -483,7 +483,7 @@ public sealed record WindowFunctionsByKindQueryTests
                     [
                       "150.5",
                       "150.5",
-                      "100.5",
+                      "200",
                       "2",
                       "2",
                       "6",
@@ -535,7 +535,7 @@ public sealed record WindowFunctionsByKindQueryTests
                     [
                       "100.5",
                       "826.25",
-                      "100.5",
+                      "300",
                       "1",
                       "1",
                       "3",

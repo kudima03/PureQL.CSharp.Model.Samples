@@ -27,9 +27,9 @@ namespace PureQL.CSharp.Model.Samples.Queries.Windows;
 /// Selects from schema_with_foreign_keys.orders the windows of every function kind: the
 /// running sum of order_total over a partition by order_user_id ordered by placed_at and
 /// order_id with a frame from the first row, the sum of order_total over a range of one
-/// month before the current placed_on, the largest order_total of the user within 100000
-/// seconds on both sides of placed_at (ordered descending), the count of the user's
-/// orders over a partition alone, rowNumber within the user, rank over order_total
+/// month before the current placed_on, the largest order_total of the tenant within
+/// 100000 seconds on both sides of placed_at (ordered descending), the count of the
+/// user's orders over a partition alone, rowNumber within the user, rank over order_total
 /// descending, denseRank within the order_status, percentRank over order_total,
 /// cumulativeDistribution over placed_on, ntile of 4 buckets over order_total and
 /// order_id, and the order_total two orders ahead within the tenant (ordered by placed_at
@@ -180,7 +180,7 @@ public sealed record WindowFunctionsByKindQuery
                                             new OrdersTable().Name,
                                         ]
                                     ).TextValue,
-                                    new OrderUserIdColumn().Name.TextValue
+                                    new OrderTenantIdColumn().Name.TextValue
                                 ),
                             ]
                         )
@@ -555,7 +555,7 @@ public sealed record WindowFunctionsByKindQuery
                                     new String("hour_around"),
                                     new DoubleColumnType()
                                 ),
-                                new InvariantCell(new Double(100.5))
+                                new InvariantCell(new Double(200))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
@@ -851,7 +851,7 @@ public sealed record WindowFunctionsByKindQuery
                                     new String("hour_around"),
                                     new DoubleColumnType()
                                 ),
-                                new InvariantCell(new Double(100.5))
+                                new InvariantCell(new Double(300))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
