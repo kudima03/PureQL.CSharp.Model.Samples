@@ -1,8 +1,27 @@
+using Pure.Collections.Generic;
+using Pure.Primitives.Date;
+using Pure.Primitives.Number;
 using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
+using Pure.Primitives.Time;
+using Pure.RelationalSchema.Abstractions.Column;
+using Pure.RelationalSchema.ColumnType;
+using Pure.RelationalSchema.HashCodes;
 using Pure.RelationalSchema.Samples.Schemas;
 using Pure.RelationalSchema.Samples.Tables;
+using Pure.RelationalSchema.Storage;
+using Pure.RelationalSchema.Storage.Abstractions;
+using Pure.RelationalSchema.Storage.Samples.Cells;
+using Pure.RelationalSchema.Storage.Samples.SchemaDataSets;
+using Pure.RelationalSchema.Storage.Samples.TableDataSets;
 using PureQL.CSharp.Model.Literals;
+using PureQL.CSharp.Model.Samples.Cells;
+using Column = Pure.RelationalSchema.Column.Column;
+using DateTime = Pure.Primitives.DateTime.DateTime;
+using Double = Pure.Primitives.Number.Double;
+using Guid = Pure.Primitives.Guid.Guid;
+using String = Pure.Primitives.String.String;
+using Table = Pure.RelationalSchema.Table.Table;
 
 namespace PureQL.CSharp.Model.Samples.Queries.Select;
 
@@ -113,11 +132,13 @@ public sealed record LiteralsAtTheEdgesOfEveryFormatQuery
                 ),
                 new SelectItemProjection(
                     "nil_uuid",
-                    new LiteralUuid(new Guid(0, 0, 0, new byte[8]))
+                    new LiteralUuid(new System.Guid(0, 0, 0, new byte[8]))
                 ),
                 new SelectItemProjection(
                     "max_uuid",
-                    new LiteralUuid(new Guid("ffffffff-ffff-ffff-ffff-ffffffffffff"))
+                    new LiteralUuid(
+                        new System.Guid("ffffffff-ffff-ffff-ffff-ffffffffffff")
+                    )
                 ),
                 new SelectItemProjection("zero", new LiteralDecimal(0m)),
                 new SelectItemProjection("negative_half", new LiteralDecimal(-0.5m)),
@@ -156,6 +177,1969 @@ public sealed record LiteralsAtTheEdgesOfEveryFormatQuery
                 new SelectItemProjection(
                     "string_looking_like_a_date",
                     new LiteralString("2024-02-30")
+                ),
+            ]
+        );
+
+    /// <summary>
+    /// The rows the query returns under the PureQL specification's semantics over
+    /// <see cref="SchemaDataSetWithForeignKeys"/> and
+    /// <see cref="AuditSchemaDataSet"/>, in no particular order: the same literals on
+    /// each of the six orders. A decimal is the nearest double, and a time or datetime with
+    /// a fractional second is its text as the specification spells it, since a
+    /// Pure.Primitives time holds whole seconds.
+    /// </summary>
+    public IStoredTableDataSet Result =>
+        new StoredTableDataSet(
+            new Table(
+                new EmptyString(),
+                [
+                    new Column(new String("leap_day_0004"), new DateColumnType()),
+                    new Column(new String("leap_day_0400"), new DateColumnType()),
+                    new Column(new String("leap_day_1600"), new DateColumnType()),
+                    new Column(new String("leap_day_2000"), new DateColumnType()),
+                    new Column(new String("leap_day_2400"), new DateColumnType()),
+                    new Column(new String("leap_day_9996"), new DateColumnType()),
+                    new Column(
+                        new String("last_day_of_february_1900"),
+                        new DateColumnType()
+                    ),
+                    new Column(
+                        new String("last_day_of_february_2100"),
+                        new DateColumnType()
+                    ),
+                    new Column(
+                        new String("thirty_first_of_december"),
+                        new DateColumnType()
+                    ),
+                    new Column(new String("thirtieth_of_november"), new DateColumnType()),
+                    new Column(new String("first_instant"), new DateTimeColumnType()),
+                    new Column(new String("last_instant"), new DateTimeColumnType()),
+                    new Column(new String("leap_instant"), new DateTimeColumnType()),
+                    new Column(new String("one_microsecond"), new TimeColumnType()),
+                    new Column(new String("last_second"), new TimeColumnType()),
+                    new Column(new String("last_microsecond"), new TimeColumnType()),
+                    new Column(new String("nil_uuid"), new UuidColumnType()),
+                    new Column(new String("max_uuid"), new UuidColumnType()),
+                    new Column(new String("zero"), new DoubleColumnType()),
+                    new Column(new String("negative_half"), new DoubleColumnType()),
+                    new Column(new String("largest_decimal"), new DoubleColumnType()),
+                    new Column(new String("smallest_fraction"), new DoubleColumnType()),
+                    new Column(
+                        new String("most_digits_with_fraction"),
+                        new DoubleColumnType()
+                    ),
+                    new Column(new String("negative_zero_integer"), new LongColumnType()),
+                    new Column(new String("zero_integer"), new LongColumnType()),
+                    new Column(
+                        new String("integer_written_with_fraction_zero"),
+                        new LongColumnType()
+                    ),
+                    new Column(new String("empty_string"), new StringColumnType()),
+                    new Column(new String("string_with_newline"), new StringColumnType()),
+                    new Column(
+                        new String("string_with_quote_and_backslash"),
+                        new StringColumnType()
+                    ),
+                    new Column(new String("string_with_emoji"), new StringColumnType()),
+                    new Column(new String("string_of_spaces"), new StringColumnType()),
+                    new Column(
+                        new String("string_looking_like_a_date"),
+                        new StringColumnType()
+                    ),
+                ],
+                []
+            ),
+            [
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0004"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(new UShort(29), new UShort(2), new UShort(4))
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_1600"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(1600)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2000"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2000)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_9996"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(9996)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_1900"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(1900)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_2100"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(2100)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirty_first_of_december"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirtieth_of_november"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(30),
+                                        new UShort(11),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("first_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new UtcDateTimeCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(1),
+                                            new UShort(1),
+                                            new UShort(1)
+                                        ),
+                                        new Time(
+                                            new UShort(0),
+                                            new UShort(0),
+                                            new UShort(0)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("9999-12-31T23:59:59.999999Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("2024-02-29T23:59:59.000001Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("one_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("00:00:00.000001"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_second"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(23),
+                                        new UShort(59),
+                                        new UShort(59)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("23:59:59.999999"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("nil_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000000-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("max_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("zero"), new DoubleColumnType()),
+                                new InvariantCell(new Double(0d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_half"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(-0.5d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("largest_decimal"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("smallest_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E-28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("most_digits_with_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+26d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("integer_written_with_fraction_zero"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(100))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("empty_string"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String(""))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_newline"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("a\nb"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_quote_and_backslash"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("say \"hi\" \\ bye"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_emoji"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("\U0001f600 \u00e9"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_of_spaces"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("   "))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_looking_like_a_date"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("2024-02-30"))
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0004"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(new UShort(29), new UShort(2), new UShort(4))
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_1600"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(1600)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2000"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2000)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_9996"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(9996)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_1900"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(1900)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_2100"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(2100)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirty_first_of_december"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirtieth_of_november"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(30),
+                                        new UShort(11),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("first_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new UtcDateTimeCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(1),
+                                            new UShort(1),
+                                            new UShort(1)
+                                        ),
+                                        new Time(
+                                            new UShort(0),
+                                            new UShort(0),
+                                            new UShort(0)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("9999-12-31T23:59:59.999999Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("2024-02-29T23:59:59.000001Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("one_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("00:00:00.000001"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_second"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(23),
+                                        new UShort(59),
+                                        new UShort(59)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("23:59:59.999999"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("nil_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000000-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("max_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("zero"), new DoubleColumnType()),
+                                new InvariantCell(new Double(0d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_half"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(-0.5d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("largest_decimal"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("smallest_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E-28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("most_digits_with_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+26d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("integer_written_with_fraction_zero"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(100))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("empty_string"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String(""))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_newline"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("a\nb"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_quote_and_backslash"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("say \"hi\" \\ bye"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_emoji"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("\U0001f600 \u00e9"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_of_spaces"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("   "))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_looking_like_a_date"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("2024-02-30"))
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0004"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(new UShort(29), new UShort(2), new UShort(4))
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_1600"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(1600)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2000"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2000)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_9996"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(9996)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_1900"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(1900)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_2100"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(2100)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirty_first_of_december"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirtieth_of_november"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(30),
+                                        new UShort(11),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("first_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new UtcDateTimeCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(1),
+                                            new UShort(1),
+                                            new UShort(1)
+                                        ),
+                                        new Time(
+                                            new UShort(0),
+                                            new UShort(0),
+                                            new UShort(0)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("9999-12-31T23:59:59.999999Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("2024-02-29T23:59:59.000001Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("one_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("00:00:00.000001"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_second"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(23),
+                                        new UShort(59),
+                                        new UShort(59)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("23:59:59.999999"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("nil_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000000-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("max_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("zero"), new DoubleColumnType()),
+                                new InvariantCell(new Double(0d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_half"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(-0.5d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("largest_decimal"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("smallest_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E-28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("most_digits_with_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+26d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("integer_written_with_fraction_zero"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(100))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("empty_string"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String(""))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_newline"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("a\nb"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_quote_and_backslash"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("say \"hi\" \\ bye"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_emoji"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("\U0001f600 \u00e9"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_of_spaces"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("   "))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_looking_like_a_date"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("2024-02-30"))
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0004"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(new UShort(29), new UShort(2), new UShort(4))
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_1600"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(1600)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2000"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2000)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_9996"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(9996)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_1900"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(1900)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_2100"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(2100)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirty_first_of_december"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirtieth_of_november"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(30),
+                                        new UShort(11),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("first_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new UtcDateTimeCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(1),
+                                            new UShort(1),
+                                            new UShort(1)
+                                        ),
+                                        new Time(
+                                            new UShort(0),
+                                            new UShort(0),
+                                            new UShort(0)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("9999-12-31T23:59:59.999999Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("2024-02-29T23:59:59.000001Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("one_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("00:00:00.000001"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_second"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(23),
+                                        new UShort(59),
+                                        new UShort(59)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("23:59:59.999999"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("nil_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000000-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("max_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("zero"), new DoubleColumnType()),
+                                new InvariantCell(new Double(0d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_half"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(-0.5d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("largest_decimal"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("smallest_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E-28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("most_digits_with_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+26d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("integer_written_with_fraction_zero"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(100))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("empty_string"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String(""))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_newline"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("a\nb"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_quote_and_backslash"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("say \"hi\" \\ bye"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_emoji"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("\U0001f600 \u00e9"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_of_spaces"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("   "))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_looking_like_a_date"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("2024-02-30"))
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0004"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(new UShort(29), new UShort(2), new UShort(4))
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_1600"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(1600)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2000"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2000)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_9996"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(9996)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_1900"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(1900)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_2100"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(2100)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirty_first_of_december"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirtieth_of_november"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(30),
+                                        new UShort(11),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("first_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new UtcDateTimeCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(1),
+                                            new UShort(1),
+                                            new UShort(1)
+                                        ),
+                                        new Time(
+                                            new UShort(0),
+                                            new UShort(0),
+                                            new UShort(0)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("9999-12-31T23:59:59.999999Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("2024-02-29T23:59:59.000001Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("one_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("00:00:00.000001"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_second"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(23),
+                                        new UShort(59),
+                                        new UShort(59)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("23:59:59.999999"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("nil_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000000-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("max_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("zero"), new DoubleColumnType()),
+                                new InvariantCell(new Double(0d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_half"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(-0.5d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("largest_decimal"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("smallest_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E-28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("most_digits_with_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+26d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("integer_written_with_fraction_zero"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(100))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("empty_string"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String(""))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_newline"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("a\nb"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_quote_and_backslash"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("say \"hi\" \\ bye"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_emoji"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("\U0001f600 \u00e9"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_of_spaces"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("   "))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_looking_like_a_date"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("2024-02-30"))
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0004"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(new UShort(29), new UShort(2), new UShort(4))
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_0400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_1600"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(1600)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2000"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2000)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_2400"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(2400)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_day_9996"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(29),
+                                        new UShort(2),
+                                        new UShort(9996)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_1900"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(1900)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_day_of_february_2100"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(28),
+                                        new UShort(2),
+                                        new UShort(2100)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirty_first_of_december"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(31),
+                                        new UShort(12),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("thirtieth_of_november"),
+                                    new DateColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Date(
+                                        new UShort(30),
+                                        new UShort(11),
+                                        new UShort(2024)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("first_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new UtcDateTimeCell(
+                                    new DateTime(
+                                        new Date(
+                                            new UShort(1),
+                                            new UShort(1),
+                                            new UShort(1)
+                                        ),
+                                        new Time(
+                                            new UShort(0),
+                                            new UShort(0),
+                                            new UShort(0)
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("9999-12-31T23:59:59.999999Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("leap_instant"),
+                                    new DateTimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new String("2024-02-29T23:59:59.000001Z")
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("one_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("00:00:00.000001"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_second"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(
+                                    new Time(
+                                        new UShort(23),
+                                        new UShort(59),
+                                        new UShort(59)
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("last_microsecond"),
+                                    new TimeColumnType()
+                                ),
+                                new InvariantCell(new String("23:59:59.999999"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("nil_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000000-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("max_uuid"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "ffffffff-ffff-ffff-ffff-ffffffffffff"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("zero"), new DoubleColumnType()),
+                                new InvariantCell(new Double(0d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_half"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(-0.5d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("largest_decimal"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("smallest_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E-28d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("most_digits_with_fraction"),
+                                    new DoubleColumnType()
+                                ),
+                                new InvariantCell(new Double(1E+26d))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("negative_zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("zero_integer"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(0))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("integer_written_with_fraction_zero"),
+                                    new LongColumnType()
+                                ),
+                                new InvariantCell(new Long(100))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("empty_string"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String(""))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_newline"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("a\nb"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_quote_and_backslash"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("say \"hi\" \\ bye"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_with_emoji"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("\U0001f600 \u00e9"))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_of_spaces"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("   "))
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("string_looking_like_a_date"),
+                                    new StringColumnType()
+                                ),
+                                new InvariantCell(new String("2024-02-30"))
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
                 ),
             ]
         );

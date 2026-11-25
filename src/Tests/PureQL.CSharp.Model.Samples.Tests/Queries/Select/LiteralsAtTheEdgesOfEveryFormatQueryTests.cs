@@ -311,4 +311,357 @@ public sealed record LiteralsAtTheEdgesOfEveryFormatQueryTests
             new QueryJson(new LiteralsAtTheEdgesOfEveryFormatQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "leap_day_0004",
+                      "type": "date"
+                    },
+                    {
+                      "name": "leap_day_0400",
+                      "type": "date"
+                    },
+                    {
+                      "name": "leap_day_1600",
+                      "type": "date"
+                    },
+                    {
+                      "name": "leap_day_2000",
+                      "type": "date"
+                    },
+                    {
+                      "name": "leap_day_2400",
+                      "type": "date"
+                    },
+                    {
+                      "name": "leap_day_9996",
+                      "type": "date"
+                    },
+                    {
+                      "name": "last_day_of_february_1900",
+                      "type": "date"
+                    },
+                    {
+                      "name": "last_day_of_february_2100",
+                      "type": "date"
+                    },
+                    {
+                      "name": "thirty_first_of_december",
+                      "type": "date"
+                    },
+                    {
+                      "name": "thirtieth_of_november",
+                      "type": "date"
+                    },
+                    {
+                      "name": "first_instant",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "last_instant",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "leap_instant",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "one_microsecond",
+                      "type": "time"
+                    },
+                    {
+                      "name": "last_second",
+                      "type": "time"
+                    },
+                    {
+                      "name": "last_microsecond",
+                      "type": "time"
+                    },
+                    {
+                      "name": "nil_uuid",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "max_uuid",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "zero",
+                      "type": "double"
+                    },
+                    {
+                      "name": "negative_half",
+                      "type": "double"
+                    },
+                    {
+                      "name": "largest_decimal",
+                      "type": "double"
+                    },
+                    {
+                      "name": "smallest_fraction",
+                      "type": "double"
+                    },
+                    {
+                      "name": "most_digits_with_fraction",
+                      "type": "double"
+                    },
+                    {
+                      "name": "negative_zero_integer",
+                      "type": "long"
+                    },
+                    {
+                      "name": "zero_integer",
+                      "type": "long"
+                    },
+                    {
+                      "name": "integer_written_with_fraction_zero",
+                      "type": "long"
+                    },
+                    {
+                      "name": "empty_string",
+                      "type": "string"
+                    },
+                    {
+                      "name": "string_with_newline",
+                      "type": "string"
+                    },
+                    {
+                      "name": "string_with_quote_and_backslash",
+                      "type": "string"
+                    },
+                    {
+                      "name": "string_with_emoji",
+                      "type": "string"
+                    },
+                    {
+                      "name": "string_of_spaces",
+                      "type": "string"
+                    },
+                    {
+                      "name": "string_looking_like_a_date",
+                      "type": "string"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "0004-02-29",
+                      "0400-02-29",
+                      "1600-02-29",
+                      "2000-02-29",
+                      "2400-02-29",
+                      "9996-02-29",
+                      "1900-02-28",
+                      "2100-02-28",
+                      "2024-12-31",
+                      "2024-11-30",
+                      "0001-01-01T00:00:00Z",
+                      "9999-12-31T23:59:59.999999Z",
+                      "2024-02-29T23:59:59.000001Z",
+                      "00:00:00.000001",
+                      "23:59:59",
+                      "23:59:59.999999",
+                      "00000000-0000-0000-0000-000000000000",
+                      "ffffffff-ffff-ffff-ffff-ffffffffffff",
+                      "0",
+                      "-0.5",
+                      "1E+28",
+                      "1E-28",
+                      "1E+26",
+                      "0",
+                      "0",
+                      "100",
+                      "",
+                      "a\nb",
+                      "say \"hi\" \\ bye",
+                      "😀 é",
+                      "   ",
+                      "2024-02-30"
+                    ],
+                    [
+                      "0004-02-29",
+                      "0400-02-29",
+                      "1600-02-29",
+                      "2000-02-29",
+                      "2400-02-29",
+                      "9996-02-29",
+                      "1900-02-28",
+                      "2100-02-28",
+                      "2024-12-31",
+                      "2024-11-30",
+                      "0001-01-01T00:00:00Z",
+                      "9999-12-31T23:59:59.999999Z",
+                      "2024-02-29T23:59:59.000001Z",
+                      "00:00:00.000001",
+                      "23:59:59",
+                      "23:59:59.999999",
+                      "00000000-0000-0000-0000-000000000000",
+                      "ffffffff-ffff-ffff-ffff-ffffffffffff",
+                      "0",
+                      "-0.5",
+                      "1E+28",
+                      "1E-28",
+                      "1E+26",
+                      "0",
+                      "0",
+                      "100",
+                      "",
+                      "a\nb",
+                      "say \"hi\" \\ bye",
+                      "😀 é",
+                      "   ",
+                      "2024-02-30"
+                    ],
+                    [
+                      "0004-02-29",
+                      "0400-02-29",
+                      "1600-02-29",
+                      "2000-02-29",
+                      "2400-02-29",
+                      "9996-02-29",
+                      "1900-02-28",
+                      "2100-02-28",
+                      "2024-12-31",
+                      "2024-11-30",
+                      "0001-01-01T00:00:00Z",
+                      "9999-12-31T23:59:59.999999Z",
+                      "2024-02-29T23:59:59.000001Z",
+                      "00:00:00.000001",
+                      "23:59:59",
+                      "23:59:59.999999",
+                      "00000000-0000-0000-0000-000000000000",
+                      "ffffffff-ffff-ffff-ffff-ffffffffffff",
+                      "0",
+                      "-0.5",
+                      "1E+28",
+                      "1E-28",
+                      "1E+26",
+                      "0",
+                      "0",
+                      "100",
+                      "",
+                      "a\nb",
+                      "say \"hi\" \\ bye",
+                      "😀 é",
+                      "   ",
+                      "2024-02-30"
+                    ],
+                    [
+                      "0004-02-29",
+                      "0400-02-29",
+                      "1600-02-29",
+                      "2000-02-29",
+                      "2400-02-29",
+                      "9996-02-29",
+                      "1900-02-28",
+                      "2100-02-28",
+                      "2024-12-31",
+                      "2024-11-30",
+                      "0001-01-01T00:00:00Z",
+                      "9999-12-31T23:59:59.999999Z",
+                      "2024-02-29T23:59:59.000001Z",
+                      "00:00:00.000001",
+                      "23:59:59",
+                      "23:59:59.999999",
+                      "00000000-0000-0000-0000-000000000000",
+                      "ffffffff-ffff-ffff-ffff-ffffffffffff",
+                      "0",
+                      "-0.5",
+                      "1E+28",
+                      "1E-28",
+                      "1E+26",
+                      "0",
+                      "0",
+                      "100",
+                      "",
+                      "a\nb",
+                      "say \"hi\" \\ bye",
+                      "😀 é",
+                      "   ",
+                      "2024-02-30"
+                    ],
+                    [
+                      "0004-02-29",
+                      "0400-02-29",
+                      "1600-02-29",
+                      "2000-02-29",
+                      "2400-02-29",
+                      "9996-02-29",
+                      "1900-02-28",
+                      "2100-02-28",
+                      "2024-12-31",
+                      "2024-11-30",
+                      "0001-01-01T00:00:00Z",
+                      "9999-12-31T23:59:59.999999Z",
+                      "2024-02-29T23:59:59.000001Z",
+                      "00:00:00.000001",
+                      "23:59:59",
+                      "23:59:59.999999",
+                      "00000000-0000-0000-0000-000000000000",
+                      "ffffffff-ffff-ffff-ffff-ffffffffffff",
+                      "0",
+                      "-0.5",
+                      "1E+28",
+                      "1E-28",
+                      "1E+26",
+                      "0",
+                      "0",
+                      "100",
+                      "",
+                      "a\nb",
+                      "say \"hi\" \\ bye",
+                      "😀 é",
+                      "   ",
+                      "2024-02-30"
+                    ],
+                    [
+                      "0004-02-29",
+                      "0400-02-29",
+                      "1600-02-29",
+                      "2000-02-29",
+                      "2400-02-29",
+                      "9996-02-29",
+                      "1900-02-28",
+                      "2100-02-28",
+                      "2024-12-31",
+                      "2024-11-30",
+                      "0001-01-01T00:00:00Z",
+                      "9999-12-31T23:59:59.999999Z",
+                      "2024-02-29T23:59:59.000001Z",
+                      "00:00:00.000001",
+                      "23:59:59",
+                      "23:59:59.999999",
+                      "00000000-0000-0000-0000-000000000000",
+                      "ffffffff-ffff-ffff-ffff-ffffffffffff",
+                      "0",
+                      "-0.5",
+                      "1E+28",
+                      "1E-28",
+                      "1E+26",
+                      "0",
+                      "0",
+                      "100",
+                      "",
+                      "a\nb",
+                      "say \"hi\" \\ bye",
+                      "😀 é",
+                      "   ",
+                      "2024-02-30"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LiteralsAtTheEdgesOfEveryFormatQuery().Result).TextValue
+        );
+    }
 }
