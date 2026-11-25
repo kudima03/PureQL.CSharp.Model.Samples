@@ -29,12 +29,13 @@ namespace PureQL.CSharp.Model.Samples.Queries.Strings;
 /// Selects the user_id of schema_with_foreign_keys.users as id, the user_id of the users
 /// it is joined to as other_id, whether the last names of the two are equal in the form
 /// NFC, the order_status of the orders of the first user in the form NFC, nullable after
-/// the left join, and whether it equals paid in the form NFKC. The users are joined to
-/// schema_with_foreign_keys.users as other when their stored emails are equal case-folded
-/// and in the form NFKC and the user_id is less than the other user_id, then left joined
-/// to schema_with_foreign_keys.orders on order_user_id. The where keeps the pairs whose
-/// first user has a country that, in the form NFKC, is Brésil or Peru, ordered by the
-/// email in the form NFC, then by the two user_id values and order_status.
+/// the left join, and whether it equals shipped in the form NFKC. The users are joined
+/// to schema_with_foreign_keys.users as other when their stored emails are equal
+/// case-folded and in the form NFKC and the user_id is less than the other user_id, then
+/// left joined to schema_with_foreign_keys.orders on order_user_id. The where keeps the
+/// pairs whose first user has a country that, in the form NFKC, is Brésil, Peru or PÉRU,
+/// ordered by the email in the form NFC, then by the two user_id values and
+/// order_status.
 /// </summary>
 public sealed record NormalizeMatchingOverJoinsQuery
 {
@@ -269,7 +270,7 @@ public sealed record NormalizeMatchingOverJoinsQuery
                     ),
                     NormalizationForm.NFKC
                 ),
-                new ListLiteralString(["Br\u00E9sil", "Peru"])
+                new ListLiteralString(["Br\u00E9sil", "Peru", "P\u00C9RU"])
             ),
             select:
             [
@@ -450,7 +451,7 @@ public sealed record NormalizeMatchingOverJoinsQuery
                     )
                 ),
                 new SelectItemProjection(
-                    "status_is_paid",
+                    "status_is_shipped",
                     new EqualStringProjection(
                         new NormalizeStringNullableProjection(
                             new FieldStringNullable(
@@ -465,7 +466,7 @@ public sealed record NormalizeMatchingOverJoinsQuery
                             ),
                             NormalizationForm.NFKC
                         ),
-                        new LiteralString("paid")
+                        new LiteralString("shipped")
                     )
                 ),
             ],
@@ -556,7 +557,7 @@ public sealed record NormalizeMatchingOverJoinsQuery
                     new Column(new String("other_id"), new UuidColumnType()),
                     new Column(new String("same_last_name"), new BoolColumnType()),
                     new Column(new String("status"), new StringColumnType()),
-                    new Column(new String("status_is_paid"), new BoolColumnType()),
+                    new Column(new String("status_is_shipped"), new BoolColumnType()),
                 ],
                 []
             ),
@@ -597,7 +598,7 @@ public sealed record NormalizeMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
                                 new InvariantCell(new False())
@@ -644,10 +645,10 @@ public sealed record NormalizeMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
-                                new InvariantCell(new False())
+                                new InvariantCell(new True())
                             ),
                         ],
                         pair => pair.Key,
@@ -691,7 +692,7 @@ public sealed record NormalizeMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
                                 new InvariantCell(new False())
@@ -738,10 +739,10 @@ public sealed record NormalizeMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
-                                new InvariantCell(new False())
+                                new InvariantCell(new True())
                             ),
                         ],
                         pair => pair.Key,
@@ -785,7 +786,7 @@ public sealed record NormalizeMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
                                 new InvariantCell(new False())
@@ -832,7 +833,54 @@ public sealed record NormalizeMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
+                                    new BoolColumnType()
+                                ),
+                                new InvariantCell(new False())
+                            ),
+                        ],
+                        pair => pair.Key,
+                        pair => pair.Value,
+                        column => new ColumnHash(column)
+                    )
+                ),
+                new Row(
+                    new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
+                        [
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("id"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000005-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("other_id"), new UuidColumnType()),
+                                new InvariantCell(
+                                    new Guid(
+                                        new System.Guid(
+                                            "00000006-0000-0000-0000-000000000000"
+                                        )
+                                    )
+                                )
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("same_last_name"),
+                                    new BoolColumnType()
+                                ),
+                                new InvariantCell(new False())
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(new String("status"), new StringColumnType()),
+                                new EmptyCell()
+                            ),
+                            new KeyValuePair<IColumn, ICell>(
+                                new Column(
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
                                 new InvariantCell(new False())

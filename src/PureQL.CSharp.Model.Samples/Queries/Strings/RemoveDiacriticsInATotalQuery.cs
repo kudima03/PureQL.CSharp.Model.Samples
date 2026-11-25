@@ -68,9 +68,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new IfStringRow(
@@ -87,9 +85,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(5, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(5, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidRow(
@@ -103,9 +99,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                         ).TextValue,
                                         new UserTenantIdColumn().Name.TextValue
                                     ),
-                                    new LiteralUuid(
-                                        new Guid(901, 0, 0, new byte[8])
-                                    )
+                                    new LiteralUuid(new Guid(901, 0, 0, new byte[8]))
                                 )
                             ),
                             new EqualUuidRow(
@@ -158,12 +152,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                             .TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            901,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(901, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -210,9 +199,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 ),
                                 NormalizationForm.NFC
@@ -241,12 +228,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                             .TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            901,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(901, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -293,9 +275,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 )
                             )
@@ -329,12 +309,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -365,9 +340,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidRow(
@@ -414,12 +387,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -450,9 +418,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidRow(
@@ -528,9 +494,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserTenantIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(901, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(901, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidRow(
@@ -570,12 +534,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                         new UserIdColumn().Name.TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            2,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(2, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -594,12 +553,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                         new UserIdColumn().Name.TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            5,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(5, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -617,12 +571,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -698,12 +647,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                         new UserIdColumn().Name.TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            6,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(6, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -775,12 +719,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                                             .TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            901,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(901, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -827,9 +766,7 @@ public sealed record RemoveDiacriticsInATotalQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 )
                             )

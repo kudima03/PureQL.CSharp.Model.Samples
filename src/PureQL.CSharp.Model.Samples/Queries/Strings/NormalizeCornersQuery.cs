@@ -91,9 +91,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(6, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(6, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -166,9 +164,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(6, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(6, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -241,9 +237,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(6, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(6, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -316,9 +310,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(6, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(6, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -379,12 +371,7 @@ public sealed record NormalizeCornersQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -415,9 +402,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -466,12 +451,7 @@ public sealed record NormalizeCornersQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -502,9 +482,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -569,9 +547,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(5, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(5, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -612,12 +588,7 @@ public sealed record NormalizeCornersQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -648,9 +619,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -698,12 +667,7 @@ public sealed record NormalizeCornersQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -734,9 +698,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -785,12 +747,7 @@ public sealed record NormalizeCornersQuery
                                                             .TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            901,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(901, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -837,9 +794,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 ),
                                 NormalizationForm.NFD
@@ -876,12 +831,7 @@ public sealed record NormalizeCornersQuery
                                                             .TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            901,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(901, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -928,9 +878,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 ),
                                 NormalizationForm.NFD
@@ -961,12 +909,7 @@ public sealed record NormalizeCornersQuery
                                                             .TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            901,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(901, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -1013,9 +956,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 ),
                                 NormalizationForm.NFC
@@ -1050,12 +991,7 @@ public sealed record NormalizeCornersQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -1086,9 +1022,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -1142,9 +1076,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(5, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(5, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -1194,12 +1126,7 @@ public sealed record NormalizeCornersQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -1230,9 +1157,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -1273,9 +1198,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(2, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(2, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new LiteralStringNullable(),
@@ -1290,9 +1213,7 @@ public sealed record NormalizeCornersQuery
                                         ).TextValue,
                                         new UserTenantIdColumn().Name.TextValue
                                     ),
-                                    new LiteralUuid(
-                                        new Guid(901, 0, 0, new byte[8])
-                                    )
+                                    new LiteralUuid(new Guid(901, 0, 0, new byte[8]))
                                 )
                             ),
                             NormalizationForm.NFC
@@ -1323,9 +1244,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(5, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(5, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(
@@ -1379,12 +1298,7 @@ public sealed record NormalizeCornersQuery
                                                         new UserIdColumn().Name.TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            5,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(5, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -1471,12 +1385,7 @@ public sealed record NormalizeCornersQuery
                                                                 .TextValue
                                                         ),
                                                         new LiteralUuid(
-                                                            new Guid(
-                                                                6,
-                                                                0,
-                                                                0,
-                                                                new byte[8]
-                                                            )
+                                                            new Guid(6, 0, 0, new byte[8])
                                                         )
                                                     )
                                                 ),
@@ -1492,12 +1401,7 @@ public sealed record NormalizeCornersQuery
                                                         new UserIdColumn().Name.TextValue
                                                     ),
                                                     new LiteralUuid(
-                                                        new Guid(
-                                                            3,
-                                                            0,
-                                                            0,
-                                                            new byte[8]
-                                                        )
+                                                        new Guid(3, 0, 0, new byte[8])
                                                     )
                                                 )
                                             ),
@@ -1553,12 +1457,7 @@ public sealed record NormalizeCornersQuery
                                                         .TextValue
                                                 ),
                                                 new LiteralUuid(
-                                                    new Guid(
-                                                        901,
-                                                        0,
-                                                        0,
-                                                        new byte[8]
-                                                    )
+                                                    new Guid(901, 0, 0, new byte[8])
                                                 )
                                             )
                                         ),
@@ -1589,9 +1488,7 @@ public sealed record NormalizeCornersQuery
                                             ).TextValue,
                                             new UserIdColumn().Name.TextValue
                                         ),
-                                        new LiteralUuid(
-                                            new Guid(3, 0, 0, new byte[8])
-                                        )
+                                        new LiteralUuid(new Guid(3, 0, 0, new byte[8]))
                                     )
                                 ),
                                 new EqualUuidProjection(

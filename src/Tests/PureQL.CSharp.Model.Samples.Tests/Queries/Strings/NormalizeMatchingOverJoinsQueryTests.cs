@@ -390,7 +390,8 @@ public sealed record NormalizeMatchingOverJoinsQueryTests
                       },
                       "value": [
                         "Br\u00e9sil",
-                        "Peru"
+                        "Peru",
+                        "P\u00c9RU"
                       ]
                     }
                   },
@@ -718,7 +719,7 @@ public sealed record NormalizeMatchingOverJoinsQueryTests
                       }
                     },
                     {
-                      "alias": "status_is_paid",
+                      "alias": "status_is_shipped",
                       "expression": {
                         "operator": "equal",
                         "type": {
@@ -744,7 +745,7 @@ public sealed record NormalizeMatchingOverJoinsQueryTests
                           "type": {
                             "name": "string"
                           },
-                          "value": "paid"
+                          "value": "shipped"
                         }
                       }
                     }
@@ -890,7 +891,7 @@ public sealed record NormalizeMatchingOverJoinsQueryTests
                       "type": "string"
                     },
                     {
-                      "name": "status_is_paid",
+                      "name": "status_is_shipped",
                       "type": "bool"
                     }
                   ],
@@ -908,7 +909,7 @@ public sealed record NormalizeMatchingOverJoinsQueryTests
                       "00000002-0000-0000-0000-000000000000",
                       "False",
                       "shipped",
-                      "False"
+                      "True"
                     ],
                     [
                       "00000001-0000-0000-0000-000000000000",
@@ -922,7 +923,7 @@ public sealed record NormalizeMatchingOverJoinsQueryTests
                       "00000003-0000-0000-0000-000000000000",
                       "True",
                       "shipped",
-                      "False"
+                      "True"
                     ],
                     [
                       "00000004-0000-0000-0000-000000000000",
@@ -936,6 +937,13 @@ public sealed record NormalizeMatchingOverJoinsQueryTests
                       "00000006-0000-0000-0000-000000000000",
                       "False",
                       "pending",
+                      "False"
+                    ],
+                    [
+                      "00000005-0000-0000-0000-000000000000",
+                      "00000006-0000-0000-0000-000000000000",
+                      "False",
+                      "",
                       "False"
                     ]
                   ]

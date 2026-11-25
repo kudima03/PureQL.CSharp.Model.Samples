@@ -731,7 +731,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQueryTests
                       }
                     },
                     {
-                      "alias": "status_is_paid",
+                      "alias": "status_is_shipped",
                       "expression": {
                         "operator": "equal",
                         "type": {
@@ -763,7 +763,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQueryTests
                           "type": {
                             "name": "string"
                           },
-                          "value": "paid"
+                          "value": "shipped"
                         }
                       }
                     }
@@ -976,7 +976,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQueryTests
                       "type": "string"
                     },
                     {
-                      "name": "status_is_paid",
+                      "name": "status_is_shipped",
                       "type": "bool"
                     }
                   ],
@@ -994,7 +994,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQueryTests
                       "00000002-0000-0000-0000-000000000000",
                       "False",
                       "shipped",
-                      "False"
+                      "True"
                     ],
                     [
                       "00000001-0000-0000-0000-000000000000",
@@ -1008,14 +1008,14 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQueryTests
                       "00000003-0000-0000-0000-000000000000",
                       "True",
                       "shipped",
-                      "False"
+                      "True"
                     ],
                     [
                       "00000002-0000-0000-0000-000000000000",
                       "00000003-0000-0000-0000-000000000000",
                       "False",
                       "shipped",
-                      "False"
+                      "True"
                     ]
                   ]
                 }

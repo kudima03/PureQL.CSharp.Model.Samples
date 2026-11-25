@@ -29,7 +29,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Strings;
 /// Selects the user_id of schema_with_foreign_keys.users as id, the user_id of the users
 /// it is joined to as other_id, whether the first names of the two are equal case-folded
 /// and without accents, the order_status of the orders of the first user without accents,
-/// nullable after the left join, and whether it equals paid case-folded and without
+/// nullable after the left join, and whether it equals shipped case-folded and without
 /// accents. The users are joined to schema_with_foreign_keys.users as other when their
 /// last names are equal case-folded and without accents and the user_id is less than the
 /// other user_id, then left joined to schema_with_foreign_keys.orders on order_user_id.
@@ -466,7 +466,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                     )
                 ),
                 new SelectItemProjection(
-                    "status_is_paid",
+                    "status_is_shipped",
                     new EqualStringProjection(
                         new RemoveDiacriticsStringNullableProjection(
                             new FoldCaseStringNullableProjection(
@@ -482,7 +482,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                                 )
                             )
                         ),
-                        new LiteralString("paid")
+                        new LiteralString("shipped")
                     )
                 ),
             ],
@@ -617,7 +617,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                     new Column(new String("other_id"), new UuidColumnType()),
                     new Column(new String("same_first_name"), new BoolColumnType()),
                     new Column(new String("status"), new StringColumnType()),
-                    new Column(new String("status_is_paid"), new BoolColumnType()),
+                    new Column(new String("status_is_shipped"), new BoolColumnType()),
                 ],
                 []
             ),
@@ -658,7 +658,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
                                 new InvariantCell(new False())
@@ -705,10 +705,10 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
-                                new InvariantCell(new False())
+                                new InvariantCell(new True())
                             ),
                         ],
                         pair => pair.Key,
@@ -752,7 +752,7 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
                                 new InvariantCell(new False())
@@ -799,10 +799,10 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
-                                new InvariantCell(new False())
+                                new InvariantCell(new True())
                             ),
                         ],
                         pair => pair.Key,
@@ -846,10 +846,10 @@ public sealed record RemoveDiacriticsMatchingOverJoinsQuery
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
-                                    new String("status_is_paid"),
+                                    new String("status_is_shipped"),
                                     new BoolColumnType()
                                 ),
-                                new InvariantCell(new False())
+                                new InvariantCell(new True())
                             ),
                         ],
                         pair => pair.Key,
