@@ -26,7 +26,7 @@ public sealed record PairStatisticsOverWindowsQueryTests
                         },
                         "left": {
                           "source": "schema_with_foreign_keys.order_items",
-                          "field": "item_tenant_id",
+                          "field": "item_product_id",
                           "type": {
                             "name": "uuid"
                           }

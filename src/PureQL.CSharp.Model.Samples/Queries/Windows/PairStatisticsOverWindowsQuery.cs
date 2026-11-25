@@ -68,7 +68,7 @@ public sealed record PairStatisticsOverWindowsQuery
                                     new OrderItemsTable().Name,
                                 ]
                             ).TextValue,
-                            new ItemTenantIdColumn().Name.TextValue
+                            new ItemProductIdColumn().Name.TextValue
                         ),
                         new FieldUuid(
                             new JoinedString(
