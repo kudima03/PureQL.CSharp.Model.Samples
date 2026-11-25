@@ -1,6 +1,7 @@
 using Pure.Collections.Generic;
 using Pure.Primitives.Bool;
 using Pure.Primitives.Date;
+using Pure.Primitives.Number;
 using Pure.Primitives.String;
 using Pure.Primitives.String.Operations;
 using Pure.Primitives.Time;
@@ -22,7 +23,6 @@ using PureQL.CSharp.Model.RowExpressions;
 using PureQL.CSharp.Model.Samples.Cells;
 using Column = Pure.RelationalSchema.Column.Column;
 using DateTime = Pure.Primitives.DateTime.DateTime;
-using Double = Pure.Primitives.Number.Double;
 using Guid = Pure.Primitives.Guid.Guid;
 using String = Pure.Primitives.String.String;
 using Table = Pure.RelationalSchema.Table.Table;
@@ -37,7 +37,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Nulls;
 /// null when empty, or else user_name; phone, nullIfEqual of the mobile (+1- and
 /// user_name when user_score is above 29, else empty) and the empty string, or else
 /// nullIfEqual of the landline (+2- and user_name for an active user, else empty) and the
-/// empty string; age, nullIfEqual of user_age and 25; opted_in, nullIfEqual of
+/// empty string; age, nullIfEqual of user_age rounded to a whole number and 25; opted_in, nullIfEqual of
 /// user_active and false; trial_start, nullIfEqual of user_edge_date and 9999-12-31;
 /// call_time, nullIfEqual of user_edge_time and midnight; returned_at, nullIfEqual of
 /// last_login and 2024-06-01T08:30:00Z; referrer_id, nullIfEqual of user_tenant_id and
@@ -234,16 +234,18 @@ public sealed record BlankValuesOfEveryTypeAsNullQuery
                 ),
                 new SelectItemProjection(
                     "age",
-                    new NullIfEqualDecimalNullableProjection(
-                        new FieldDecimal(
-                            new JoinedString(
-                                new DotString(),
-                                [
-                                    new RelationalSchemaWithForeignKeys().Name,
-                                    new UsersTable().Name,
-                                ]
-                            ).TextValue,
-                            new UserAgeColumn().Name.TextValue
+                    new NullIfEqualIntegerNullableProjection(
+                        new RoundWithoutDigitsIntegerProjection(
+                            new FieldDecimal(
+                                new JoinedString(
+                                    new DotString(),
+                                    [
+                                        new RelationalSchemaWithForeignKeys().Name,
+                                        new UsersTable().Name,
+                                    ]
+                                ).TextValue,
+                                new UserAgeColumn().Name.TextValue
+                            )
                         ),
                         new LiteralInteger(25)
                     )
@@ -393,7 +395,7 @@ public sealed record BlankValuesOfEveryTypeAsNullQuery
                     new UserIdColumn(),
                     new Column(new String("display_name"), new StringColumnType()),
                     new Column(new String("phone"), new StringColumnType()),
-                    new Column(new String("age"), new DoubleColumnType()),
+                    new Column(new String("age"), new LongColumnType()),
                     new Column(new String("opted_in"), new BoolColumnType()),
                     new Column(new String("trial_start"), new DateColumnType()),
                     new Column(new String("call_time"), new TimeColumnType()),
@@ -429,8 +431,8 @@ public sealed record BlankValuesOfEveryTypeAsNullQuery
                                 new InvariantCell(new String("+1-Ann"))
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("age"), new DoubleColumnType()),
-                                new InvariantCell(new Double(30))
+                                new Column(new String("age"), new LongColumnType()),
+                                new InvariantCell(new Long(30))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(new String("opted_in"), new BoolColumnType()),
@@ -499,8 +501,8 @@ public sealed record BlankValuesOfEveryTypeAsNullQuery
                                 new InvariantCell(new String("+1-Cara"))
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("age"), new DoubleColumnType()),
-                                new InvariantCell(new Double(30))
+                                new Column(new String("age"), new LongColumnType()),
+                                new InvariantCell(new Long(30))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(new String("opted_in"), new BoolColumnType()),
@@ -574,7 +576,7 @@ public sealed record BlankValuesOfEveryTypeAsNullQuery
                                 new EmptyCell()
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("age"), new DoubleColumnType()),
+                                new Column(new String("age"), new LongColumnType()),
                                 new EmptyCell()
                             ),
                             new KeyValuePair<IColumn, ICell>(
@@ -661,8 +663,8 @@ public sealed record BlankValuesOfEveryTypeAsNullQuery
                                 new InvariantCell(new String("+2-Fay"))
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("age"), new DoubleColumnType()),
-                                new InvariantCell(new Double(28))
+                                new Column(new String("age"), new LongColumnType()),
+                                new InvariantCell(new Long(28))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(new String("opted_in"), new BoolColumnType()),

@@ -354,14 +354,20 @@ public sealed record BlankValuesOfEveryTypeAsNullQueryTests
                       "expression": {
                         "operator": "nullIfEqual",
                         "type": {
-                          "name": "decimal",
+                          "name": "integer",
                           "nullable": true
                         },
                         "left": {
-                          "source": "schema_with_foreign_keys.users",
-                          "field": "user_age",
+                          "operator": "round",
                           "type": {
-                            "name": "decimal"
+                            "name": "integer"
+                          },
+                          "operand": {
+                            "source": "schema_with_foreign_keys.users",
+                            "field": "user_age",
+                            "type": {
+                              "name": "decimal"
+                            }
                           }
                         },
                         "right": {
@@ -563,7 +569,7 @@ public sealed record BlankValuesOfEveryTypeAsNullQueryTests
                     },
                     {
                       "name": "age",
-                      "type": "double"
+                      "type": "long"
                     },
                     {
                       "name": "opted_in",
