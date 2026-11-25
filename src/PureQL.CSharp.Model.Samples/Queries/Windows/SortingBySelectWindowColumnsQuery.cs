@@ -362,7 +362,7 @@ public sealed record SortingBySelectWindowColumnsQuery
                 new EmptyString(),
                 [
                     new ItemIdColumn(),
-                    new Column(new String("order_id"), new UuidColumnType()),
+                    new OrderIdColumn(),
                     new Column(new String("line_total"), new DoubleColumnType()),
                     new Column(new String("running_total"), new DoubleColumnType()),
                     new Column(new String("position"), new LongColumnType()),
@@ -386,7 +386,7 @@ public sealed record SortingBySelectWindowColumnsQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("order_id"), new UuidColumnType()),
+                                new OrderIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -441,7 +441,7 @@ public sealed record SortingBySelectWindowColumnsQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("order_id"), new UuidColumnType()),
+                                new OrderIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -496,7 +496,7 @@ public sealed record SortingBySelectWindowColumnsQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("order_id"), new UuidColumnType()),
+                                new OrderIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -551,7 +551,7 @@ public sealed record SortingBySelectWindowColumnsQuery
                                 )
                             ),
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("order_id"), new UuidColumnType()),
+                                new OrderIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(

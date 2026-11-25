@@ -419,7 +419,7 @@ public sealed record CircularMeanHourPerUserQuery
             new Table(
                 new EmptyString(),
                 [
-                    new Column(new String("user_id"), new UuidColumnType()),
+                    new UserIdColumn(),
                     new Column(new String("mean_hour_angle"), new DoubleColumnType()),
                     new Column(new String("mean_hour"), new DoubleColumnType()),
                     new Column(new String("concentration"), new DoubleColumnType()),
@@ -433,7 +433,7 @@ public sealed record CircularMeanHourPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -487,7 +487,7 @@ public sealed record CircularMeanHourPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(

@@ -210,7 +210,7 @@ public sealed record LastTwelveMonthsPerUserQuery
             new Table(
                 new EmptyString(),
                 [
-                    new Column(new String("user_id"), new UuidColumnType()),
+                    new UserIdColumn(),
                     new Column(new String("month"), new DateColumnType()),
                     new Column(new String("revenue"), new DoubleColumnType()),
                     new Column(new String("last_twelve_months"), new DoubleColumnType()),
@@ -227,7 +227,7 @@ public sealed record LastTwelveMonthsPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -281,7 +281,7 @@ public sealed record LastTwelveMonthsPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -335,7 +335,7 @@ public sealed record LastTwelveMonthsPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -389,7 +389,7 @@ public sealed record LastTwelveMonthsPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -443,7 +443,7 @@ public sealed record LastTwelveMonthsPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
@@ -497,7 +497,7 @@ public sealed record LastTwelveMonthsPerUserQuery
                     new Dictionary<KeyValuePair<IColumn, ICell>, IColumn, ICell>(
                         [
                             new KeyValuePair<IColumn, ICell>(
-                                new Column(new String("user_id"), new UuidColumnType()),
+                                new UserIdColumn(),
                                 new InvariantCell(
                                     new Guid(
                                         new System.Guid(
