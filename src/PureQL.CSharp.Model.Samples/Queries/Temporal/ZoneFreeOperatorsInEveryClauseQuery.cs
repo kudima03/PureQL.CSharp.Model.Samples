@@ -37,7 +37,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Temporal;
 /// 700000, where the instant is 2024-06-01T10:00:00Z plus order_total divided by 100
 /// seconds. They are grouped by the startOfSecond of the instant as second, by placed_on
 /// plus 1 month as renewal and by the nullable shipped.placed_on plus 1 month as
-/// shipped_renewal, and the groups whose renewal is more than a whole month after
+/// shipped_renewal, and the groups whose renewal is at least a whole month after
 /// 2024-06-02 are kept. Each group gives the keys, the latest microsecond, the count of
 /// orders with rank 1 in their second and the count of orders whose shipped.placed_on
 /// lies 0 months from placed_on. The subquery ranked gives each order_id the
