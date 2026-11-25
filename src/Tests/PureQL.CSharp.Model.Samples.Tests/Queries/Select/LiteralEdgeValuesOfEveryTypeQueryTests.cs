@@ -185,4 +185,217 @@ public sealed record LiteralEdgeValuesOfEveryTypeQueryTests
             new QueryJson(new LiteralEdgeValuesOfEveryTypeQuery().Value).TextValue
         );
     }
+
+    [Fact]
+    public void ResultMatchesExpectedRows()
+    {
+        Assert.Equal(
+            new ExpectedJson(
+                /*lang=json,strict*/
+                """
+                {
+                  "name": "",
+                  "columns": [
+                    {
+                      "name": "int_written_as_5_0",
+                      "type": "long"
+                    },
+                    {
+                      "name": "negative_int",
+                      "type": "long"
+                    },
+                    {
+                      "name": "decimal_without_fraction",
+                      "type": "double"
+                    },
+                    {
+                      "name": "decimal_exponent",
+                      "type": "double"
+                    },
+                    {
+                      "name": "empty_string",
+                      "type": "string"
+                    },
+                    {
+                      "name": "leap_day",
+                      "type": "date"
+                    },
+                    {
+                      "name": "first_day",
+                      "type": "date"
+                    },
+                    {
+                      "name": "last_day",
+                      "type": "date"
+                    },
+                    {
+                      "name": "midnight",
+                      "type": "time"
+                    },
+                    {
+                      "name": "microseconds",
+                      "type": "time"
+                    },
+                    {
+                      "name": "utc_half_second",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "utc_one_microsecond",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "hex_letters_uuid",
+                      "type": "uuid"
+                    },
+                    {
+                      "name": "decimal_28_digits",
+                      "type": "double"
+                    },
+                    {
+                      "name": "decimal_28_digits_with_fraction",
+                      "type": "double"
+                    },
+                    {
+                      "name": "decimal_28_places",
+                      "type": "double"
+                    },
+                    {
+                      "name": "largest_integer",
+                      "type": "long"
+                    },
+                    {
+                      "name": "smallest_integer",
+                      "type": "long"
+                    }
+                  ],
+                  "indexes": 0,
+                  "rows": [
+                    [
+                      "5",
+                      "-42",
+                      "5",
+                      "1.5E-07",
+                      "",
+                      "2024-02-29",
+                      "0001-01-01",
+                      "9999-12-31",
+                      "00:00:00",
+                      "23:59:59.999999",
+                      "2024-12-31T23:59:59.5Z",
+                      "2024-01-01T00:00:00.000001Z",
+                      "abcdefab-cdef-4abc-8def-abcdefabcdef",
+                      "-1E+28",
+                      "1234567890123456.8",
+                      "-1E-28",
+                      "9223372036854775807",
+                      "-9223372036854775808"
+                    ],
+                    [
+                      "5",
+                      "-42",
+                      "5",
+                      "1.5E-07",
+                      "",
+                      "2024-02-29",
+                      "0001-01-01",
+                      "9999-12-31",
+                      "00:00:00",
+                      "23:59:59.999999",
+                      "2024-12-31T23:59:59.5Z",
+                      "2024-01-01T00:00:00.000001Z",
+                      "abcdefab-cdef-4abc-8def-abcdefabcdef",
+                      "-1E+28",
+                      "1234567890123456.8",
+                      "-1E-28",
+                      "9223372036854775807",
+                      "-9223372036854775808"
+                    ],
+                    [
+                      "5",
+                      "-42",
+                      "5",
+                      "1.5E-07",
+                      "",
+                      "2024-02-29",
+                      "0001-01-01",
+                      "9999-12-31",
+                      "00:00:00",
+                      "23:59:59.999999",
+                      "2024-12-31T23:59:59.5Z",
+                      "2024-01-01T00:00:00.000001Z",
+                      "abcdefab-cdef-4abc-8def-abcdefabcdef",
+                      "-1E+28",
+                      "1234567890123456.8",
+                      "-1E-28",
+                      "9223372036854775807",
+                      "-9223372036854775808"
+                    ],
+                    [
+                      "5",
+                      "-42",
+                      "5",
+                      "1.5E-07",
+                      "",
+                      "2024-02-29",
+                      "0001-01-01",
+                      "9999-12-31",
+                      "00:00:00",
+                      "23:59:59.999999",
+                      "2024-12-31T23:59:59.5Z",
+                      "2024-01-01T00:00:00.000001Z",
+                      "abcdefab-cdef-4abc-8def-abcdefabcdef",
+                      "-1E+28",
+                      "1234567890123456.8",
+                      "-1E-28",
+                      "9223372036854775807",
+                      "-9223372036854775808"
+                    ],
+                    [
+                      "5",
+                      "-42",
+                      "5",
+                      "1.5E-07",
+                      "",
+                      "2024-02-29",
+                      "0001-01-01",
+                      "9999-12-31",
+                      "00:00:00",
+                      "23:59:59.999999",
+                      "2024-12-31T23:59:59.5Z",
+                      "2024-01-01T00:00:00.000001Z",
+                      "abcdefab-cdef-4abc-8def-abcdefabcdef",
+                      "-1E+28",
+                      "1234567890123456.8",
+                      "-1E-28",
+                      "9223372036854775807",
+                      "-9223372036854775808"
+                    ],
+                    [
+                      "5",
+                      "-42",
+                      "5",
+                      "1.5E-07",
+                      "",
+                      "2024-02-29",
+                      "0001-01-01",
+                      "9999-12-31",
+                      "00:00:00",
+                      "23:59:59.999999",
+                      "2024-12-31T23:59:59.5Z",
+                      "2024-01-01T00:00:00.000001Z",
+                      "abcdefab-cdef-4abc-8def-abcdefabcdef",
+                      "-1E+28",
+                      "1234567890123456.8",
+                      "-1E-28",
+                      "9223372036854775807",
+                      "-9223372036854775808"
+                    ]
+                  ]
+                }
+                """
+            ).TextValue,
+            new DataSetJson(new LiteralEdgeValuesOfEveryTypeQuery().Result).TextValue
+        );
+    }
 }
