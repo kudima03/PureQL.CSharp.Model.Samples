@@ -47,9 +47,7 @@ public sealed record InlineRowsOfEveryCellTypeQuery
                             new RowItem("time", new LiteralTime(new TimeOnly(8, 30, 0))),
                             new RowItem(
                                 "id",
-                                new LiteralUuid(
-                                    new Guid("3f2a6c1e-8b4d-4e2a-9c1f-1a2b3c4d5e6f")
-                                )
+                                new LiteralUuid(new Guid(1001, 0, 0, new byte[8]))
                             ),
                         ],
                         [
@@ -57,9 +55,7 @@ public sealed record InlineRowsOfEveryCellTypeQuery
                             new RowItem("amount", new LiteralDecimal(2.5m)),
                             new RowItem(
                                 "id",
-                                new LiteralUuid(
-                                    new Guid("9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d")
-                                )
+                                new LiteralUuid(new Guid(1002, 0, 0, new byte[8]))
                             ),
                             new RowItem(
                                 "time",

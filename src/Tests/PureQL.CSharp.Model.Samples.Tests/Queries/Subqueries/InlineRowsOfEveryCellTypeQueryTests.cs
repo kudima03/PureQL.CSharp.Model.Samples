@@ -77,7 +77,7 @@ public sealed record InlineRowsOfEveryCellTypeQueryTests
                               "type": {
                                 "name": "uuid"
                               },
-                              "value": "3f2a6c1e-8b4d-4e2a-9c1f-1a2b3c4d5e6f"
+                              "value": "000003e9-0000-0000-0000-000000000000"
                             }
                           }
                         ],
@@ -107,7 +107,7 @@ public sealed record InlineRowsOfEveryCellTypeQueryTests
                               "type": {
                                 "name": "uuid"
                               },
-                              "value": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
+                              "value": "000003ea-0000-0000-0000-000000000000"
                             }
                           },
                           {
