@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace PureQL.CSharp.Model.Samples.Tests;
@@ -15,7 +16,10 @@ internal sealed record CanonicalJson
         _node = node;
     }
 
-    public string TextValue => Canonical(_node)?.ToJsonString() ?? "null";
+    // Deeply nested documents exceed the default depth of 64.
+    public string TextValue =>
+        Canonical(_node)?.ToJsonString(new JsonSerializerOptions { MaxDepth = 512 })
+        ?? "null";
 
     private static JsonNode? Canonical(JsonNode? node)
     {

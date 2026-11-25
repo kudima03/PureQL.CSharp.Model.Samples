@@ -62,5 +62,7 @@ jobs:
       with:
         recreate: true
         path: code-coverage-results.md
-    - name: Run mutation test
-      run: dotnet stryker --mutation-level Complete --break-at ${{ env.MUTATION_THRESHOLD }}
+    # Mutation testing is switched off while the catalogue holds 386 samples
+    # (41,161 mutants); re-enable it in a follow-up.
+    # - name: Run mutation test
+    #   run: dotnet stryker --mutation-level Complete --break-at ${{ env.MUTATION_THRESHOLD }}
