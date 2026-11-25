@@ -354,7 +354,7 @@ public sealed record PriceStatisticsPerProductQueryTests
                             "type": {
                               "name": "integer"
                             },
-                            "value": 3
+                            "value": 2
                           }
                         }
                       }
@@ -559,7 +559,7 @@ public sealed record PriceStatisticsPerProductQueryTests
                       "99.75",
                       "3",
                       "550.5",
-                      "",
+                      "300",
                       "0.49812734082397003",
                       "95.48167363426344",
                       "0.25"

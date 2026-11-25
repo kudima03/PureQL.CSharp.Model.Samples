@@ -34,7 +34,7 @@ namespace PureQL.CSharp.Model.Samples.Queries.Aggregates;
 /// quantity, the mode of the quantity of all rows, the continuous percentiles of 0.75 and
 /// 0.25 of the price subtracted, the discrete percentile of 0.75 of the quantity, the
 /// median of the quantity times the price, the median price of the items with a quantity
-/// above 3 (a predicate, null where there is none), the population standard deviation of
+/// above 2 (a predicate, null where there is none), the population standard deviation of
 /// the price divided by its average (null through nullIfEqual where that is 0), the
 /// sample standard deviation of the price of all rows and the population variance of the
 /// quantity. The having keeps the products whose sample standard deviation of the price,
@@ -314,7 +314,7 @@ public sealed record PriceStatisticsPerProductQuery
                                     new ItemQtyColumn().Name.TextValue
                                 )
                             ),
-                            new LiteralInteger(3)
+                            new LiteralInteger(2)
                         )
                     )
                 ),
@@ -517,7 +517,7 @@ public sealed record PriceStatisticsPerProductQuery
                                     new String("median_of_large_lines"),
                                     new DoubleColumnType()
                                 ),
-                                new EmptyCell()
+                                new InvariantCell(new Double(300))
                             ),
                             new KeyValuePair<IColumn, ICell>(
                                 new Column(
